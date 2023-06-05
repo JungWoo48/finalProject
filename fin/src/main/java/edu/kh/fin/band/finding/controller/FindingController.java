@@ -7,9 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class FindingController {
 	
 	@GetMapping("/findingMember")
-	public String roomController() {
+	public String findingMemberController() {
 		
 		return "finding/findingMember";
+		
+	}
+	
+
+	@GetMapping("/memberList")
+	public String memberListController() {
+		
+		return "finding/memberList";
 		
 	}
 

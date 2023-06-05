@@ -79,26 +79,52 @@
   padding: 3em 3em;
 }
 
+h2{
+  padding: 1em 0 0 1.5em;
+}
+
+
+.mainQuestion > div:last-child{
+  width: 100%;
+}
+
 
 .questionInput{
   padding:0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .questionInput > form{
   display: flex;
   flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
-.questionInput input{
+.mainInput{
   margin: 2em 0;
-  height: 35px;
-  width: 500px;
+  height: 45px;
+  width: 35%;
   padding: 1em 1em;
   border: 1.5px solid #868E96;
   border-radius: 5px;
   outline: none;
-  font-size: 1.1em;
+  font-size: 1em;
   background-color:transparent;
+  min-width: 400px;
+}
+
+.label{
+  width: 35%;
+  min-width: 400px;
+}
+
+.inputEmail{
+  font-family: var(--navFont-style-);
 }
 
 input::-webkit-outer-spin-button,
@@ -108,23 +134,17 @@ input::-webkit-inner-spin-button {
 }
 
 
-.questionInput textarea{
-  margin: 2em 0;
+.mainTextArea{
   resize: none;
-  width: 510px;
   height: 150px;
-  padding: 1em 1em;
-  border: 1.5px solid #868E96;
-  border-radius: 5px;
-  outline: none;
   font-size: 1.3em;
-  background-color:transparent;
 }
 
 .questionInput button{
   background-color: transparent;
   border: 1.5px solid #868E96;
   border-radius: 5px;
+  width: 35%;
   height: 50px;
   cursor: pointer;
 }
@@ -137,6 +157,7 @@ input::-webkit-inner-spin-button {
 
 .content2, .content3, .content4{
   position: relative;
+  overflow: hidden;
 }
 
 /* guitar Text */
@@ -146,9 +167,24 @@ input::-webkit-inner-spin-button {
   right: 1em;
   bottom: 16em;
   padding: 3em 3em;
-  width: 38%;
+  width: 45%;
   opacity: 0;
 }
+
+body.darkmode .mainTextP, body.darkmode .mainTextA{
+	color: var(--background-color);
+}
+
+body.darkmode .bi-chevron-compact-up{
+	color: var(--background-color);
+}
+
+/*bi-arrow-up-short*/
+
+.mainTextP{
+	color: var(--text-color);
+}
+
 
 .boardText > div{
   height: 100%;
@@ -223,19 +259,18 @@ input::-webkit-inner-spin-button {
 .reservationText{
   color: #000;
   position: absolute;
-  top: 7em;
-  right: 0;
-  bottom: 0;
-  left: 45em;
+  top: 3em;
+  right: 10em;
+  /* bottom: 0; */
+  /* left: 42em; */
   padding: 3em 3em;
   height: 100%;
-  width: 100%;
   opacity: 0;
 }
 
 .reservationText > div{
   height: 100%;
-  width: 45%;
+  width: 100%;
 }
 
 .reservationText p:first-child{
@@ -318,7 +353,7 @@ input::-webkit-inner-spin-button {
     top: 20em;
     opacity: 0;
   }to{
-    top: 7em;
+    top: 3em;
     opacity: 1;
   }
 }
@@ -327,7 +362,7 @@ input::-webkit-inner-spin-button {
 
 @keyframes disappearSlideHeadPhone{
   from{
-    top: 7em;
+    top: 3em;
     opacity: 1;
   }to{
     top: 20em;
@@ -340,9 +375,74 @@ input::-webkit-inner-spin-button {
 
 /* ===================main Text KeyFrames=================== */
 
+
+/* mian Text media */
+
+@media screen and (max-width:53em){
+  .mainTextP, hr, .topBtn{
+    display: none;
+  }
+  .mainBoard{
+    font-size: 2em;
+    position: absolute;
+    bottom: -3.5em;
+  }
+ 
+
+  .mainUsed{
+    font-size: 2em;
+    position: absolute;
+    top: -1.3em;
+    left: -2em;
+  }
+
+
+  .mainReser{
+    font-size: 2em;
+    position: absolute;
+    left: -16em;
+    top: -0.8em;
+  }
+  
+
+
+ 
+
+
+}
+
+/* mian Text media */
+
 /* ===============================main Text=============================== */
 
 
+
+/* top button */
+
+
+.show{
+  transition: opacity 1s ease-out;
+  opacity: 1 !important;
+}
+
+
+
+.topBtn{
+  position: fixed;
+  bottom: 1em;
+  right: 3em;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 99;
+  transition: opacity 0.7s ease-out;
+  opacity: 0;
+}
+
+.bi-chevron-compact-up{
+  font-size: 3em;
+  color: var(--text-color);
+}
 
 
 

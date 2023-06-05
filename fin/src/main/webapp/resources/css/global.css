@@ -1,11 +1,13 @@
 :root{
     --text-color:#000; 
-    --background-color:#fff; 
+    --background-color:#ffffff; 
     --grey-color:#868E96;
     --accent-color: #f3b013;
     --stroke-color: #474554;
     
-    --grr-color : #ebebeb;
+	--grr-color : #edeeef;
+	--scroll-background-color : #e7efee;
+    --scroll-dark-color: #e7c3c3;
     
     --background-dark-color:#000;
     --text-dark-color:#fff;
@@ -15,6 +17,7 @@
     --magenta-heart-color: magenta;
     
     --silver-color : silver;
+
 
 
     --background-nav-color:#fff;
@@ -45,5 +48,33 @@ body{
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
+    margin: 0 auto;
+    min-height: 100vh;
+    max-width: 100vw;
+    
 }
+
+body::-webkit-scrollbar {
+    width: 3px;  /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+    height: 15%; /* 스크롤바의 길이 */
+    background: var(--grey-color); /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--scroll-background-color);  /*스크롤바 뒷 배경 색상*/
+}
+
+
+body.darkmode::-webkit-scrollbar-track{
+    background-color: transparent; /*다크모드 스크롤바 배경 투명색 == 검은색 */
+}
+
+body.darkmode::-webkit-scrollbar-thumb {
+    background: var(--scroll-dark-color); /* 다크모드 스크롤바 연한 핑크 */
+}
+
 

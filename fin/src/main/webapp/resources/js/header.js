@@ -45,7 +45,7 @@ let darkMode = localStorage.getItem('darkMode');
 const darkModeFunc = () => {
   // 바디 태그에 다크모드 클래스 입히기
   document.body.classList.add('darkmode');
- 
+  
   for(let i = 0; i < navA.length; i++){
     navA[i].style.color="#fff";
   }
@@ -135,3 +135,28 @@ sun.addEventListener('click', () => {
 
 
 // =========================================모드==========================================
+
+
+
+
+
+const modal = document.getElementById("modal");
+const openModalBtn = document.getElementById("open-modal");
+const closeModalBtn = document.getElementById("close-modal");
+// 모달창 열기
+openModalBtn.addEventListener("click", () => {
+  modal.style.display = "block";
+  document.body.style.overflow = "hidden"; // 스크롤바 제거
+});
+// 모달창 닫기
+closeModalBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  document.body.style.overflow = "auto"; // 스크롤바 보이기
+});
+
+modal.addEventListener("click", e => {
+    const evTarget = e.target
+    if(evTarget.classList.contains("modal-content")) {
+        modal.style.display = "none"
+    }
+})

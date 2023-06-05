@@ -1,0 +1,194 @@
+*{
+	box-sizing: border-box;
+}
+body{
+    margin: 0px;
+}
+
+.main{
+    width: 80%;
+    margin: auto;
+    margin-top: 200px;
+	
+
+}
+
+#searchboxInput{
+	width: 250px;
+    height: 38px;
+    border-radius: 19px;
+    border: solid 1px var( --grey-color);
+    box-sizing: border-box;
+    padding:15px;
+}
+
+.searchInputButton{
+    justify-content: center;
+    position: absolute;
+	
+    border: none;
+     float: right;
+	margin-top: 10px;
+	margin-right: 170px;
+}
+
+.fa-solid fa-magnifying-glass{
+	position: absolute;
+ 	margin-right: 30px;
+  	border: solid 1px var( --grey-color);
+}
+
+ .jb-division-line {
+    border-top: 1px solid var(--grey-color);
+    margin: 15px 0px;
+  }
+
+  .thingTotalBox{
+    display: flex;
+    justify-content: space-between;
+        justify-content: space-around;
+    flex-wrap: wrap;
+
+
+  }
+
+
+.topbox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.mainTitle{
+	  font-weight: bold;
+padding-left: 50px;
+    display: flex;
+    justify-content: center;
+    float: right;
+}
+.searchbox{
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+}
+#guitarImg{
+	width: 300px;
+	height: 250px;
+	border-radius:10px;
+
+}
+.thingBox{
+	border-radius:10px;
+    border: 1px solid var(--stroke-color);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 2em;
+
+}
+
+
+.thingPicture {
+    background-color:var(#868E96);
+	width: 300px;
+	height: 250px;
+	box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+	   
+}
+
+
+
+
+.thingsecondbox{
+ 
+	
+	width: 300px;
+	height: 100px;
+	box-sizing: border-box;
+    padding: 10px;
+
+}
+
+.thingssecondTop{
+    display: flex;
+	padding-left: 5px;
+	
+    padding-top: 10px;
+}
+.SaleOrSoldout{
+    color: var( --accent-color);
+    padding-left: 5px;
+    padding-right: 16px;
+    font-weight: bold;
+        padding : 3px;
+}
+
+.thingTitle{
+    font-weight: bold;
+      padding : 10px;
+           padding : 3px;
+
+}
+
+.thingsecondBottomBox{
+    justify-content: space-around;
+padding-top: 5px;  
+}
+.thingsecondBottom{
+    padding-left: 5px;
+    float: left;
+    display: flex;
+}
+
+.sellerName{
+    color: var(#474554);
+	font-weight: bold;
+      padding : 3px;
+}
+.dot{
+    color: var(#474554);
+    font-weight: bold;
+    padding-right: 7px;
+    padding-left: 7px;
+      padding : 3px;
+}
+.sellerRegion{
+    color: var(#474554);
+    font-weight: bold;
+      padding : 3px;
+}
+
+.price{
+  
+    padding-right: 17px;
+    float: right;
+    font-weight: bold;
+      padding : 3px;
+}
+
+
+
+@media (max-width:700px){
+	
+	.main{
+	width: 500px;
+	margin: auto;
+	
+	}
+	
+.mainTitle{
+	  font-weight: bold;
+  
+    display: flex;
+    justify-content: center;
+    float: right;
+}
+.searchbox{
+    flex-basis: 30%;
+    display: flex;
+    justify-content: center;
+}
+	
+}
