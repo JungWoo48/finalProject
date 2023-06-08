@@ -78,6 +78,10 @@ body.darkmode .chatBox > button >i{
     border-radius: 0.5em;
 }
 
+body.darkmode .imgBox{
+    border: 1px solid var(--border-color);
+}
+
 .imgBox > div:first-child{
     flex-basis: 60%;
     border: 1px solid goldenrod;
@@ -116,60 +120,107 @@ body.darkmode .chatBox > button >i{
 
 
 
-
-
-
-
-
-
-.secondSection{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* border:1px solid black; */
-    margin-bottom: 15em;
-    margin-top: 15em;
+/* 
+    평소 displayNone인데 강사가 본인 게시글을 들어갔을 때, 혹은 관리자일때 채팅 보내기 
+    아이콘 말고 delelte 버튼이 있어야함.
+ */
+#deleteBtn{
+    width: 150px;
+    height: 40px;
+    border: 1px solid var(--label-color);
+    background: transparent;
+    border-radius: 0.5em;
+    letter-spacing: 0.3em;
+    text-align: center;
+    cursor: pointer;
+    display: none;
 }
 
-.secondSection > div:first-child{
-    text-align: center;
+body.darkmode #deleteBtn{
+    color: var(--text-dark-color);
+    border: 1px solid var(--accent-color);
+}
+
+
+
+
+
+
+
+
+
+
+/* slider */
+
+
+.secondSection img{
+  width: 150px;
+}
+
+.secondSection > div:first-child > p{
     font-size: 2em;
+    font-weight: 600;
+}
+
+.secondSection{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 17em;
+  margin-bottom: 17em;
 }
 
 .recommendImgBox{
-    display: flex;
-    justify-content: space-evenly;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 5em;
+}
+
+.recommendImgBox div{
+  height: 100%;
+  overflow: hidden;
+  margin: 0 2em;
+  text-align: center;
+}
+
+.recommendImgBox ul{
+  display: none !important;
+  list-style: none;
+}
+
+
+.recommendImgBox > img{
+  width: 80px;
+  height: 80px;
+}
+
+
+.btn{
+  display: none !important;
+}
+
+
+.slick-initialized .slick-slide{
+    display: flex !important;
+    justify-content: center;
     align-items: center;
-    /* border: 1px solid black; */
-    margin-top: 5em;
+    flex-direction: column;
 }
-
-.recommendImgBox > div{
-    border: 1px solid var(--stroke-color);
-    border-radius: 0.5em;
-    overflow: hidden;
-    width: 150px;
-    text-align: center;
-}
-
-.recommendName{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 5em;
-}
-
-.recommendName > div > p{
-    padding: 1em 1em;
-}
+/* slider */
 
 
 
-/* 반응형 */
+/* 미디어쿼리 */
 
-
-@media screen and (max-width:46.875rem) {
-    .imgBox{
-        width: 90%;
+@media screen and (min-width:22.5rem) and (max-width:31.3rem){
+    .recommendImgBox div{
+        margin: 0;
     }
 }
+
+/* 미디어쿼리 */
+

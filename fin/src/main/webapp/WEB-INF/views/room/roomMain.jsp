@@ -12,6 +12,8 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+
+<a href="${contextPath}/usedWriting">중고글 작성</a>
 <div class="content" id="content">
 	<div class="logoDiv">
 		<svg id="titleLogo" width="283" height="102" viewBox="0 0 283 102" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,29 +24,50 @@
 		<path d="M233.082 89.624H282.042V101H217.53V90.632L266.202 12.008H218.106V0.632004H281.754V11L233.082 89.624Z" stroke="black" stroke-width="5"/>
 		</svg>
 	</div>
-		
-		
+
 	<!-- 분류 창 -->
 	<div class="sorting-bar">
 		<!-- 각각의 메뉴 -->
 		<div>
+			<button class="regionBtn" id="regionBtn">
+				<span id="regionTextSpan">REGION</span>
+				<i class="bi bi-caret-down" id="bi"></i>
+			</button>
+			<ul class="regionListUl disappearList" id="regionListUl">
+				<li>서울</li>
+				<li>경기</li>
+				<li>부산</li>
+				<li>대구</li>
+				<li>대전</li>
+				<li>강원도</li>
+				<li>경상북도</li>
+				<li>경상남도</li>
+				<li>전라북도</li>
+				<li>전라남도</li>
+				<li>충청북도</li>
+				<li>충청남도</li>
+				<li>충청남도</li>
+				<li>제주도</li>
+			</ul>
+			<!--
 			<select>
-				<option>지역</option>
-				<option>서울</option>
-				<option>경기</option>
-				<option>부산</option>
-				<option>대구</option>
-				<option>대전</option>
-				<option>강원도</option>
-				<option>경상북도</option>
-				<option>경상남도</option>
-				<option>전라북도</option>
-				<option>전라남도</option>
-				<option>충청북도</option>
-				<option>충청남도</option>
-				<option>충청남도</option>
-				<option>제주도</option>
+				<li>지역</li>
+				<li>서울</li>
+				<li>경기</li>
+				<li>부산</li>
+				<li>대구</li>
+				<li>대전</li>
+				<li>강원도</li>
+				<li>경상북도</li>
+				<li>경상남도</li>
+				<li>전라북도</li>
+				<li>전라남도</li>
+				<li>충청북도</li>
+				<li>충청남도</li>
+				<li>충청남도</li>
+				<li>제주도</li>
 			</select>
+			-->
 		</div>
 		<div>
 			<input type="search" id="room-search">
@@ -270,7 +293,9 @@
 	 </div>
 
 </div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+
 <script type="text/javascript" src="${contextPath}/resources/js/roomMain.js"></script>
 </body>
 </html>

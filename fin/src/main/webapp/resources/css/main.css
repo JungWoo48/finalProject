@@ -79,8 +79,13 @@
   padding: 3em 3em;
 }
 
+h1{
+  letter-spacing: 0.2em;
+}
+
 h2{
-  padding: 1em 0 0 1.5em;
+  padding: 1em 0 0 1.7em;
+  letter-spacing: 0.2em;
 }
 
 
@@ -110,7 +115,7 @@ h2{
   height: 45px;
   width: 35%;
   padding: 1em 1em;
-  border: 1.5px solid #868E96;
+  border: 1px solid var(--label-color);
   border-radius: 5px;
   outline: none;
   font-size: 1em;
@@ -118,10 +123,29 @@ h2{
   min-width: 400px;
 }
 
+
 .label{
   width: 35%;
   min-width: 400px;
+  color: var(--label-color);
+  letter-spacing: 0.3em;
 }
+
+
+
+
+body.darkmode .mainInput{
+  border: 1px solid var(--text-dark-color);
+}
+body.darkmode .label{
+  color: var(--text-dark-color);
+}
+
+
+
+
+
+
 
 .inputEmail{
   font-family: var(--navFont-style-);
@@ -142,11 +166,33 @@ input::-webkit-inner-spin-button {
 
 .questionInput button{
   background-color: transparent;
-  border: 1.5px solid #868E96;
+  border: 1.5px solid var(--label-color);
   border-radius: 5px;
   width: 35%;
   height: 50px;
   cursor: pointer;
+  letter-spacing: 0.3em;
+}
+
+
+
+
+
+
+#mainBtn:hover{
+  animation: in .5s ease-out;
+}
+
+@keyframes in{
+  0%{
+    letter-spacing: 0.3em;
+  }
+  50%{
+    letter-spacing: 0.6em
+  }
+  100%{
+    letter-spacing: 0.3em
+  }
 }
 
 
@@ -376,42 +422,6 @@ body.darkmode .bi-chevron-compact-up{
 /* ===================main Text KeyFrames=================== */
 
 
-/* mian Text media */
-
-@media screen and (max-width:53em){
-  .mainTextP, hr, .topBtn{
-    display: none;
-  }
-  .mainBoard{
-    font-size: 2em;
-    position: absolute;
-    bottom: -3.5em;
-  }
- 
-
-  .mainUsed{
-    font-size: 2em;
-    position: absolute;
-    top: -1.3em;
-    left: -2em;
-  }
-
-
-  .mainReser{
-    font-size: 2em;
-    position: absolute;
-    left: -16em;
-    top: -0.8em;
-  }
-  
-
-
- 
-
-
-}
-
-/* mian Text media */
 
 /* ===============================main Text=============================== */
 
@@ -443,6 +453,157 @@ body.darkmode .bi-chevron-compact-up{
   font-size: 3em;
   color: var(--text-color);
 }
+
+
+.textWrapper{
+  position: relative;
+}
+
+/* 미디어 쿼리 */
+
+/* mian Text media */
+
+/* @media screen and (max-width:52rem){
+  .mainTextP, hr, .topBtn{
+    display: none;
+  }
+
+
+  .mainBoard{
+    font-size: 1.8em;
+    position: absolute;
+    top: 5em;
+  }
+ 
+
+  .mainUsed{
+    font-size: 1.8em;
+    position: absolute;
+    bottom: 3em;
+    left: -4em;
+  }
+
+
+  .mainReser{
+    font-size: 1.8em;
+    position: absolute;
+    top: 2em;
+    right: -1em;
+  }
+} */
+
+/* mian Text media */
+
+
+/* 하단 인풋 미디어쿼리 */
+/* 아이폰 xr, 갤럭시 울트라 */
+@media screen and (max-width:26rem) {
+  .label, .mainInput, .questionInput button{
+    width: 80%;
+    min-width: 0;
+  }
+}
+
+
+@media screen and (width:48.2rem) {
+
+  .mainBoard{
+    font-size: 1.8em;
+    position: absolute;
+    top: 15em;
+    left: 4em;
+  }
+  
+  
+}
+
+
+
+
+
+/* 미디어쿼리 */
+
+
+/* 반응형 키프레임 */
+
+/* guitar Text */
+/* 26 */
+@keyframes slideGuitarMedia{
+  from{
+    right: -10em;
+    opacity: 0;
+
+  }to{
+    top: 5em;
+    right: 3em;
+    opacity: 1;
+  }
+}
+
+/* 30 */
+@keyframes disappearSlideGuitarMedia{
+  from{
+    top: 5em;
+    right: 3em;
+    opacity: 1;
+  }to{
+    right: -10em;
+    opacity: 0;
+  }
+}
+
+
+
+/* drum Text */
+/* 32 */
+@keyframes slideDrumMedia{
+  from{
+    left: 0;
+    opacity: 0;
+  }to{
+    left: 10em;
+    opacity: 1;
+  }
+}
+
+
+/* 37 */
+@keyframes disappearSlideDrumMedia{
+  from{
+    left: 10em;
+    opacity: 1;
+  }to{
+    left: 0;
+    opacity: 0;
+  }
+}
+
+
+/* 37.5 */
+@keyframes slideHeadPhoneMedia{
+  from{
+    top: 5em;
+    opacity: 0;
+  }to{
+    opacity: 1;
+    top: -3em;
+    right: 4em;
+  }
+}
+
+
+/* 43 */
+@keyframes disappearSlideHeadPhoneMedia{
+  from{
+    opacity: 1;
+    top: -3em;
+    right: 4em;
+  }to{
+    top: 5em;
+    opacity: 0;
+  }
+}
+
 
 
 

@@ -6,14 +6,13 @@
 }
 
 .item{
-	width: 350px;
+	width: 400px;
 	height: 200px;
 	margin: 2em;
 	border-radius: 10px;
 	border: 1px solid black;
 	display: flex;
 	flex-direction: column;
-	cursor: pointer;
 	
 }
 
@@ -77,5 +76,18 @@
 
 .darkmode .item {
 	border: 1px solid #fff;
+}
+
+
+.fa-solid fa-guitar {
+	width:16px;
+}
+
+.sendchat {
+	cursor: pointer;
+}
+
+.userinfo {
+	cursor: pointer;
 }
 

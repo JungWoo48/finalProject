@@ -57,3 +57,40 @@ const titleLogo = document.querySelectorAll("#titleLogo path");
 for(let i = 0; i<titleLogo.length; i++){
 	console.log(`Letter ${i} is ${titleLogo[i].getTotalLength()}`);
 }
+
+$('#regionBtn').on("click",()=>{
+
+	if($('#regionListUl').hasClass("disappearList")){
+		
+		$('#bi').toggleClass( "bi-caret-up");
+		$('#regionListUl').removeClass("disappearList");
+	}else{
+
+		$('#bi').toggleClass( "bi-caret-up");
+		$('#regionListUl').addClass("disappearList");
+	}
+
+
+});
+
+$(document).click(e=>{
+
+	if(!$(e.target).parent().hasClass('regionBtn') && !$(e.target).hasClass('regionBtn')
+		&& !$(e.target).parent().hasClass('reginListUl')){
+		if(!$('#regionListUl').hasClass("disappearList")){
+			
+			$('#bi').toggleClass( "bi-caret-up");
+			$('#regionListUl').addClass("disappearList");
+		}
+	}
+
+})
+
+let liArr = $('#regionListUl > li');
+
+for(let eachLi of liArr){
+	$(eachLi).click(()=>{
+		$('#regionTextSpan').html($(eachLi).html());
+	})
+}
+

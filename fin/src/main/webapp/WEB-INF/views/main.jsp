@@ -36,12 +36,12 @@
 
     <!-- 게시판 링크 -->
     <div class="boardText">
-      <div>
+      <div class="textWrapper">
         <p class="mainTextP">Band Archive!<br></p>
         <p class="mainTextP">밴드를 사랑하는 사람들의 모임으로써,<br><br>
            수 많은 회원들의 커뮤니티 활동을 할 수 있게 서비스를 제공해주는 사이트입니다.
         </p>
-        <a href="" ><span class="mainTextA mainBoard">Board</span></a>
+        <a href="board" ><span class="mainTextA mainBoard">Board</span></a>
         <hr class="mainBoardHr">
       </div>
     </div>
@@ -58,14 +58,14 @@
 
     <!-- 중고 게시판 링크 -->
     <div class="usedText">
-      <div>
+      <div class="textWrapper">
         <p class="mainTextP">Selling your instruments!<br></p>
         <p class="mainTextP">
           다양한 커뮤니티 활동뿐만이 아니라<br><br>
           자신이 쓰던 악기들까지도 중고품으로 판매 할 수 있게<br><br>
           공간을 마련해주는 서비스 또한 제공하고 있습니다.
         </p>
-        <a href="" ><span class="mainTextA mainUsed">Used</span></a>
+        <a href="used" ><span class="mainTextA mainUsed">Used</span></a>
         <hr class="mainUsedHr">
       </div>
     </div>
@@ -80,13 +80,13 @@
 
     <!-- 예약 게시판 -->
     <div class="reservationText">
-      <div>
+      <div class="textWrapper">
         <p class="mainTextP">Make a reservation!<br></p>
         <p class="mainTextP">
           밴드 멤버들과 함께 연습할 수 있는 다양한 연습실 목록들을 제공하며<br><br>
           마음에 드는 연습실들 또한 예약할 수 있습니다!
         </p>
-        <a href="" ><span class="mainTextA mainReser">Reservations</span></a>
+        <a href="room" ><span class="mainTextA mainReser">Reservations</span></a>
         <hr class="mainReserHr">
       </div>
     </div>
@@ -109,11 +109,22 @@
 	    <div>
         <ul class="questionInput">
           <form action="" class="mainForm">
-            <label for="" class="label">NAME*</label><input type="text" class="mainInput">
-            <label for="" class="label">EMAIL*</label><input type="email" class="mainInput inputEmail">
-            <label for="" class="label">PHONE*</label><input type="number" class="mainInput">
-            <label for="" class="label">TELL US*</label><textarea name="" class="mainInput mainTextArea"></textarea>
-            <button class="mainInput">SEND YOUR MESSAGE</button>
+
+            <label for="" class="label">NAME*</label>
+            <input type="text" class="mainInput inputName">
+            
+            <label for="" class="label">EMAIL*</label>
+            <input type="email" class="mainInput inputEmail">
+            
+            <label for="" class="label">PHONE*</label>
+            <input type="number" class="mainInput inputPhone">
+            
+            
+            <label for="" class="label">TELL US*</label>
+            <textarea name="" class="mainInput mainTextArea"></textarea>
+            
+
+            <button class="mainInput" id="mainBtn">SEND</button>
           </form>
         </ul>
       </div>

@@ -17,6 +17,7 @@ let greenList = new Array();
         locale: 'ko', // 한국어 설정
         expandRows: true, // 화면에 맞게 높이 재설정
         height: '500px', // calendar 높이 설정
+        width: '500px',
         dateClick: function(info) {
         
         greenList = document.getElementsByClassName("greenDay");
@@ -121,3 +122,5 @@ document.getElementById("timeSubmit").addEventListener("click", function(){
     console.log("날짜 : " + schedule.innerHTML + ", 예약할 시간 : " + timetable);
 
 })
+
+
