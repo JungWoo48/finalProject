@@ -14,20 +14,35 @@
 <script src = "${contextPath}/resources/js/myPageModal.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
+<style>
+	dl, ol, ul {
+	    margin-top: 0;
+	    margin-bottom: 0;
+	    padding-left: 0;
+	}
+	body{
+		line-height: normal;	
+	}
+	button, input, optgroup, select, textarea {
+	    font-family : revert;
+	    font-size: revert;
+	    line-height: inherit;
+	}
+	
+	a:hover {
+    color: revert;
+	}
+</style>
 
 </head>
 <body>
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-    <jsp:include page="/WEB-INF/views/profile/lookProfile.jsp"/>
     
     <section class="myPageWrapper">
         <section class="myPageInfo">
             <div>
                 <span>개다리방방</span>
-	               <input type="hidden" value="1" id="hiddenUserNo">
-	               <div id="toModalDiv" data-bs-toggle="modal" data-bs-target="#exampleModal">
-	                	<ion-icon name="person-circle" id="profileIcon"></ion-icon>
-	               </div>
+               <ion-icon name="person-circle" id="profileIcon"></ion-icon>
             </div>
 
             <div class="imgBox">
@@ -431,6 +446,7 @@
                                     <p><button>멤버추방</button></p>
                                 </td>
                             </tr>
+
 
                             <tr>
                                 <td>
@@ -869,17 +885,6 @@
 
     
     
-    
-    
-    
-   
-    
-    
-    
-    
-    
-
- 
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
