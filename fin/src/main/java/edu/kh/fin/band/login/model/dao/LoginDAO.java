@@ -17,7 +17,7 @@ public class LoginDAO {
 	
 	
 
-	/** �α��� DAO
+	/**로그인DAO
 	 * @param inputUser
 	 * @return loginUser
 	 */
@@ -34,12 +34,34 @@ public class LoginDAO {
 
 
 
-	/** �̸��� �ߺ��˻� DAO
+	/** 이메일 중복검사DAO
 	 * @param userEmail
 	 * @return result
 	 */
 	public int emailDupCheck(String userEmail) {
 		return sqlSession.selectOne("loginMapper.emailDupCheck", userEmail);
+	}
+
+
+
+	/** 닉네임 중복검사 DAO
+	 * @param userNickname
+	 * @return result
+	 */
+	public int nicknameDupCheck(String userNickname) {
+		
+		return sqlSession.selectOne("loginMapper.nicknameDupCheck", userNickname);
+	}
+
+
+
+	/** 회원가입 DAO
+	 * @param inputUser
+	 * @return result
+	 */
+	public int signUp(User inputUser) {
+		
+		return sqlSession.insert("loginMapper.signUp", inputUser);
 	}
 
 }

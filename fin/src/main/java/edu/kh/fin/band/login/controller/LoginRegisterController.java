@@ -10,14 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.Gson;
 
 import edu.kh.fin.band.login.model.service.LoginService;
 import edu.kh.fin.band.login.model.vo.User;
@@ -49,73 +53,150 @@ public class LoginRegisterController {
 						, HttpServletRequest req
 						, @RequestParam(value="saveId", required = false) String saveId ) {
 		
-		System.out.println("ÄÁÆ®·Ñ" +inputUser);
-		
-		logger.info("·Î±×ÀÎ ¼öÇà");
+		logger.info("ë¡œê·¸ì¸ ìˆ˜í–‰ë¨");
 		
 		User loginUser = service.login(inputUser);
 		
-		System.out.println("ÄÁÆ®·Ñ2"+ loginUser);
+		String message = null;
+		String path = null;
 		
-		if(loginUser !=null) { // ·Î±×ÀÎ ¼º°ø½Ã
+		if(loginUser !=null) { // ë¡œê·¸ì¸ ì„±ê³µì‹œ
 			model.addAttribute("loginUser", loginUser);
+
+			System.out.println(loginUser.getUserNo());
 			
-			//ÄíÅ° »ı¼º
+			//ì¿ í‚¤ ìƒì„±
 			Cookie cookie = new Cookie("saveId", loginUser.getUserEmail());
 			
-			if(saveId !=null) { // ¾ÆÀÌµğ ÀúÀå Ã¼Å©½Ã
+			if(saveId !=null) { // ì•„ì´ë”” ì €ì¥ ì²´í¬ì‹œ
 				
-				cookie.setMaxAge(60 * 60 * 24 * 365); // 1³â
+				cookie.setMaxAge(60 * 60 * 24 * 365); // 1ë…„
 				
-			} else { // Ã¼Å© ¾ÈÇÒ ½Ã
-				cookie.setMaxAge(0); // ÄíÅ° »èÁ¦
+			} else { // ì²´í¬ ì•ˆí–ˆì„ì‹œ
+				cookie.setMaxAge(0); // 0ì´ˆ == ì‚­ì œ
 			}
 			
-			// ÄíÅ° Àû¿ë °æ·Î ÁöÁ¤
+			// ì¿ í‚¤ ê²½ë¡œ ì§€ì •
 			cookie.setPath(req.getContextPath());
 			
-			// ÄíÅ°¸¦ ÀÀ´ä ½Ã Å¬¶óÀÌ¾ğÆ®¿¡°Ô Àü´Ş
+			// ì¿ í‚¤ë¥¼ í´ë¼ì´ì–¸íŠ¸ì— ì „ë‹¬
 			resp.addCookie(cookie);
 			
+			path = "/main";
 			
-		} else { //·Î±×ÀÎ ½ÇÆĞ 
+		} else { //ì‹¤íŒ¨ 
 			
-			ra.addFlashAttribute("message", "¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²¸²");
+			ra.addFlashAttribute("message", "ì´ë©”ì¼ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤");
+			path = "/login";
 			
 		}
 		
-		return"redirect:/";
+		return"redirect:" + path;
 		
 	}
 	
-	// ·Î±×¾Æ¿ô
+	//  ë¡œê·¸ì•„ì›ƒ
 		@GetMapping("/logout")
 		public String logout( /*HttpSession session,*/
 							SessionStatus status) {
 			
-			// ·Î±×¾Æ¿ô == ¼¼¼ÇÀ» ¾ø¾Ö´Â °Í
 			
-			// * @SessionAttributesÀ» ÀÌ¿ëÇØ¼­ session scope¿¡ ¹èÄ¡µÈ µ¥ÀÌÅÍ´Â
-			//   SessionStatus¶ó´Â º°µµ °´Ã¼¸¦ ÀÌ¿ëÇØ¾ß¸¸ ¾ø¾Ù ¼ö ÀÖ´Ù.
-			logger.info("·Î±×¾Æ¿ô ¼öÇàµÊ");
+			logger.info("ë¡œê·¸ì•„ì›ƒ ìˆ˜í–‰ë¨");
 			
-			// session.invalidate(); // ±âÁ¸ ¼¼¼Ç ¹«È¿È­ ¹æ½ÄÀ¸·Î´Â ¾ÈµÈ´Ù!
 			
-			status.setComplete(); // ¼¼¼¾ÀÌ ÇÒ ÀÏÀÌ ¿Ï·áµÊ -> ¾ø¾Ú
 			
-			return "redirect:/"; // ¸ŞÀÎÆäÀÌÁö ¸®´ÙÀÌ·ºÆ®
+			status.setComplete(); 
+			
+			return "redirect:/main"; 
 			
 		}
 		
 		
-	//ÀÌ¸ŞÀÏ Áßº¹ °Ë»ç
+	//ì´ë©”ì¼ ì¤‘ë³µ ê²€ì‚¬
+	@ResponseBody
 	@GetMapping("/emailDupCheck")
 	public int emailDupCheck(String userEmail) {
+		
+		logger.info("ì´ë©”ì¼ ì¤‘ë³µê²€ì‚¬ ìˆ˜í–‰ë¨");
 		
 		int result = service.emailDupCheck(userEmail);
 		
 		return result;
 	}
+	
+	// ë‹‰ë„¤ì„ ì¤‘ë³µ ê²€ì‚¬
+	@ResponseBody  
+	@GetMapping("/nicknameDupCheck")
+	public int nicknameDupCheck(String userNickname) {
+		
+		logger.info("ë‹‰ë„¤ì„ ì¤‘ë³µ ê²€ì‚¬ ìˆ˜í–‰ë¨");
+		
+		int result = service.nicknameDupCheck(userNickname);
+		System.out.println(result);
+			
+		return result;
+		
+			
+		}
+	
+	//íšŒì›ê°€ì…
+	@PostMapping("fin/signUp")
+	public String signUp( User inputUser
+						, Model model
+						, RedirectAttributes ra
+						, HttpServletResponse resp 
+						, HttpServletRequest req) {
+		
+		logger.info("íšŒì›ê°€ì… ìˆ˜í–‰ë¨");
+		
+		System.out.println(inputUser);
+		
+		int result = service.signUp(inputUser);
+		
+		System.out.println(inputUser);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "íšŒì›ê°€ì… ì™„ë£Œ";
+			path = "redirect:/login";
+			
+		}else { 
+			message = "íšŒì›ê°€ì… ì‹¤íŒ¨";
+			path = "redirect:/login"; 
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return path;
+	
+		
+	}
+	
+	
+	//ì´ë©”ì¼ ì¸ì¦
+	@ResponseBody
+	@GetMapping("/checkEmail")
+	public String checkEmail(@RequestParam String inputEmail) {
+		
+		logger.info("ì´ë©”ì¼ ì¸ì¦ ìˆ˜í–‰ë¨");
+			
+		System.out.println(inputEmail);
+		int result = service.checkEmail(inputEmail);
+		
+		if(result > 0) {
+			  return new Gson().toJson("ë©”ì¼ ì „ì†¡ ì„±ê³µ");
+		  } else {
+			  return new Gson().toJson("ë©”ì¼ ì „ì†¡ ì‹¤íŒ¨");
+		  }
+			
+	}
+	
+	
+	
+	
+	
+	
 		
 	
 

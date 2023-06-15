@@ -42,13 +42,13 @@
 
             <div class="formBox login"> <!--for-box login-->
                 <h2>LOGIN</h2>
-
-                <form action="fin/login" method="POST" name="login-form">
+		
+                <form action="fin/login" method="POST" name="login-form" onsubmit="return loginValidate()">
                     <div class="inputBox"> <!--input-box-->
                         <span class="icon">
                             <ion-icon name="mail"></ion-icon>
                         </span>
-                        <input type="email" name="userEmail" required>
+                        <input type="email" name="userEmail" value="${cookie.saveId.value}"required>
                         <label>EMAIL</label>
                     </div>
 
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="rememberForgot">  <!--remember-forgot-->
-                        <label><input type="checkbox" name="saveId"> Remember me</label>
+                        <label><input type="checkbox" name="saveId"  ${chk}  id="saveId"> Remember me</label>
                         <a href="#">Forgot Password?</a>
                     </div>
 
@@ -79,60 +79,59 @@
             <div class="formBox register"> 
                 <h2>REGISTRATION</h2>
 
-                <form id ="form" action="fin/login" method="POST" name="regi-form">
+                <form id ="form" action="fin/signUp" method="POST" name="regi-form" onsubmit="return signUpValidate()">
 
                     <div class="inputBox"> <!--input-box-->
                         <span class="icon">
                             <ion-icon name="mail" id="sendEmail"></ion-icon>
                         </span>
-                        <input type="email" id="email" required>
-                        <label>EMAIL</label>
-                        <span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
+                        <input type="email" id="email" name="userEmail">
+                        <label>EMAIL&nbsp;&nbsp;<span class="signUp-message" id="emailMessage"></span></label>
                     </div>
 
                     <div class="inputBox"> <!--input-box-->
                         <span class="icon">
-                            <ion-icon name="key-outline"></ion-icon>
+                            <ion-icon name="key-outline" id="sendEm"></ion-icon>
                         </span>
-                        <input type="text" required id="checkEmail">
-                        <label>CERTIFICATION NUMBER</label>
+                        <input type="text" id="checkEmail">
+                        <label>CERTIFICATION NUMBER&nbsp;&nbsp;<span class="signUp-message" id="emailCheckMessage"></span></label>
                     </div>
 
-                    <div class="inputBox">  <!--input-box-->
+                    <div class="inputBox">  <!--input-box-->         
                         <span class="icon">
                             <ion-icon name="lock-closed"></ion-icon>
                         </span>
-                        <input type="password" id="password" required>
-                        <label>PASSWORD</label>
-                        <span class="signUp-message" id="pwMessage">영어, 숫자 10글자 이하로 작성.</span>
+                        
+                        <input type="password" id="rpassword" name="userPw">
+                        <label>PASSWORD&nbsp;&nbsp;<span class="signUp-message" id="pwMessage"></span></label>                      
                     </div>
 
                     <div class="inputBox">  <!--input-box-->
                         <span class="icon">
                             <ion-icon name="checkmark-outline"></ion-icon>
                         </span>
-                        <input type="password" id="password2" required>
-                        <label>CHECK PW</label>
+                        <input type="password" id="password2">
+                        <label>CHECK PW&nbsp;&nbsp;<span class="signUp-message" id="pwMessage2"></span></label>                        
                     </div>
 
                     <div class="inputBox">  <!--input-box-->
                         <span class="icon">
                             <ion-icon name="person-outline"></ion-icon>
                         </span>
-                        <input type="text" id="nickname" required>
-                        <label>USER</label>
+                        <input type="text" id="nickname" name="userNick">
+                        <label>Nickname&nbsp;&nbsp;<span class="signUp-message" id="nicknameMessage"></span></label>                       
                     </div>
 
                     <div class="inputBox busniessBox">  <!--busniess-box-->
                         <span class="icon">
                             <ion-icon name="business-outline"></ion-icon>
                         </span>
-                        <input type="text" required>
+                        <input type="text">
                         <label>BUSINESS NUMBER</label>
                     </div>
 
                     <div class="rememberForgot">  <!--remember-forgot-->
-                        <label><input type="checkbox"> Agree to the terms & conditions</label>
+                        <label><input type="checkbox" name="agreeList" id="agree"> Agree to the terms & conditions</label>
                         <a href="#" id="showBusiness">Business</a>
                         <a href="#" class="js-static-modal-toggle">Show terms & conditions</a>
               		</div>
@@ -208,7 +207,7 @@
             </li>
           </ul>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Agree</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="agreebtn">Agree</button>
               </div>
         </form>
       </div>
@@ -226,7 +225,7 @@
 
         	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
    
-   			<script src="${contextPath}/resources/js/LoginRegister.js"></script>
+   			<script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>
 
   </body>
 </html>
