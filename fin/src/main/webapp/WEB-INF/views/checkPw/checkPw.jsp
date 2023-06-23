@@ -30,24 +30,34 @@
 
     <section class="checkPwSection">
         <h2>CHECK FOR YOUR PASSWORD</h2>
-        <form action="#">
+        <form action="fin/checkPw" method="POST" name="checkPw-form">
             <div class="wrapperCheck">
                 <p>Band Archive</p>
                 <div class="inputBoxCheck">  <!--input-box-->
                     <span class="iconCheck">
                         <ion-icon name="lock-closed" id="iconCheck"></ion-icon>
                     </span>
-                    <input type="password" required>
+                    <input type="password" required name="userPw">
                     <label id="labelCheck">PASSWORD</label>
                 </div>
         
-                <button type="submit" id="checkBtn" onclick="location.href='myPage'">SUBMIT</button>
+                <button type="submit" id="checkBtn">SUBMIT</button>
             </div>
         </form>
     </section>
 
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+    
+    <script>
+      const msg = "${msg}";
+      if (msg.trim() !== "") {
+        alert(msg);
+      } 
+        // 왜 자꾸 로그인 창을 들어가도 공백 alert가 뜰까 
+        // -> 해결 -> != null로 조건을 주지 말고, 문자열로 체크를 해서 주면 발생하지않음.
+        // 빈 문자열인 경우에는 alert를 발생시키지 않음
+    </script>
 
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

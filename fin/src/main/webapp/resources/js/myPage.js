@@ -70,6 +70,21 @@ showBtn.addEventListener('click', function(){
   document.querySelector('.js-static-modal-togglefindMemberP').addEventListener('click', function() {
     new Modal({el: document.getElementById('static-modalfindMember')}).show();
   });
+  
+  const inutImg = document.getElementById("input-image");
+  const fileImg = document.getElementById("fileImg");
+  
+  const secession = getElementById("secessionBtn");
 
+  secession.addEventListener("click", function() {
+    if(confirm("정말로 탈퇴하시겠습니까?")) {
+      return true;
+    } else {
+      alert("탈퇴 취소")
+      return false;
+    }
+
+
+  })
 
 

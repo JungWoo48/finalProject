@@ -8,52 +8,81 @@
   <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="${contextPath}/resources/css/global.css">
 	 <link rel="stylesheet"href="${contextPath}/resources/css/boardDetail.css"></script>
- 
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"/>
+   <link rel="stylesheet" href="${contextPath}/resources/css/global.css">
+
+   <script src="${contextPath}/resources/js/modal.min.js"></script>
     <script src="https://kit.fontawesome.com/555e979a9d.js" crossorigin="anonymous"></script>   
-    <title>중고거래상세페이지</title>
+   
+    <title>BOARDDETAIL</title>
    </head>
    <body>
-<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-   <div class="container">
+
+<%-- request에 message 속성이 존재하는 경우 alert창으로 해당 내용을 출력 --%>
+
+
+     <c:if test="${not empty includeHeader and includeHeader}">
+     
+ <jsp:include page="/WEB-INF/views/common/header.jsp"/> 
+  </c:if>
+<c:if test="${ !empty message }">
+    <script>
+        alert("${message}");
+        // EL 작성 시 scope를 지정하지 않으면
+        // page -> request -> session -> application 순서로 검색하여
+        // 일치하는 속성이 있으면 출력
+    </script>
+</c:if> 
+<div class="DetailContainer">
     <div class="title-container">
-      <p class="tagsss">공지사항</p>
-      <h1 class="title">밴드아카이브 이용 안내 </h1>
+   <c:choose>
+            <c:when test="${BoardDetail.boardTag==1}">
+              
+      <p class="tagsss">잡담</p>
+      
+      
+      		</c:when>
+	  <c:otherwise>
+      		
+      <p class="tagsss">질문</p>
+      </c:otherwise> 
+    
+ 
+      	
+   </c:choose>
+   
+   
+   
+       
+      <h1 class="BoardDetailTitle">${BoardDetail.boardTitle}</h1> 
     </div>
     <div class="info">
       <div class="left">
-        <span class="nickname">이갈치</span>
+        <span class="nickname">${BoardDetail.userNick}</span>
         <div class="viewsBox">
         <i class="fa-solid fa-eye"></i>
-        <span class="views">111</span>
+        <span class="DetailViews">${BoardDetail.readCount}</span>
         </div>
+        
         <div class="heartBox">
         <i class="fa-solid fa-heart"></i>
-        <span class="hearts">111</span>
+        <span class="hearts">${BoardDetail.boardLike}</span>
         </div>
-        <span class="date">20.05.05</span>
+        <span class="date">${BoardDetail.createDate}</span>
       </div>
       <div class="right">
-        <button class="edit">수정</button>
-        <button class="delete">삭제</button>
+         <c:if test="${loginUser.userNo == BoardDetail.userNo}">
+        <button class="edit" onclick="updateBtn()">수정</button>
+        <button class="delete" onclick="deleteBtn()">삭제</button>
+        </c:if>
       </div>
     </div>
+    
     <div class="content">
-      <p>공모명: [국방난제해결 아이디어 공모전] 해군 함정 기동 시 소음의 획기적 감소 방안
-        분야: 기획/ 아이디어/ 공학/ 기타
-        주최사: 정부/공공기관
-        <br>
-        
-        주제: 해군 함정 기동 시 획기적인 수중 소음 감소
-        <br>
-        활동내용: 적군 잠수함이 우리 해군 함정을 포착하기 어렵도록 함정 기동 시 적의 탐지를 회피할 수 있는 방안을 마련해주세요.
-        <br>
-        과제 배경 : 북한이 주요 비대칭 전략으로 운영 중인 잠수함은 전시에 아군 함정에 가장 위협이 되는 전력.
-        <br>
-        
-        
-        
+      <p>${BoardDetail.boardContent}
         </p>
     </div>
     <div class="comments">
@@ -83,7 +112,10 @@
         <span class="author-name">작성자</span>
         <span class="author-date">22.05.00</span>
       </div>
+      
+        
       <div class="right">
+    
         <button class="edit">수정</button>
         <button class="reply">답글</button>
       </div>
@@ -127,163 +159,45 @@
         <p>안녕하세요 이갈치입니다 잘부탁드립니다 하하</p>
       </div>
 
-    <div class="comment-input">
+    <!-- <div class="comment-input">        
         <div class="inputDetail">
       <textarea type="text"  placeholder=" 댓글을 남겨보세요" class="inputWi"></textarea>
     </div>
       <button class="submit">글쓰기</button>
     </div>
-  </div>
-  <div class="boardContainer">
+  </div> -->
   
-    <nav class="boardNav">
-      <ul>
-        <li><a href="#" class="total">전체</a></li>
-        <li><a href="#">공지</a></li>
-        <li><a href="#">인기게시판</a></li>
-        <li><a href="#">일반게시판</a></li>
-      </ul>
-    </nav>
-
-    <table>
-      <thead>
-        <tr>
-          <th class="boardNumber">번호</th>
-          <th class="title">제목</th>
-          <th></th>
-          <th class="ninkName"><i class="fa-solid fa-user"></i></th>
-          <th class="views"><i class="fa-solid fa-eye"></i></th>
-          <th class="heart"><i class="fa-solid fa-heart"></i></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th class="boardNumber">공지</td>
-          <th class="title">게시물 제목 1</td>
-          <td><span class="tagNotice">공지사항</span></td>
-          <th class="ninkName">작성자1</td>
-          <th class="views">10</td>
-          <th class="heart">5</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">공지</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagHot">인기게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        <tr>
-            <th class="boardNumber">2</td>
-          <th class="title">게시물 제목 2</td>
-          <td><span class="tagBasic">일반게시판</span></td>
-          <th class="ninkName">작성자2</td>
-          <th class="views">5</td>
-          <th class="heart">3</td>
-        </tr>
-        
-      </tbody>
-    </table>
-    <div class="pagination-search">
-        <div class="pagination">
-            <a href="#"><span>1</span></a>
-            <a href="#" class="active"><span>2</span></a>
-          </div>
-        <div class="search-box">
-          <select id="nav-select">
-            <option value="all">전체</option>
-            <option value="notice">공지</option>
-            <option value="popular">인기게시판</option>
-            <option value="general">일반게시판</option>
-          </select>
-          <input type="text" placeholder="글 검색">
-          <button type="button">검색</button>
-      </div>
-    </div>
-  </div>
   
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
+
+</div>
+<jsp:include page="/WEB-INF/views/board/boardMain.jsp"/> 
+
+<script>
+
+
+const updateBtn= () => {
+	const boardNo = '${BoardDetail.boardNo}';
+	  
+	location.href = "update?boardNo=" + boardNo ;
+}
+
+	
+	
+
+const deleteBtn= () => {
+	const boardNo = '${BoardDetail.boardNo}';
+	   if (!confirm("정말 삭제하시겠습니까?")) {
+		   location.href = "/board";
+		   
+	    } else {
+	    	location.href = "delete?boardNo=" + boardNo ;
+	   
+	    }
+	
+	
+	}
+</script>
 <script src = "${contextPath}/resources/js/boardDetail.js"></script>
 </body>
 </html>

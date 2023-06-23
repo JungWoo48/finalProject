@@ -1,12 +1,14 @@
 package edu.kh.fin.band.room.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +23,6 @@ public class RoomController {
 	@Autowired
 	RoomService service;
 	
-	List<Room> searchingRoomList;
 	
 	@GetMapping("/room")
 	public String roomController(Model model) {
@@ -59,15 +60,42 @@ public class RoomController {
 	
 	@GetMapping("/searchingRoomScroll")
 	@ResponseBody
-	public String searchingRoomScroll() {
+	public String searchingRoomScroll(@RequestParam("region") String region, @RequestParam("searchingText") String searchingText) {
 		
 		List<Room> roomList = new ArrayList<>();
-		roomList = searchingRoomList;
+
+		roomList = service.searchingRoomList(region, searchingText);
 		
 		return new Gson().toJson(roomList);
 		
 	}
 	
+	@PostMapping("/pracRoomBooking")
+	@ResponseBody
+	public int pracRoomBooking(@RequestParam("timeArr[]") ArrayList<Integer> timeArr, @RequestParam HashMap<String, Object> map) {
+		
+		System.out.println(timeArr);
+		System.out.println(map);
+		
+		int roomAlarmResult = service.roomAlarmResult(map); // 예약을 할 때, 오너에게 알람을 보내는 메서드
+		
+		
+		int result = service.pracRoomBooking(timeArr, map);
+		
+		
+		return result + roomAlarmResult;
+	}
+	
+	@PostMapping("checkBookingTime")
+	@ResponseBody
+	public String checkBookingTime(@RequestParam HashMap<String, Object> dayMap) {
+		
+		List<Integer> bookTime = service.checkBookingTime(dayMap); 
+		
+		return new Gson().toJson(bookTime);
+	}
+	
+/*	
 	@GetMapping("/searchingPracRoom")
 	public String searchingPracRoom(Model model, @RequestParam("regionSelector") String region,
 			@RequestParam("searchingText")String searchingText) {
@@ -85,5 +113,6 @@ public class RoomController {
 		return "room/roomMain";
 	}
 	
+*/
 
 }

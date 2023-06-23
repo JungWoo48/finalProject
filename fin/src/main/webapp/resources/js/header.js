@@ -1,4 +1,4 @@
-console.log("header");
+
 
 // =========================================반응형=========================================
 
@@ -8,9 +8,6 @@ const navDiv = document.querySelector(".navDiv")
 const navSecondDiv = document.querySelector(".navSecondDiv");
 const signUpIMG = document.querySelector(".signUpIMG");
 const loginIMG = document.querySelector(".loginIMG");
-
-
-
 
 // 반응형 줄어들었을 때, JS
 hamburger.addEventListener("click", () => {
@@ -56,26 +53,12 @@ for(let i = 0; i< path.length; i ++){
   console.log("test");
   path[i].style.stroke ="#FB4F93";
 }
-
-
-
-// let mainInput = document.querySelectorAll('.mainInput');
-
-
-// for(let j = 0; j < mainInput.length; j++){
-//     	mainInput[j].style.color = "#fff";
-// }
- 
-
   // 각각 요소 색깔 바꾸기
   navBar.style.background = "#000";
   sun.style.color="#fff";
   toggle.style.color = "#fff";
   loginIMGI.style.color = "#fff";
   signUpIMGI.style.color = "#fff";
-  
-
-  
 //   해로 바꿔주기
   sun.className = "bi-brightness-high"
   
@@ -99,9 +82,6 @@ const lightModeFunc = () => {
 
     path[i].style.stroke ="#000";
   }
-
-
-
   navBar.style.background = "#fff";
   sun.style.color="#000";
   toggle.style.color = "#000";
@@ -140,14 +120,16 @@ sun.addEventListener('click', () => {
 // =========================================모드==========================================
 
 
-// header scroll시 사라지게 함
+
+// =========================================탑 버튼 스크롤 함수==========================================
 
 let lastScrollTop = 0;
 let nav = document.querySelector('.navBar');
 
-window.addEventListener('scroll', () =>{
+window.addEventListener('scroll', () =>{ // header scroll시 사라지게 함
 
   let scrollTop = window.scrollY;
+
   if(scrollTop > lastScrollTop){
     nav.style.top = "-60px";
   }else{
@@ -155,6 +137,195 @@ window.addEventListener('scroll', () =>{
   }
   lastScrollTop = scrollTop;
 });
+
+// =========================================탑 버튼 스크롤 함수==========================================
+
+let wrapperUlOpen = false;
+let messageUlBoxOpen = false;
+// alert View 보이기
+
+const wrapperUl = document.querySelector('.wrapperUl');
+
+function showAlertView(){
+  wrapperUl.classList.toggle('alertViewShow');
+  return wrapperUlOpen = true;
+}
+
+function getUserNicks(loginUserNo){ //userNicksList 부르는 함수 
+  $.ajax({ // userNo를 바탕으로 userNickslist 가져오는 ajax
+    url:"getUserNicks",
+    method:"GET",
+    data:{"loginUserNo": loginUserNo},
+    dataType:"JSON",
+    success: function(getUserNicks){
+      let stringMsg = "님께서 회원님에게 쪽지를 보냈습니다!"
+
+      if(getUserNicks === "none"){
+        $('.messageUlBox').append('<li class="wrapperLi"><a href="msgBoxPage" id="msgBoxPageA"><p>NO MESSAGE</p></a></li>') // 쪽지가 없거나, 읽었을 때, 코드 수행
+      }else{
+        for(let i = 0; i < getUserNicks.length; i++){
+          $('.messageUlBox').append(`<li class="wrapperLi"><div class="messageDate"><h3>${getUserNicks[i].sendMonth}<br><span>${getUserNicks[i].sendDay}</span></h3></div>
+          <a href="msgBoxPage"><p>${getUserNicks[i].userNick + stringMsg}<br>지금 확인하세요!</p></a></li>`) // 새로운 쪽지가 있을 때, 코드 수행
+        }
+      } // if끝
+
+    },
+    error : function(request, status, error){
+      console.log("getUserNicks AJAX 에러 발생");
+      console.log("상태코드 : " + request.status); 
+    }
+  });
+
+}
+
+function getMsgAlarmCount(loginUserNo){ // msgAlarmCount 가져오는 함수 
+  $.ajax({ // userNo를 바탕으로 alarmCount 가져오는 ajax
+    url:"getMsgAlarmCount",
+    method:"GET",
+    data:{"loginUserNo": loginUserNo},
+    dataType: "JSON",
+    success: function(count){
+      const alarmCount = count;
+      if(alarmCount != 0){
+        $('#msgAlarmCount').css('display', 'block');
+        $('#msgAlarmCount').text(alarmCount); // 알람 카운트가 0 초과일 때, 수행
+      }else{
+        
+      }
+    }, // success 끝나는 부분
+    error : function(request, status, error){
+      console.log("getMsgAlarmCount AJAX 에러 발생");
+      console.log("상태코드 : " + request.status); 
+    }
+  });
+}
+
+function disappearCount(loginUserNo){ // msgCount 갯수 사라지게 하는 함수
+  // 메세지 아이콘 클릭 시, count 갯수 사라지게 하는 이벤트 리스너
+  document.getElementById('msgBoxOpen').addEventListener('click', function() {
+
+    let messageUlBox = document.querySelector('.messageUlBox');
+    $.ajax({
+      url:"disappearCount",
+      method:"GET",
+      data:{"loginUserNo": loginUserNo},
+      dataType: "JSON",
+      success: function(result){
+        $('#msgAlarmCount').css('display', 'none'); // 알람 카운트 보이는 걸 없애기
+        console.log("msgCount 지우기 성공 result : " + result);
+      },
+      error : function(request, status, error){
+        console.log("disappearCount AJAX 에러 발생");
+        console.log("상태코드 : " + request.status); 
+      }
+    });
+    messageUlBox.classList.toggle('alertViewShow');
+    return messageUlBoxOpen = true;
+  }); // 이벤트 리스너 끝
+}
+
+
+
+function getAlarmCount(loginUserNo){ // alarmCount 가져오는 함수 
+  $.ajax({ // userNo를 바탕으로 alarmCount 가져오는 ajax
+    url:"getAlarmCount",
+    method:"GET",
+    data:{"loginUserNo": loginUserNo},
+    dataType: "JSON",
+    success: function(count){
+
+      if(count != 0){
+        $('#alarmCount').css('display', 'block');
+        $('#alarmCount').text(count); // 알람 카운트가 0 초과일 때, 수행
+      }else{
+        
+      }
+    }, // success 끝나는 부분
+    error : function(request, status, error){
+      console.log("getAlarmCount AJAX 에러 발생");
+      console.log("상태코드 : " + request.status); 
+    }
+  });
+}
+
+
+function alarmDisappearCount(loginUserNo){ // alarmCount 지우기 함수
+  document.getElementById('alertBell').addEventListener('click', function(){
+
+    $.ajax({
+      url: "alarmDisappearCount",
+      method:"GET",
+      data:{"loginUserNo": loginUserNo},
+      dataType:"JSON",
+      success: function(result){
+        $('#alarmCount').css('display', 'none');
+        console.log("알람 카운트 지우기 성공 여부 : " + result);
+      },
+      error : function(request, status, error){
+        console.log("alarmDisappearCount AJAX 에러 발생");
+        console.log("상태코드 : " + request.status); 
+      }
+    });
+    showAlertView();
+  })
+
+  
+}
+
+function getUserNicksFromRoom(loginUserNo){ // 예약 신청알람 함수
+  $.ajax({
+    url:"getUserNicksFromRoom",
+    method:"GET",
+    data:{"loginUserNo" : loginUserNo},
+    dataType: "JSON",
+    success(getUsers){
+      
+      let stringMsg1 = "님께서 회원님의 "
+      let stringMsg2 = "을 예약 신청했습니다!"
+      if(getUsers === "none"){
+        $('.wrapperUl').append('<li class="wrapperLi"><a href="#" id="noMsgAlarmBox"><p>NO POST</p></a></li>') // 예약신청이 없거나, 읽었을 때, 코드 수행
+      }else{
+        for(let i = 0; i < getUsers.length; i++){
+          $('.wrapperUl').append(`<li class="wrapperLi"><div class="date"><h3>${getUsers[i].sendMonth}<br><span>${getUsers[i].sendDay}</span></h3></div>
+          <a href="#"><p>${getUsers[i].userNick + stringMsg1 + getUsers[i].roomName + stringMsg2 }</p></a></li>`) // 새로운 예약신청 알람 있을 때, 코드 수행
+        }
+      } // if끝
+    },
+    error : function(request, status, error){
+      console.log("getUserNicksFromRoom AJAX 에러 발생");
+      console.log("상태코드 : " + request.status); 
+    }
+  });
+}
+
+
+
+
+
+$.ajax({ // 접속하자마자 userNo 가져오는 ajax
+  url:"getUserNo",
+  method:"GET",
+  dataType:"JSON",
+  success: function(loginUserNo){
+    getUserNicks(loginUserNo);
+    getMsgAlarmCount(loginUserNo);
+    disappearCount(loginUserNo);
+
+    getAlarmCount(loginUserNo);
+    alarmDisappearCount(loginUserNo);
+    getUserNicksFromRoom(loginUserNo);
+  }, //  success 끝
+  error : function(request, status, error){
+    console.log("getUserNo AJAX 에러 발생");
+    console.log("상태코드 : " + request.status); 
+    return false;
+  }
+}); //  ajax끝
+
+
+
+
+
 
 
   

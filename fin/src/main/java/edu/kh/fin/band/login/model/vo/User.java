@@ -21,4 +21,14 @@ public class User {
 	private String userType;
 	private String intro;
 	private String banFl;
+	private String profileImg;
 }
+
+
+
+
+
+
+
+
+

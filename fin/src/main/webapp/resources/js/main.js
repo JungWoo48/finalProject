@@ -1,4 +1,5 @@
-console.log("svg.js loaded")
+
+
 
 
 // ======================================패스 요소======================================
@@ -306,3 +307,6 @@ document.getElementById('sendEmailBtn').addEventListener("click", () =>{
   }
   });
 });
+
+
+

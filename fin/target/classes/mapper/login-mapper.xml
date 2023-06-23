@@ -15,10 +15,9 @@
 	<result property="userType" 		column="USER_TYPE"/>
 	<result property="intro" 		column="INTRO_MENT"/>
 	<result property="banFl" 		column="BANNED_FL"/>
+	<result property="profileImg" 	column="IMAGE"/>
+
   </resultMap>
-  
-  
-  
   
   
   
@@ -27,9 +26,13 @@
   		SELECT USER_NO, USER_EMAIL, USER_PWD, USER_NICK ,USER_TYPE, 
 		MATCHING_FL, INTRO_MENT, TO_CHAR( JOIN_DATE , 'YYYY-MM-DD HH24:MI:SS') AS JOIN_DATE 
 		FROM "USER"
-		WHERE USER_EMAIL = #{userEmail} AND USER_PWD = #{userPw}
+		WHERE USER_EMAIL = #{userEmail}
 		AND SECESSION_FL = 'N'
   </select>
+  
+  
+  
+  
   
   <!-- 이메일 중복 검사 -->
   <select id="emailDupCheck" parameterType="string" resultType="_int">
@@ -58,8 +61,15 @@
   			DEFAULT,
   			DEFAULT,
   			NULL,
-  			DEFAULT
+  			DEFAULT,
+  			NULL
   		)
   	</insert>
+  	
+  	
+  	<select id="selectEncPw" resultType="string">
+		SELECT USER_PWD FROM "USER"
+		WHERE USER_NO = ${userNo}
+	</select>
   
 </mapper>

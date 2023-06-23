@@ -53,7 +53,7 @@
     
     <section class="checkBoxSection">
 		<p id="tt">CHECK!</p>
-		<form action="checkSelect" method="post">
+		<form action="checkSelect" method="post" id="searchingForm">
 			<div class="checkWrapper">
 
 				<p id="genderP">*GENDER*</p>
@@ -61,11 +61,11 @@
 					<table class="genderTable">
 						<tr>
 							<td>
-								<input type="radio" id="MAN" name="gender" value="MAN">
+								<input type="radio" id="MAN" name="gender" value="M">
 								<label for="MAN">MAN</label>
 							</td>
 							<td>
-								<input type="radio" id="WOMAN" name="gender" value="WOMAN">
+								<input type="radio" id="WOMAN" name="gender" value="W">
 								<label for="WOMAN">WOMAN</label>
 							</td>
 						</tr>
@@ -249,14 +249,15 @@
 				</div>
 
 				<div class="searchBtnBox">
-					<button type="submit">SUBMIT</button>
+					<button type="submit" id="searchingSubmitBtn">SUBMIT</button>
 				</div>
 			</div>
 		</form>
 
 	</section>
-			
-
+	
+	<jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
+	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 
 <script src="${contextPath}/resources/js/findingMember.js"></script>    

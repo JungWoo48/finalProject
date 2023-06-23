@@ -10,20 +10,22 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 	<script src="https://kit.fontawesome.com/44f3dd3f25.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/LoginRegister.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
-	
+	<link rel="stylesheet" href="${contextPath}/resources/css/naverLogin.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/loginbootStrap.css">
 	<link rel="stylesheet" href="${contextPath}/resources/css/loginModal.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
 	<script src = "${contextPath}/resources/js/myPageModal.js"></script>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
+  integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
 
 
+	</head>
       <!--바디 부분 시작-->
       <body>
  	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
- 	
- 	
+   
  	
  	<div class="svgBox">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1117 669">
@@ -34,14 +36,14 @@
     </div>
  	
  	
- 	
- 	
     <section class="loginSection"> <!-- body -->
 
         <div class="wrapper"> <!--wrapper-->
 
             <div class="formBox login"> <!--for-box login-->
                 <h2>LOGIN</h2>
+                
+                
 		
                 <form action="fin/login" method="POST" name="login-form" onsubmit="return loginValidate()">
                     <div class="inputBox"> <!--input-box-->
@@ -65,10 +67,30 @@
                         <a href="#">Forgot Password?</a>
                     </div>
 
-                    <button type="submit" class="btn">LOGIN</button>
+                    <div class="loginBtnBox" title="밴드아카이브 로그인">
+                      
+                      <button type="submit" class="btn">LOGIN</button>
+                      
+                      <div id="naver_id_login" title="네이버 아이디로 로그인">
+                        LOGIN WITH NAVER
+                      </div>
+                      
+                      <div class="naverImgBox">
+                        <img id="naverIMG" src="${contextPath}/resources/images/naverIMG.png" alt="" title="네이버 아이디로 로그인">
+                      </div>
+
+                      <div class="kakaoBtn" title="카카오 아이디로 로그인">
+                        <a id="kakao-login-btn" href="https://kauth.kakao.com/oauth/authorize?client_id=de31983424f4bd5faadc8493b90e5626&response_type=code&redirect_uri=http://localhost:8091/fin/kakaoLogin">
+                          LOGIN WITH KAKAO
+                        </a>
+                        <img src="${contextPath}/resources/images/kakaoIcon.png" alt="">
+                      </div>
+
+                    </div>
 
                     <div class="loginRegister">   <!--login-register-->
                         <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                        <p>Are you businessman?<a href="${contextPath}/businessRegi" class="register-link">Business login</a></p>
                     </div>
 
                 </form>
@@ -81,12 +103,13 @@
 
                 <form id ="form" action="fin/signUp" method="POST" name="regi-form" onsubmit="return signUpValidate()">
 
-                    <div class="inputBox"> <!--input-box-->
+                    <div class="inputBox" id="embox"> <!--input-box-->
                         <span class="icon">
                             <ion-icon name="mail" id="sendEmail"></ion-icon>
                         </span>
                         <input type="email" id="email" name="userEmail">
                         <label>EMAIL&nbsp;&nbsp;<span class="signUp-message" id="emailMessage"></span></label>
+                        <div class="emshow"><p>이메일 보내기</p></div>
                     </div>
 
                     <div class="inputBox"> <!--input-box-->
@@ -122,18 +145,10 @@
                         <label>Nickname&nbsp;&nbsp;<span class="signUp-message" id="nicknameMessage"></span></label>                       
                     </div>
 
-                    <div class="inputBox busniessBox">  <!--busniess-box-->
-                        <span class="icon">
-                            <ion-icon name="business-outline"></ion-icon>
-                        </span>
-                        <input type="text">
-                        <label>BUSINESS NUMBER</label>
-                    </div>
 
                     <div class="rememberForgot">  <!--remember-forgot-->
-                        <label><input type="checkbox" name="agreeList" id="agree"> Agree to the terms & conditions</label>
-                        <a href="#" id="showBusiness">Business</a>
-                        <a href="#" class="js-static-modal-toggle">Show terms & conditions</a>
+                        <label><input type="checkbox" name="agreeList" id="agree"> Agree to the terms & conditions</label>            
+                        <a href="#" class="js-static-modal-toggle">Show terms  & conditions</a>
               		</div>
 					           
                     <button type="submit" class="btn">REGISTER</button>
@@ -161,7 +176,7 @@
           <div class="terms__check__all">
             <input type="checkbox" name="checkAll" id="checkAll" />
             <label for="checkAll"
-              >BandArchive 이용약관, 개인정보 수신(선택)에 모두 동의합니다.</label
+              >BandArchive 이용약관, 매치정보 수신(선택)에 모두 동의합니다.</label
             >
           </div>
           <ul class="terms__list">
@@ -196,7 +211,7 @@
             <li class="terms__box">
               <div class="input__check">
                 <input type="checkbox" name="agreement" id="allowPromotions" value="allowPromotions" />
-                <label for="allowPromotions"  class="required">정보 수신 동의</label>
+                <label for="allowPromotions"  class="required">매치 정보 동의</label>
               </div>
               <div class="terms__content">
                 BandArchive에서 제공하는 이벤트/혜택 등 다양한 정보를 휴대전화(BandArchive앱 알림 또는 문자), 이메일로 받아보실 수
@@ -213,19 +228,26 @@
       </div>
     </div>
               </div>
-
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
-        </div>
+          
 
-
-
+    <script>
+      const msg = "${msg}";
+      if (msg.trim() !== "") {
+        alert(msg);
+      } 
+        // 왜 자꾸 로그인 창을 들어가도 공백 alert가 뜰까 
+        // -> 해결 -> != null로 조건을 주지 말고, 문자열로 체크를 해서 주면 발생하지않음.
+        // 빈 문자열인 경우에는 alert를 발생시키지 않음
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+    
         	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
    
-   			<script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>
-
+      <script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>
+			<script src="${contextPath}/resources/js/naverLogin.js"></script>
+      <script src="${contextPath}/resources/js/kakaoLogin.js"></script>
   </body>
 </html>

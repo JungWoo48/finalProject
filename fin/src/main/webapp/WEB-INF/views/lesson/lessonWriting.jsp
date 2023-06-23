@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/global.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/lessonWriting.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
 
@@ -17,23 +19,28 @@
 
     <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     
-    
-    
+   
     <section class="allSection">
-        <form action="">
+  
 
-            <div class="imgBox">
-                이미지
-            </div>
+	<form method ="post" action="${contextPath}/writeLessonForm" id="writeLessonForm" enctype="multipart/form-data">
+           <div class ="imgbox">
+     
+ 			<label for="img1">
+	 			<img id="imageInsertPic" src="${contextPath}/resources/images/imageinsert.png">
+ 			</label>
+ 			<input type="file" class="inputImage" id="img1" name="images" accept="image/*">
+ 		</div>
 
             <!-- input 박스 요소들 -->
             <div class="inputBox">
-
+			
+			<!-- 이름 -->
                 <div class="input-box">
                     <span class="icon">
-                        <ion-icon name="mail"></ion-icon>
+                        <ion-icon name="Name"></ion-icon>
                     </span>
-                    <input type="text" required>
+                    <input id="lessonNamePlace" name="lessonNameInput" type="text" maxlength="5" required>
                     <label>NAME</label>
                 </div>
 
@@ -41,7 +48,7 @@
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
                     </span>
-                    <input type="text" required>
+                    <input id="lessonLocationPlace" name="lessonLocationInput" type="text" maxlength="5" required>
                     <label>LOCATION</label>
                 </div>
 
@@ -49,7 +56,7 @@
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
-                    <input type="text" required>
+                   <input id="lessonSocialPlace" name="lessonSocialInput" type="text" maxlength="10" required>
                     <label>SOCIAL MEDIA</label>
                 </div>
 
@@ -57,7 +64,7 @@
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
-                    <input type="text" required>
+                    <input id="lessonMottoPlace" name="lessonMottoInput" type="text" maxlength="10" required>
                     <label>MOTTO</label>
                 </div>
 
@@ -65,7 +72,7 @@
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
-                    <textarea name="" id="" cols="30" rows="10" required></textarea>
+                    <textarea name="lessonDetailInput" id="lessonDetailExplain" cols="30" rows="10" required></textarea>
                     <label class="textLabel">TELL YOUR STROY</label>
                 </div>
 
@@ -73,105 +80,109 @@
 
 
 
-
+	
             <div class="lessonCheckWrapper">
 
                 <div class="genreWrapper">
                     <p id="genreP" class="">GENRE</p>
+                    
+
                     <div class="genreBox">
                         <table class="genreTable">
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="ELECTRONIC" name="ELECTRONIC" value="ELECTRONIC">
+                                    <input type="radio" id="ELECTRONIC" name="genre" value="ELECTRONIC">
                                     <label for="ELECTRONIC">ELECTRONIC</label>
                                 </td>
                                 <td>
-                                    <input type="checkbox" id="AQUSTIC" name="AQUSTIC" value="AQUSTIC">
+                                    <input type="radio" id="AQUSTIC" name="genre" value="AQUSTIC">
                                     <label for="AQUSTIC">AQUSTIC</label>
                                 </td>
                                 <td>
-                                    <input type="checkbox" id="FOLK" name="FOLK" value="FOLK">
+                                    <input type="radio" id="FOLK" name="genre" value="FOLK">
                                     <label for="FOLK">FOLK</label>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="BLUES" name="BLUES" value="BLUES">
+                                    <input type="radio" id="BLUES" name="genre" value="BLUES">
                                     <label for="BLUES">BLUES</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="METAL" name="METAL" value="METAL">
+                                    <input type="radio" id="METAL" name="genre" value="METAL">
                                     <label for="METAL">METAL</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="JAZZ" name="JAZZ" value="JAZZ">
+                                    <input type="radio" id="JAZZ" name="genre" value="JAZZ">
                                     <label for="JAZZ">JAZZ</label>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="ROCK" name="ROCK" value="ROCK">
+                                    <input type="radio" id="ROCK" name="genre" value="ROCK">
                                     <label for="ROCK">ROCK</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="POP" name="POP" value="POP">
+                                    <input type="radio" id="POP" name="genre" value="POP">
                                     <label for="POP">POP</label>
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
+ 
 
 
                 <div class="lessonWrapper">
                     <p id="lessonP" class="">LESSON</p>
+ 
                     <div class="lessonBox">
                         <table class="lessonTable">
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="GUITAR" name="GUITAR" value="GUITAR">
+                                    <input type="radio" id="GUITAR" name="lesson" value="GUITAR">
                                     <label for="GUITAR">GUITAR</label>
                                 </td>
                                 <td>
-                                    <input type="checkbox" id="BASS" name="BASS" value="BASS">
+                                    <input type="radio" id="BASS" name="lesson" value="BASS">
                                     <label for="BASS">BASS</label>
                                 </td>
                                 <td>
-                                    <input type="checkbox" id="KEYBOARD" name="KEYBOARD" value="KEYBOARD">
+                                    <input type="radio" id="KEYBOARD" name="lesson" value="KEYBOARD">
                                     <label for="KEYBOARD">KEYBOARD</label>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="VOCAL" name="VOCAL" value="VOCAL">
+                                    <input type="radio" id="VOCAL" name="lesson" value="VOCAL">
                                     <label for="VOCAL">VOCAL</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="SOUND" name="SOUND" value="SOUND">
+                                    <input type="radio" id="SOUND" name="lesson" value="SOUND">
                                     <label for="SOUND">SOUND</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="COMPOSITION" name="COMPOSITION" value="COMPOSITION">
+                                    <input type="radio" id="COMPOSITION" name="lesson" value="COMPOSITION">
                                     <label for="COMPOSITION">COMPOSITION</label>
                                 </td>
                             </tr>
 
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="DRUM" name="DRUM" value="DRUM">
+                                    <input type="radio" id="DRUM" name="lesson" value="DRUM">
                                     <label for="DRUM">DRUM</label>
                                 </td>
 
                                 <td>
-                                    <input type="checkbox" id="HORN" name="HORN" value="HORN">
+                                    <input type="radio" id="HORN" name="lesson" value="HORN">
                                     <label for="HORN">HORN</label>
                                 </td>
                             </tr>
@@ -289,12 +300,14 @@
                 </table>
             </div> -->
 
-        </form>
+
 
         <div class="writingBtnBox">
-            <button id="writingBtn">SUBMIT</button>
+            <button type="button" id="writingBtn">SUBMIT</button>
         </div>
+            </form>
     </section>
+
 
 
 

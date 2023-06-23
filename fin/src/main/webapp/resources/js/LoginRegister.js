@@ -27,7 +27,7 @@ loginLink.addEventListener('click', ()=> {
     wrapper.classList.remove('active');
 });
 
-
+/*
 let showBusiness = document.getElementById('showBusiness');
 let busniessBox = document.querySelector('.busniessBox');
 
@@ -40,7 +40,7 @@ showBusiness.addEventListener('click', () =>{
     } else {
         busniessBox.classList.remove('visible');
     }
-});
+});*/
 
 
 function setText() {
@@ -52,6 +52,7 @@ function setText() {
     document.querySelector('.js-static-modal-toggle').addEventListener('click', function() {
       new Modal({el: document.getElementById('static-modal')}).show();
     });
+    
 
 
 ("use strict");
@@ -216,9 +217,9 @@ email.addEventListener("input", function(){
 /*인증번호 보내기 js*/
 
 // 인증번호 보내기
-const sendEmail = document.getElementById("sendEm");
+const sendEmail = document.getElementById("sendEmail");
 const cMessage = document.getElementById("cMessage");
-
+let chem;
 // 타이머에 사용될 변수
 let checkInterval; // setInterval을 저장할 변수
 let min = 4;
@@ -235,9 +236,11 @@ sendEmail.addEventListener("click", function(){
             success : function(result){
                 console.log("이메일 발송 성공");
                 console.log(result);
-                // 인증 버튼이 클릭되어 정상적으로 메일이 보내졌음을 checkObj에 기록
-                checkObj.sendEmail = true;
+                
 
+                chem = result;
+                // 인증 버튼이 클릭되어 정상적으로 메일이 보내졌음을 checkObj에 기록
+                //checkObj.sendEmail = true;
                 
 
             },
@@ -253,7 +256,7 @@ sendEmail.addEventListener("click", function(){
 
         // 5분 타이머
         // setInerval(함수, 지연시간) : 지연시간이 지난 후 함수를 수행 (반복)
-
+        /*
         cMessage.innerText = "5:00"; // 초기값 5분
         min = 4;
         sec = 59; // 분, 초 초기화
@@ -281,9 +284,11 @@ sendEmail.addEventListener("click", function(){
             }
 
         }, 1000); // 1초 지연 후 수행
+        */
 
         
         alert("인증번호가 발송되었습니다. 이메일을 확인해주세요.");
+        
     }
 });
 
@@ -302,7 +307,7 @@ checkmail.addEventListener("input", function() {
         return;
     }
 
-    if(checkmail.value == result) { // 이메일 인증번호 동일
+    if(checkmail.value == chem) { // 이메일 인증번호 동일
 
         emailCheckMessage.innerText = "";
         emailCheckMessage.classList.add("confirm");

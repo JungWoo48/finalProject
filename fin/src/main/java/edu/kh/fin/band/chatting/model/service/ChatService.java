@@ -63,6 +63,16 @@ public class ChatService {
 	}
 
 
+	public String withUserName(String chatRoomNo) {
+		return dao.withUserName(chatRoomNo);
+	}
+
+
+	public String chattingCheckImg(int userNo) {
+		return dao.chattingCheckImg(userNo);
+	}
+
+
 
 
 }

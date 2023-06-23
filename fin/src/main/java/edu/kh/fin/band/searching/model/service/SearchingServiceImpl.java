@@ -18,10 +18,36 @@ public class SearchingServiceImpl implements SearchingService{
 
 
 
+	/**
+	 * 조건에 맞는 멤버조회 서비스
+	 * @author lee
+	 */
 	@Override
 	public List<Searching> checkSelect(Searching searching) {
 		
 		return dao.checkSelect(searching);
+	}
+
+
+
+	/** 인포 작성 유무 검사 서비스
+	 *
+	 */
+	@Override
+	public int checkInfo(int userNo) {
+		
+		return dao.checkInfo(userNo);
+	}
+
+
+
+	/** 내 인포 작성 서비스
+	 *
+	 */
+	@Override
+	public int setInfo(Searching setInfo) {
+		
+		return dao.setInfo(setInfo);
 	}
 
 

@@ -1,4 +1,4 @@
-console.log("footer");
+
 
 const mode = localStorage.getItem('darkMode');
 const footerA = document.querySelectorAll('.footerA');
@@ -25,7 +25,6 @@ window.onload = function(){
     }
 }
 */
-
 
 
 

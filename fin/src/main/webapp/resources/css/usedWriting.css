@@ -15,6 +15,20 @@
 	width: 100%;
 }
 
+.usedImageXBtn{
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+
+}
+
+.usedJustXBtn{
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+}
+
+
 
 /* 기본 정보 */
 .usedContent > div:nth-of-type(1) {
@@ -48,15 +62,32 @@
 }
 /* 사진 칸 */
 .usedContent > div:nth-of-type(2) > div:nth-of-type(2){
-	width: 300px;
-	height: 250px;
-	cursor: pointer;
+	width: 80%;
+    height: 200px;
+    cursor: pointer;
+    display: flex;
 
 }
 
-#imageInsertPic{
+/* 각 사진 이미지 */
+.usedContent > div:nth-of-type(2) > div:nth-of-type(2) > label {
+	margin-right: 20px;
+}
+
+body.swal2-shown{
+	padding-right : 0 !important;
+	overflow: revert !important;
+}
+
+#imageInsertPic1, #imageInsertPic2, #imageInsertPic3{
 	width: 100%;
 	height: 100%;
+	cursor: pointer;
+	border-radius:10px;
+}
+
+#img1, #img2, #img3{
+	display: none;
 }
 /* 제목 */
 .usedContent > div:nth-of-type(3) {
@@ -66,7 +97,7 @@
 	padding: 1em;
 }
 
-usedTitleInputTextLength{
+.usedTitleInputTextLength{
 	align-self: flex-end;
 }
 
@@ -91,9 +122,35 @@ usedTitleInputTextLength{
 	border-radius: 10px;
 }
 
+/* 상품명 */
+.usedContent > div:nth-of-type(4){
+	flex-basis: 5%;
+	display: flex;
+	border-bottom: 2px solid var(--grey-color);
+	padding: 1em;
+
+}
+
+.usedContent > div:nth-of-type(4) > div:nth-child(1) {
+    font-size: 1.2em;
+    flex-basis: 20%;
+}
+.usedProductNameDiv {
+	width: 90%;
+}
+
+.usedProductNameDiv > input {
+	padding: 10px;
+    width: 70%;
+    margin-right: 10px;
+    height: 3em;
+    border: 1px solid;
+    border-color: var(--grey-color);
+    border-radius: 10px;
+}
 
 /* 거래 지역 */
-.usedContent > div:nth-of-type(4) {
+.usedContent > div:nth-of-type(5) {
 	flex-basis: 20%;
 	display: flex;
 	padding: 1em;
@@ -101,7 +158,7 @@ usedTitleInputTextLength{
 	
 }
 
-.usedContent > div:nth-of-type(4) > div:nth-child(1){
+.usedContent > div:nth-of-type(5) > div:nth-child(1){
 	font-size: 1.2em;
 	flex-basis: 17%;
 }
@@ -148,7 +205,7 @@ usedTitleInputTextLength{
 
 
 /* 상태 */
-.usedContent > div:nth-of-type(5) {
+.usedContent > div:nth-of-type(6) {
 	flex-basis: 5%;
 	display: flex;
 	padding: 1em;
@@ -156,30 +213,30 @@ usedTitleInputTextLength{
 	
 }
 
-.usedContent > div:nth-of-type(5) label{
+.usedContent > div:nth-of-type(6) label{
 	margin-right: 10px;
 }
 
-.usedContent > div:nth-of-type(5) > div:nth-child(1){
+.usedContent > div:nth-of-type(6) > div:nth-child(1){
 	font-size: 1.2em;
 	flex-basis: 20%;
 }
 
 
 /* 가격 */
-.usedContent > div:nth-of-type(6) {
+.usedContent > div:nth-of-type(7) {
 	flex-basis: 10%;
 	display: flex;
 	border-bottom: 2px solid var(--grey-color);
 	padding: 1em;
 }
 
-.usedContent > div:nth-of-type(6) > div:first-child{
+.usedContent > div:nth-of-type(7) > div:first-child{
 	font-size: 1.2em;
 	flex-basis: 20%;
 }
 
-.usedContent > div:nth-of-type(6) > div:last-child{
+.usedContent > div:nth-of-type(7) > div:last-child{
 	flex-basis: 88%;
 }
 
@@ -196,19 +253,19 @@ usedTitleInputTextLength{
 	margin-bottom: 1em;
 }
 /* 설명 */
-.usedContent > div:nth-of-type(7) {
+.usedContent > div:nth-of-type(8) {
 	flex-basis: 30%;
 	display: flex;
 	padding: 1em;
 	margin-bottom: 10px;
 }
 
-.usedContent > div:nth-of-type(7) > div:first-child{
+.usedContent > div:nth-of-type(8) > div:first-child{
 	font-size: 1.2em;
 	flex-basis: 20%;
 }
 
-.usedContent > div:nth-of-type(7) > div:last-child{
+.usedContent > div:nth-of-type(8) > div:last-child{
 	flex-basis: 88%;
 }
 
@@ -227,7 +284,7 @@ usedTitleInputTextLength{
 	text-align: end;
 }
 /* 버튼 */
-.usedContent > div:nth-of-type(8) {
+.usedContent > div:nth-of-type(9) {
 	flex-basis: 5%;
 	display: flex;
 	width: 80%;
@@ -244,13 +301,25 @@ usedTitleInputTextLength{
 	background-color: var(--grr-color);
 }
 
+
+#usedBoardUpdateBtn{
+	font-size: 1em;
+	width: 6em;
+	height: 3em;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: var(--grr-color);
+
+}
+
 @media (max-width:46.875rem){
 	
 	.regionCard{
 		width: 5em;
 	}
 	
-	#imageInsertPic {
+	#imageInsertPic1, #imageInsertPic2, #imageInsertPic3 {
 		width: 80%;
 		height: 80%;
 	
@@ -287,7 +356,7 @@ usedTitleInputTextLength{
 	}
 	
 	
-	#imageInsertPic {
+	#imageInsertPic1, #imageInsertPic2, #imageInsertPic3 {
 		width: 80%;
 		height: 80%;
 	
