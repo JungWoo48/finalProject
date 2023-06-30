@@ -25,12 +25,23 @@
 		<typeAlias type="edu.kh.fin.band.used.model.vo.UsedVo" alias="used"/>
 		<typeAlias type="edu.kh.fin.band.used.model.vo.UsedImage" alias="usedImage"/>
 		<typeAlias type="edu.kh.fin.band.lesson.model.vo.Lesson" alias="lesson"/>
+		<typeAlias type="edu.kh.fin.band.lesson.model.vo.LessonImage" alias="lessonImg"/>
 		<typeAlias type="edu.kh.fin.band.login.model.vo.Business" alias="Business"/>
 		<typeAlias type="edu.kh.fin.band.board.model.vo.Board" alias="board"/>
 		<typeAlias type="edu.kh.fin.band.board.model.vo.BoardDetail" alias="detail"/>
 		<typeAlias type="edu.kh.fin.band.board.model.vo.BoardImage" alias="boardImage"/>
 		<typeAlias type="edu.kh.fin.band.msgAlarm.model.vo.MsgAlarm" alias="msgAlarm"/>
+		<typeAlias type="edu.kh.fin.band.msgAlarm.model.vo.Invitation" alias="invi"/>
 		<typeAlias type="edu.kh.fin.band.socialLogin.model.vo.SocialInfo" alias="social"/>
+		<typeAlias type="edu.kh.fin.band.board.model.vo.Reply" alias="reply"/>
+		<typeAlias type="edu.kh.fin.band.board.model.vo.Criteria" alias="criteria"/>
+		<typeAlias type="edu.kh.fin.band.myBand.model.vo.MyBand" alias="myBand"/>
+		<typeAlias type="edu.kh.fin.band.myPage.model.vo.Ban" alias="banList"/>
+		<typeAlias type="edu.kh.fin.band.myPage.model.vo.Band" alias="band"/>
+		<typeAlias type="edu.kh.fin.band.myBand.model.vo.MyBandReply" alias="myBandReply"/>
+		<typeAlias type="edu.kh.fin.band.board.model.vo.Board" alias="boardList"/>
+		<typeAlias type="edu.kh.fin.band.board.model.vo.Reply" alias="replyList"/>
+		<typeAlias type="edu.kh.fin.band.login.model.vo.User" alias="findPw"/>
 	</typeAliases>
 	
 <!-- mapper 파일(SQL 작성되는파일) 위치 등록 부분 -->
@@ -48,5 +59,9 @@
 		<mapper resource="/mapper/msgAlarm-mapper.xml"/>
 		<mapper resource="/mapper/socialLogin-mapper.xml"/>
 		<mapper resource="/mapper/myPage-mapper.xml"/>
+		<mapper resource="/mapper/reply-mapper.xml" />
+		<mapper resource="/mapper/myBand-mapper.xml"/>
+		<mapper resource="/mapper/signUpBand-mapper.xml"/>
+		<mapper resource="/mapper/findPw-mapper.xml"/>
 	</mappers>
 </configuration>

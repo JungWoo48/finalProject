@@ -66,25 +66,50 @@ showBtn.addEventListener('click', function(){
     new Modal({el: document.getElementById('static-modalInfo')}).show();
   });
 
- 
+ /*
   document.querySelector('.js-static-modal-togglefindMemberP').addEventListener('click', function() {
     new Modal({el: document.getElementById('static-modalfindMember')}).show();
+  });*/
+  
+  
+  // groupModal
+  
+   document.querySelector('.js-static-modal-toggleGroup').addEventListener('click', function() {
+    new Modal({el: document.getElementById('static-modalGroup')}).show();
+  });
+
+
+  document.querySelector('.js-static-modal-togglegroupP').addEventListener('click', function() {
+    new Modal({el: document.getElementById('static-modalGroup')}).show();
   });
   
-  const inutImg = document.getElementById("input-image");
-  const fileImg = document.getElementById("fileImg");
   
-  const secession = getElementById("secessionBtn");
+  const inputImg = document.getElementById("inputimage");
+  const fileImg = document.getElementById("fileImg");
+  fileImg.addEventListener("click", function() {
+    inputImg.click
 
+  })
+
+
+
+
+
+
+  const secession = document.getElementById("secessionBtn");
+  const userNo = document.getElementById("No");
+  const secessionout =document.getElementById("secessionout");
+  
   secession.addEventListener("click", function() {
     if(confirm("정말로 탈퇴하시겠습니까?")) {
-      return true;
+      secessionout.submit();
     } else {
       alert("탈퇴 취소")
       return false;
     }
 
 
-  })
+  });
 
+ 
 

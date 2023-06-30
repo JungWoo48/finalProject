@@ -37,7 +37,11 @@
     animation-name: slideOutUp;
   }
   
-  .modal-dialog{
+  /* .modal-dialog.{
+    
+  } */
+  
+  #memberListDialog{
     max-width: 650px;
   }
   
@@ -59,4 +63,11 @@
   .modal-footer{
     border: none !important;
   }
-    
+  
+  .modal-body.memberModal{
+    height: 400px;
+  }
+
+  h1{
+    padding-left: 0;
+  }

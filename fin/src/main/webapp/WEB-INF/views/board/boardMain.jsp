@@ -71,11 +71,28 @@
     
     <div class="naviBar">
       <ul>
-        <li><a href="#" class="total">전체</a></li>
-        <li><a href="#" class="noticeTogle">질문</a></li>
-        <li><a href="#" class="popularTogle">잡담</a></li>
+ 
+        <li>
+         <label class="test_obj">
+        <input type="radio" class="tagAll" name="boardTag" value="0" >
+        <span>전체</span>
+    </label>
+    </li>
+
+        <li>
+         
+          <label class="test_obj">
+            <input type="radio" class="tagTalk" name="boardTag" value="1">
+            <span>잡담</span>
+          </label>
        
-       
+        </li>
+        <li>
+    <label class="test_obj">
+      <input type="radio" class="tagQus" name="boardTag" value="2">
+      <span>질문</span>
+  </label>
+       </li>
        
         <c:if test="${!empty loginUser}">
                     <!-- /comm/board/write/3?mode=insert&cp=1 -->
@@ -149,10 +166,27 @@
   
 
     <div class="pagination-search">
-      <div class="pagination">
-          <a href="board/paging"><span>1</span></a>
-          <a href="#" class="active"><span>2</span></a>
-        </div>
+    
+    <ul class="pagination">
+    <c:if test="${pageVO.prev}">
+
+    <li><a href="board?pageNum=${pageVO.startPage -1}&amount=${pageVO.amount}"><span>이전</span></a></li>
+   
+   </c:if>
+   
+   <c:forEach var="num" begin="${pageVO.startPage}" end= "${pageVO.endPage}">
+   <li class="${pageVO.pageNum eq num ? 'active' : ''} ">
+   <a href="board?pageNum=${num}&amount=${pageVO.amount}">${num}</a>
+   </li>
+   </c:forEach>
+   <c:if test="${pageVO.next}">
+    <li><a href="board?pageNum=${pageVO.endPage  + 1}&amount=${pageVO.amount}" class="active"><span>다음</span></a></li>
+</c:if>
+</ul>
+
+        
+        
+        
       <div class="search-box">
         <select id="nav-select">
           <option value="all">전체</option>
@@ -168,7 +202,7 @@
 
 
  
-  <button class="js-static-modal-toggle btn btn-primary" type="button" id="blockModal">신고하기</button>
+  <button class="js-static-modal-toggle btn-primary" type="button" id="blockModal">신고하기</button>
   <div id="static-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none; padding-right: 17px;">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -278,5 +312,177 @@
     });
 
 </script>
+<script type="text/javascript">
+
+
+window.onload = function() {
+  // 서버에서 반환된 현재 페이지 번호입니다.
+  var currentPage = ${pageVO.pageNum};
+  // 페이지 링크들을 가져옵니다.
+  var pageLinks = document.querySelectorAll('.pagination li a');
+  
+  // 모든 페이지 링크들을 순회하면서, 
+  for (var i = 0; i < pageLinks.length; i++) {
+    // 페이지 링크의 번호를 가져옵니다.
+    var pageNum = parseInt(pageLinks[i].textContent);
+    
+    // 현재 페이지 번호와 링크의 페이지 번호가 일치하면,
+    if (pageNum === currentPage) {
+      // 해당 링크에 'active' 클래스를 추가합니다.
+      pageLinks[i].parentElement.classList.add('active');
+    }
+  }
+};
+
+</script>
+
+<script type="text/javascript">
+const updateBtn= () => {
+	const boardNo = '${BoardDetail.boardNo}';
+	  
+	location.href = "update?boardNo=" + boardNo ;
+}
+$('.tagTalk').click(function(){
+
+    $.ajax({
+        url: 'boardTalk',  // 데이터를 가져올 URL
+        type: 'GET',  // 요청 방식
+        dataType: 'json',  // 응답 데이터 형식
+        success: function(data) {
+        	$('.totalTitle').text('잡담 게시판');
+            var $tbody = $('tbody');  // <tbody> 요소를 선택
+            $tbody.empty();  // <tbody> 요소 내부의 모든 요소를 제거
+
+            // 서버에서 받아온 데이터를 순회하면서 <tr> 요소를 생성
+            $.each(data, function(i, board) {
+                var $tr = $('<tr>');  // <tr> 요소를 생성
+                $tr.append('<td class="boardNumber">' + board.boardNo + '</td>');
+
+                var $tdTitle = $('<td>').addClass('title');
+                var $divTag = $('<div>').addClass('tagtotal').attr('id', 'tag');
+                if(board.boardTag == 1) {
+                    $divTag.append('<span class="tagNotice">잡담</span>');
+                } else {
+                    $divTag.append('<span class="tagBasic">질문</span>');
+                }
+                $divTag.append('<a href="boardDetail?boardNo='+board.boardNo+'" class="titleA">' + board.boardTitle + '</a>');
+                $tdTitle.append($divTag);
+                $tr.append($tdTitle);
+
+                $tr.append('<td class="ninkName"><a class="blockBoxOpen">' + board.userNick + '</a></td>');
+                $tr.append('<td class="views">' + board.readCount + '</td>');
+                $tr.append('<td class="heart">' + board.boardLike + '</td>');
+
+                $tbody.append($tr);  // 생성한 <tr> 요소를 <tbody> 요소에 추가
+            });
+            
+       
+        },
+    
+        error: function(request, status, error) {
+            // AJAX 요청이 실패했을 때 실행될 함수
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+});
+
+$('.tagAll').click(function(){
+
+    $.ajax({
+        url: 'boardAll',  // 데이터를 가져올 URL
+        type: 'GET',  // 요청 방식
+        dataType: 'json',  // 응답 데이터 형식
+        success: function(data) {
+        	$('.totalTitle').text('전체 게시판');
+            var $tbody = $('tbody');  // <tbody> 요소를 선택
+            $tbody.empty();  // <tbody> 요소 내부의 모든 요소를 제거
+
+            // 서버에서 받아온 데이터를 순회하면서 <tr> 요소를 생성
+            $.each(data, function(i, board) {
+                var $tr = $('<tr>');  // <tr> 요소를 생성
+                $tr.append('<td class="boardNumber">' + board.boardNo + '</td>');
+
+                var $tdTitle = $('<td>').addClass('title');
+                var $divTag = $('<div>').addClass('tagtotal').attr('id', 'tag');
+                if(board.boardTag == 1) {
+                    $divTag.append('<span class="tagNotice">잡담</span>');
+                } else if(board.boardTag == 2) {
+                    $divTag.append('<span class="tagBasic">질문</span>');
+                } else {
+                	 $divTag.append('<span class="tagNotice">잡담</span>');
+                	  $divTag.append('<span class="tagBasic">질문</span>');
+                }
+                $divTag.append('<a href="boardDetail?boardNo='+board.boardNo+'" class="titleA">' + board.boardTitle + '</a>');
+                $tdTitle.append($divTag);
+                $tr.append($tdTitle);
+
+                $tr.append('<td class="ninkName"><a class="blockBoxOpen">' + board.userNick + '</a></td>');
+                $tr.append('<td class="views">' + board.readCount + '</td>');
+                $tr.append('<td class="heart">' + board.boardLike + '</td>');
+
+                $tbody.append($tr);  // 생성한 <tr> 요소를 <tbody> 요소에 추가
+            });
+            
+       
+        },
+    
+        error: function(request, status, error) {
+            // AJAX 요청이 실패했을 때 실행될 함수
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+});
+
+$('.tagQus').click(function(){
+
+    $.ajax({
+        url: 'boardQus',  // 데이터를 가져올 URL
+        type: 'GET',  // 요청 방식
+        dataType: 'json',  // 응답 데이터 형식
+        success: function(data) {
+        	$('.totalTitle').text('질문 게시판');
+            var $tbody = $('tbody');  // <tbody> 요소를 선택
+            $tbody.empty();  // <tbody> 요소 내부의 모든 요소를 제거
+
+            // 서버에서 받아온 데이터를 순회하면서 <tr> 요소를 생성
+            $.each(data, function(i, board) {
+                var $tr = $('<tr>');  // <tr> 요소를 생성
+                $tr.append('<td class="boardNumber">' + board.boardNo + '</td>');
+
+                var $tdTitle = $('<td>').addClass('title');
+                var $divTag = $('<div>').addClass('tagtotal').attr('id', 'tag');
+                if(board.boardTag == 1) {
+                    $divTag.append('<span class="tagNotice">잡담</span>');
+                } else {
+                    $divTag.append('<span class="tagBasic">질문</span>');
+                }
+                $divTag.append('<a href="boardDetail?boardNo='+board.boardNo+'" class="titleA">' + board.boardTitle + '</a>');
+                $tdTitle.append($divTag);
+                $tr.append($tdTitle);
+
+                $tr.append('<td class="ninkName"><a class="blockBoxOpen">' + board.userNick + '</a></td>');
+                $tr.append('<td class="views">' + board.readCount + '</td>');
+                $tr.append('<td class="heart">' + board.boardLike + '</td>');
+
+                $tbody.append($tr);  // 생성한 <tr> 요소를 <tbody> 요소에 추가
+            });
+            
+       
+        },
+    
+        error: function(request, status, error) {
+            // AJAX 요청이 실패했을 때 실행될 함수
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+});
+
+
+
+</script>
+
+
+
+
 </body>
 </html>

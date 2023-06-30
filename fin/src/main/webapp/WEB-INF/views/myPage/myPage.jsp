@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@
 <script src = "${contextPath}/resources/js/myPageModal.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
+<script src = "${contextPath}/resources/js/myPageModal.js"></script>
 <style>
 	dl, ol, ul {
 	    margin-top: 0;
@@ -45,22 +47,19 @@
     <section class="myPageWrapper">
         <section class="myPageInfo">
             <div>
-                <span>개다리방방</span>
+                <span>${loginUser.userNick}</span>
                <ion-icon name="person-circle" id="profileIcon"></ion-icon>
             </div>
 
             <div class="imgBox">
                 <c:if test="${empty loginUser.profileImg}">
-                	<img src="${contextPath}/resources/images/profileImage/user.png" id="profile-image">
+                	<img src="${contextPath}/resources/images/guitarduck.png" id="profile-image">
                 </c:if>
 
                 <c:if test="${!empty loginUser.profileImg}">
                      <img src="${contextPath}${loginUser.profileImg}" id="profile-image">
                 </c:if>
                 
-                <form action="">
-                    <i class="bi bi-camera-fill"></i>
-                </form>
             </div>
 
             <div>
@@ -69,25 +68,35 @@
                 </div>
             </div>
             
-            <div class="ulBox">
-                <div class="firstUlBox">
-                    <ul>
-                        <li>Band</li>
-                        <li>Leader</li>
-                        <li>Member</li>
-                    </ul>
-                </div>
 
-                <div class="secondUlBox">
-                    <ul>
-                        <li><i class="fa-solid fa-headphones-simple"></i>러시아워</li>
-                        <li><i class="fa-solid fa-crown"></i>개다리방방</li>
-                        <li><i class="fa-solid fa-user-astronaut"></i>초파초</li>
-                        <li><i class="fa-solid fa-user-astronaut"></i>길에반스</li>
-                        <li><i class="fa-solid fa-user-astronaut"></i>이현경</li>
-                        <li><i class="fa-solid fa-user-astronaut"></i>기타못참</li>
-                        <li><i class="fa-solid fa-user-astronaut"></i>빌스릴</li>
-                    </ul>
+                    <c:choose>
+                        <c:when test="${empty bandMem}">
+                            <p>밴드가 없습니다</p>
+                        </c:when>
+                        <c:otherwise>
+
+                        <div class="ulBox">
+                            <div class="firstUlBox">
+                                <ul>
+                                    <li>Band</li>
+                                    <li>Leader</li>
+                                    <li>Member</li>
+                                </ul>
+                            </div>
+
+                            <div class="secondUlBox">
+
+
+                            <ul>
+                                <li><i class="fa-solid fa-headphones-simple"></i>${bandMem[0].bandName}</li>
+                                 <li><i class="fa-solid fa-crown"></i>${bandMem[0].leaderNick}</li>
+        
+                                <c:forEach var="bandMem" items="${bandMem}">
+                                    <li><i class="fa-solid fa-user-astronaut"></i>${bandMem.userNick}</li>
+                                </c:forEach>
+                            </ul>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </section>
@@ -108,7 +117,7 @@
                         <li class="js-static-modal-toggleBoard"><i class="bi bi-clipboard"></i></li>
                         <li class="js-static-modal-toggleReply"><i class="bi bi-chat"></i></li>
                         <li class="js-static-modal-toggleBlock"><i class="bi bi-emoji-angry"></i></li>
-                        
+                        <li class="js-static-modal-toggleGroup"><i class="bi bi-music-player"></i></li>
                     </ul>
                 </div>
 
@@ -118,7 +127,8 @@
                         <li class="js-static-modal-toggleBandP"><p>나의 밴드</p></li>
                         <li class="js-static-modal-toggleBoardP"><p>내가 작성한 게시글</p></li>
                         <li class="js-static-modal-toggleReplyP"><p>내가 작성한 댓글</p></li>
-                        <li class="js-static-modal-toggleBlockP"><p>차단 회원 목록</p></li>
+                        <li class="js-static-modal-toggleBlockP" name="banList" id="banList"><p>차단 회원 목록</p></li>
+                        <li class="js-static-modal-togglegroupP"><p>밴드 생성</p></li>
                     </ul>
                 </div>
             </div>
@@ -137,7 +147,6 @@
               </div>
               <div class="modal-body">
 
-            <form action="">
                 <section class="modalBlockWrapper">
                     <div class="modalBlockTitleBox">
                         <p>차단 회원 목록</p>
@@ -147,52 +156,32 @@
 
 
                         <table class="modalBlockTable">
-                            <tr>
-                                <td><img src="" alt="">메탈스레기</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
+                            <c:choose>
+                                <c:when test="${empty banList}">
+                                    <p>차단 회원이 없습니다</p>
+                                </c:when>
+                                <c:otherwise>
+                                	<c:forEach var="banList" items="${banList}">
+                                        <form action="fin/ban" method="post">
+                    
+                                		<tr>
+                                            <input type="hidden" value="${banList.bannedUserNo}" id="bannedUserNo" name="bannedUserNo">
+                                        	<td id>${banList.bannedUserNick}</td>
+                                        	<td class="btnBlockTd"><button>차단해제</button></td>
+                                    	</tr>
 
-                            <tr>
-                                <td><img src="" alt="">이진영</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
+                                        </form>
+                                	</c:forEach>
+                                </c:otherwise>
 
-                            <tr>
-                                <td><img src="" alt="">이현경입니다</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="" alt="">김준수지구</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="" alt="">김준수입니다</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="" alt="">임정우입니다</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="" alt="">김민성</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><img src="" alt="">민성김입니다</td>
-                                <td class="btnBlockTd"><button>차단해제</button></td>
-                            </tr>
-
-
+                            </c:choose>
+                         
+                         
                         </table>
 
                     </div>
                 </section>
-            </form>
+            
                 
               </div>
               <div class="modal-footer">
@@ -222,60 +211,36 @@
                     <hr>
 
                     <div class="modalReplyContent">
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">얼립시스가 어디까지 적용이 된느지 한 번 볼까</p></a>
-                                </td>
-                                <td>
-                                    <p>10일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">이현경 천재</p></a>
-                                </td>
-                                <td>
-                                    <p>2일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">이현경 천재23123</p></a>
-                                </td>
-                                <td>
-                                    <p>7일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">이현경 천재ㅁ이아어</p></a>
-                                </td>
-                                <td>
-                                    <p>3일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">이현경 천재ㅁㄴㅇㅁㄴㅇ</p></a>
-                                </td>
-                                <td>
-                                    <p>1일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <a href="#"><p class="replyContent">이현경 천재asdasdasdasd</p></a>
-                                </td>
-                                <td>
-                                    <p>3일전</p>
-                                </td>
-                            </tr>
+                    	
+                    	<table>
+                    	
+                    	<c:choose>
+                    		<c:when test="${empty rList}">
+                    			<tr>
+                    				<td>
+                    					<p>작성한 댓글이 없습니다</p>
+                    				</td>
+                    			</tr>
+                    		</c:when>
+                    		
+                    		<c:otherwise>
+                    			
+                    			<c:forEach var="rList" items="${rList}" end="20">
+                    				<tr>
+                                		<td>
+                                    		<a href="#"><p class="replyContent">${rList.replyContent}</p></a>
+                                		</td>
+                                		<td>
+                                    		<p>${rList.createDate}</p>
+                                		</td>
+                            		</tr>        
+                            		         			
+                    			</c:forEach>
+                    		
+                    		</c:otherwise>
+                    	</c:choose>
+                                      
+                            
                         </table>
                     </div>
                 </section>
@@ -312,74 +277,43 @@
                     <div class="modalBoardContent">
 
                         <table class="modalBoardTable">
-                            <tr>
-                                <td>
-                                    <p>일반게시판</p>
-                                </td>
-                                <td>
-                                    <a href="#">
-                                        <p>이건 일반게시글이야아아아 (2)</p>
-                                    </a>
-                                </td>
-                                <td>
-                                    <p>10일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p>일반게시판</p>
-                                </td>
-                                <td>
-                                    <a href="#">
-                                        <p>이건 일반게시글 제목야아아아 (3)</p>
-                                    </a>
-                                </td>
-
-                                <td>
-                                    <p>10일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p>일반게시판</p>
-                                </td>
-                                <td>
-                                    <a href="#">
-                                        <p>이건 일반게시글 제목야아아아 (7)</p>
-                                    </a>
-                                </td>
-
-                                <td>
-                                    <p>10일전</p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p>일반게시판</p>
-                                </td>
-                                <td>
-                                    <a href="#">
-                                        <p>이건 일반게시글 제목야아아아 (5)</p>
-                                    </a>
-                                </td>
-
-                                <td>
-                                    <p>10일전</p>
-                                </td>
-                            </tr>
-
-
-
+                        	
+                        	<c:choose>
+                        		<c:when test="${empty boardList}">
+                        			<tr>
+                        				<td>
+                        					<p>작성 글이 존재하지 않습니다</p>
+                        				</td>
+                        			</tr>
+                        		</c:when>
+                        		
+                        		<c:otherwise>
+                        			<c:forEach var="board" items="${boardList}" end="20">
+                        				<tr>
+                                			<td>
+                                    			<p>일반게시판</p>
+                                			</td>
+                                			<td>
+                                    			<a href="boardDetail?boardNo=${board.boardNo}" >
+                                        		<p>${board.boardTitle}</p>
+                                    			</a>
+                                			</td>
+                                			<td>
+                                    			<p>${board.createDate}</p>
+                                			</td>
+                            			</tr>
+                        			
+                        			</c:forEach>
+                        		</c:otherwise>
+                        		                                              	
+                        	</c:choose>
+                        	                          
                         </table>
                     </div>
 
 
                 </section>
-
-                
+                                               
                 
               </div>
               <div class="modal-footer">
@@ -402,7 +336,7 @@
               </div>
               <div class="modal-body">
 
-            <form action="">
+            
                 <section class="modalBandWrapper">
                     <div class="modalBandTitleBox">
                         <p>밴드 관리</p>
@@ -418,7 +352,7 @@
                                 </td>
 
                                 <td>
-                                    <p class="tdTitle upTitle">러시아워</p> 
+                                    <p class="tdTitle upTitle">${bandMem[0].bandName}</p> 
                                 </td>
                             </tr>
 
@@ -428,7 +362,7 @@
                                 </td>
 
                                 <td>
-                                    <p class="tdTitle upTitle">이현경</p>
+                                    <p class="tdTitle upTitle">${bandMem[0].leaderNick}</p>
                                 </td>
                             </tr>
 
@@ -445,66 +379,64 @@
                     <div class="modalBandContentBox">
                         
                         <table>
-                            <tr>
-                                <td>
-                                    <p class="modalContentP">초파초</p>
-                                </td>
-
-                                <td>
-                                    <p><button>멤버추방</button></p>
-                                </td>
-                            </tr>
-
-
-                            <tr>
-                                <td>
-                                    <p class="modalContentP">기타못침21</p>
-                                </td>
-
-                                <td>
-                                    <p><button>멤버추방</button></p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p class="modalContentP">길에반스</p>
-                                </td>
-
-                                <td>
-                                    <p><button>멤버추방</button></p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p class="modalContentP">빌스링</p>
-                                </td>
-
-                                <td>
-                                    <p><button>멤버추방</button></p>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <p class="modalContentP">메탈리카촉</p>
-                                </td>
-
-                                <td>
-                                    <p><button>멤버추방</button></p>
-                                </td>
-                            </tr>
+                        
+                        	<c:forEach var="bandMem" items="${bandMem}">
+                        		<form action="fin/exile" method="POST">
+                        		
+                        		<input type="hidden" value="${bandMem.userNo}" id="exileNo" name="exileNo">
+                        		
+                        		<tr>
+                                	<td>
+                                    	<p class="modalContentP">${bandMem.userNick}</p>
+                                	</td>
+                                	
+                                	<c:choose>
+                                	                              		                              	
+                                		<c:when test="${loginUser.userNo eq bandMem.leaderNo}" >
+                                		                                		
+                                		
+                                			<td>
+                                    			<p><button>멤버추방</button></p>
+                                			</td>
+                                			                               			                                			                               			
+                                		</c:when>
+                                		
+                                		
+                                		<c:otherwise>                               		                                		
+                                		</c:otherwise> 
+                                		                                	                              		                                	
+                                	</c:choose>                               	
+                            	</tr>      
+                            	</form>              	                                    	                                 
+                        	</c:forEach>
+                            
                         </table>
                     </div>
 
                     <hr>
+                    
+                    <c:choose>
+                    	<c:when test="${loginUser.userNo eq bandMem[0].leaderNo}">
+                    		<div class="bandDestroyBtnBox">
+                    			
+                    			
+                    			<form action="fin/dismiss"  method="GET">
+                    			<input type="hidden" value="${bandMem[0].bandNo}" id="bandNo" name="bandNo">
+                        			<button id="dismissbtn">밴드해체</button>
+                        		</form>
+                    		</div>
+                    	
+                    	</c:when>
+                    	
+                    	<c:otherwise>
+                    
+                    
+                    	</c:otherwise>
+                    </c:choose>
+                    
 
-                    <div class="bandDestroyBtnBox">
-                        <button>밴드해체</button>
-                    </div>
+                   
                 </section>
-            </form>
 
                 
                 
@@ -526,7 +458,7 @@
         <div class="modal-dialog infoModal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
 
             <div class="modal-body">
@@ -536,17 +468,17 @@
                     <p>회원 정보 수정</p>
                 </div>
                 <form action="fin/updateInfo" method="POST" enctype="multipart/form-data">
-                	<span id="delete-image">x</span>
+             	
                 
                     <div class="modalImgBox">
                         <c:if test="${empty loginUser.profileImg}">
-                            <img src="${contextPath}/resources/images/profileImage/user.png" id="profile-image">
+                            <img src="${contextPath}/resources/images/guitarduck.png" id="profile-image">
                         </c:if>
 
                         <c:if test="${!empty loginUser.profileImg}">
                             <img src="${contextPath}${loginUser.profileImg}" id="profile-image">
                         </c:if>
-                        <i class="bi bi-camera-fill" id="fileImg"><input type="file" required name="uploadImage" id="input-image" accept="image/*"></i>              
+                        <i class="bi bi-camera-fill" id="fileImg"><input type="file" required name="uploadImage" id="inputimage" accept="image/*"></i>              
                     </div>
                 
                     <div class="modalInputBox">
@@ -564,6 +496,11 @@
                             </span>
                             <input type="text" required id="userNick" name="newNick">
                             <label>NICKNAME</label>
+                        </div>
+                        
+                        <div class="input-box">                          
+                            <input type="text" required id="userIntro" name="newIntro">
+                            <label>INTRO</label>
                         </div>
                         
 
@@ -779,14 +716,70 @@
             
             </div>
             <div class="modal-footer">
-                <form action="fin/secession" method="GET">
-                <button id="secessionBtn">탈퇴하기</button>
+                <form action="fin/secession" method="POST" id="secessionout">                     
+                <button id="secessionBtn" type="button">탈퇴하기</button>
         		</form>
             </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
     </div>
+    
+     <!-- group create -->
+    <div class="container">
+        <!-- <button class=" js-static-modal-toggleBoard btn btn-primary " type="button">test</button> -->
+        <div id="static-modalGroup" class="modal fade" tabindex="-1" role="dialog" style="display: none; padding-right: 17px;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body">
+
+                   
+                   <c:choose>
+                   		<c:when test="${!empty bandMem}">
+                   			<p id="alreadyBand">밴드가 이미 있습니다</p>
+                   		</c:when>
+                   		
+                   		<c:otherwise>
+                   			<section class="groupSection">
+                   				<form action="fin/makeBand" class="groupForm" method="GET">
+                   				
+                   				
+                   					<div class="groupTitle">
+                            			<h1>그룹 생성</h1>
+                        			</div>
+
+                        				<div class="grouInfoBox">
+                            				<input type="text" required id="groupName" name="bandName">
+                            				<label>GROUP NAME</label>
+
+                            				<input type="text" required id="groupLeaderId" name="genre">
+                            				<label>GENRE</label>
+
+                            				<textarea type="text" id="groupInfoText" name="ment"></textarea>
+                            				<label>EXPLAIN YOUR GROUP</label>
+                        				</div>
+
+                        			<div class="groupBtnBox">
+                            			<button id="groupBtn" type="submit">생성하기</button>
+                        			</div>
+                  		 		</form>
+                			</section>                  
+                   		</c:otherwise>
+                   
+                   </c:choose>                                    
+                    
+              </div>
+              <div class="modal-footer"></div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div>
+    </div>
+    
+    
+    
     
     <script>
       const msg = "${msg}";
@@ -804,6 +797,6 @@
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src = "${contextPath}/resources/js/myPage.js"></script>
+    <script src = "${contextPath}/resources/js/myPage.js?version=3"></script>
 </body>
 </html>

@@ -1,6 +1,26 @@
 
 
 
+.test_obj input[type="radio"] {
+    display: none;
+  }
+  
+  .test_obj input[type="radio"] + span {
+  display: inline-block;
+      margin: -2px;
+      padding: 4px 9px;
+      background-color: var(--background-color);
+      text-align: center;
+      cursor: pointer;
+      border-radius: 30px;
+  }
+  
+  .test_obj input[type="radio"]:checked + span {
+  background-color: var(--stroke-color);
+    color: var( --background-color);
+  }
+   
+
 .boardPath{
     fill: none;
     stroke: var(--stroke-color);
@@ -173,12 +193,22 @@ table {
 }
   
 .pagination {
-    display: inline-block;
+   
 }
   
 .pagination a {
-    display: inline-block;
+    display: flex;
 
+    text-decoration: none;
+    margin:1px;
+    
+    justify-content: center;
+    align-items: center;
+        width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    background-color: #474554;
+    color: #ffffff;
     text-decoration: none;
 }
   
@@ -195,6 +225,12 @@ table {
  }
  .pagination a.active span {
     background-color: silver;
+    color: #ffffff;
+ }
+ 
+ .pagination li.active{
+  background-color:   #e94432;
+
     color: #ffffff;
  }
  .search-box {
@@ -358,7 +394,13 @@ cursor: pointer;
     padding: 3px;
 }
 
-
+.searchBtn {
+    font-size: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    align-items: center;
+}
 
 
   /*Checkboxes styles*/
@@ -458,7 +500,7 @@ cursor: pointer;
       transform: rotate(45deg);
     } 
     
-    
+   
 
 body.darkmode th.title a
  {
@@ -487,7 +529,10 @@ body.darkmode .boardNumber
 }
  
 
-
+body.darkmode .boardPath
+ {
+   stroke: var(--stroke-dark-color);
+}
 
 
 body.darkmode .search-box button{
@@ -503,6 +548,7 @@ border: 1px solid var(--border-color);
 
 #blockModal {
     display: none;
+   
 }
 
 .blockChooseModal {
@@ -656,11 +702,11 @@ border: none;
         padding-bottom: 10px;
     }
     .searchBtn{
-        font-size: 5px;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        align-items: center;
+	font-size: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    align-items: center;
     }
     #tag{
         padding-bottom: 5px;

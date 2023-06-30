@@ -46,6 +46,7 @@
                 
 		
                 <form action="fin/login" method="POST" name="login-form" onsubmit="return loginValidate()">
+                	<input type="hidden" value="${ref}" name="ref">
                     <div class="inputBox"> <!--input-box-->
                         <span class="icon">
                             <ion-icon name="mail"></ion-icon>
@@ -64,7 +65,7 @@
 
                     <div class="rememberForgot">  <!--remember-forgot-->
                         <label><input type="checkbox" name="saveId"  ${chk}  id="saveId"> Remember me</label>
-                        <a href="#">Forgot Password?</a>
+                        <a href="${contextPath}/findPw">Forgot Password?</a>
                     </div>
 
                     <div class="loginBtnBox" title="밴드아카이브 로그인">
@@ -104,7 +105,7 @@
                 <form id ="form" action="fin/signUp" method="POST" name="regi-form" onsubmit="return signUpValidate()">
 
                     <div class="inputBox" id="embox"> <!--input-box-->
-                        <span class="icon">
+                        <span class="icon" id="emion">
                             <ion-icon name="mail" id="sendEmail"></ion-icon>
                         </span>
                         <input type="email" id="email" name="userEmail">

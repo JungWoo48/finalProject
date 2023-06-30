@@ -1,6 +1,7 @@
 package edu.kh.fin.band.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.kh.fin.band.board.model.vo.Board;
 import edu.kh.fin.band.board.model.vo.BoardDetail;
+import edu.kh.fin.band.board.model.vo.Criteria;
 
 @Repository
 public class BoardDAO {
@@ -21,9 +23,12 @@ public class BoardDAO {
 		return sqlSession.insert("boardMapper.write",board);
 	}
 
-	public List<BoardDetail> boardList() {
+	public List<BoardDetail> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("boardMapper.boardList");
+
+		  
+		
+		return sqlSession.selectList("boardMapper.boardList",cri);
 	}
 
 	public BoardDetail boardDetail(int boardNo) {
@@ -35,6 +40,11 @@ public class BoardDAO {
 		// TODO Auto-generated method stub
 		sqlSession.update("boardMapper.updateReadCount",boardNo);
 	}
+	
+	public void like_Check(int boardNo) {
+		sqlSession.update("boardMapper.like_Check", boardNo);
+	}
+	
 
 	public int delete(int boardNo) {
 		return sqlSession.delete("boardMapper.delete",boardNo);
@@ -45,6 +55,27 @@ public class BoardDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.update("boardMapper.boardUpdate",board);
 	}
+
+	public int getTotal() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("boardMapper.getTotal");
+	}
+
+	public List<BoardDetail> boardTalk(Criteria cri) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("boardMapper.boardTalk",cri);
+	}
+
+	public List<BoardDetail> boardQus(Criteria cri) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("boardMapper.boardQus",cri);
+	}
+
+	public List<BoardDetail> boardAll(Criteria cri) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("boardMapper.boardAll",cri);
+	}
+
 
 
 

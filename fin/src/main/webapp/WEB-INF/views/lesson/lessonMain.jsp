@@ -12,6 +12,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<style>
+	dl, ol, ul {
+	    margin-top: 0;
+	    margin-bottom: 0;
+	    padding-left: 0;
+	}
+	body{
+		line-height: normal;	
+	}
+	button, input, optgroup, select, textarea {
+	    font-family : revert;
+	    font-size: revert;
+	    line-height: inherit;
+	}
+
+    p{
+        margin-bottom: 0;
+    }
+	
+	a:hover {
+    color: revert;
+	}
+</style>
+
 
 
 </head>
@@ -29,8 +53,7 @@
 	</section>
 	
 	<section class="filterSec">
-	
-		<a href="${contextPath}/lessonWriting" class="lessonA"><i class="bi bi-pencil-square"></i></a>
+		<a href="lessonWriting" class="lessonA"><i class="bi bi-pencil-square"></i></a>
 	    <div>
 	        <button class="labelLesson lessonList" onclick="selctLesson()" id="lessonBtn"><span id="lessonBtnTitle">LESSON</span><i class="bi bi-caret-down" id="bi"></i></button>
 	        <ul class="listBox" id="lessonId">
@@ -40,8 +63,8 @@
 	            <li class="list">VOCAL</li>
 	            <li class="list">DRUM</li>
 	            <li class="list">HORN</li>
-	            <li class="list">작곡/편곡</li>
-	            <li class="list">음향/미디어</li>
+	            <li class="list">COMPOSITION</li>
+	            <li class="list">SOUND</li>
 	        </ul>
 	    </div>
 	
@@ -64,27 +87,30 @@
     	</div>
  		<c:if test="${!empty loginUser}">
 		<div>
-			<a href="${contextPath}/lessonWriting" id="writingBtn">WRITING</a>
+			<a href="lessonWriting" id="writingBtn">WRITING</a>
 		</div>
 		</c:if>
 
 	</section>
 
-	<hr>
+	<hr id="hr">
 	
 	
 	<section class="secondSec">
-
-	    <c:choose>
+	    <!-- <c:choose>
 			<c:when test="${!empty lessonList}">
 				<c:forEach items="${lessonList}" var="lesson">
-					<div class="imgCotentWrap" id="firstBox" onclick="location.href='${contextPath}/lessonDetail'">
-						<div class="imgBox">${lesson.lessonImg}</div>
+					
+					<input type="hidden" value="${lesson.lessonNo}">
+					<div class="imgCotentWrap" id="firstBox" onclick="location.href='${contextPath}/lessonDetail?lessonNo=${lesson.lessonNo}'">
+						<div class="imgBox">
+							<img src="" alt="">
+						</div>
 						<div class="contentBox">
-							<p id="scrollOver">${lesson.introment}</p>
-							<span>${lesson.joinDate}</span>
+							<p id="scrollOver">${lesson.motto}</p>
+							<span>${lesson.writingDate}</span>
 							<p>${lesson.region}</p>
-							<p>by.&nbsp${lesson.lessonNick}</p>
+							<p>by.&nbsp${lesson.userNick}</p>
 						</div>
 					</div>
 				</c:forEach>
@@ -95,10 +121,7 @@
 					<h1>NO DATA!</h1>
 				</div>
 			</c:otherwise>
-		</c:choose>
-	
-	   
-	    
+		</c:choose> -->
 	</section>
 
     
@@ -109,6 +132,19 @@
   	<jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
 	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	<script>
+		const message = "${message}";
+		if(message.trim() !== ""){
+			alert(message);
+		}
+
+		const msg = "${msg}";
+		if(msg.trim() !== ""){
+			alert(msg);
+		}
+
+	</script>
     
     <script src = "${contextPath}/resources/js/lesson.js"></script>
 </body>

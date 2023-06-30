@@ -15,7 +15,7 @@
 	</resultMap>
 	
 	
-	
+
 	
 	
 		<!-- 게시글 상세 조회용 resultMap -->
@@ -41,15 +41,91 @@
 		<result property="imageOriginal" column="IMG_ORIGINAL" />
 		<result property="boardNo" column="BOARD_NO" />
 	</resultMap> 
-	
+
 	<select id="boardList" resultMap="detail_rm">
-        SELECT BOARD_NO,BOARD_TITLE,BOARD_CONTENT,CREATE_DATE,READ_COUNT,
+<![CDATA[
+SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+    BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+    FROM BOARD 
+    JOIN "USER" USING(USER_NO)
+) A
+WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+
+]]>
+    </select> 
+    
+    	
+	<select id="boardTalk" resultMap="detail_rm">
+<![CDATA[
+SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+    BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+    FROM BOARD 
+    JOIN "USER" USING(USER_NO)
+) A
+WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+ 
+  AND BOARD_TAG = 1
+]]>
+    </select>
+    
+    
+    
+    
+	<select id="boardQus" resultMap="detail_rm">
+<![CDATA[
+SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+    BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+    FROM BOARD 
+    JOIN "USER" USING(USER_NO)
+) A
+WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+ AND BOARD_TAG = 2
+ 
+]]>
+    </select>
+    
+    
+    	<select id="boardAll" resultMap="detail_rm">
+<![CDATA[
+SELECT *
+FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+    BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+    FROM BOARD 
+    JOIN "USER" USING(USER_NO)
+) A
+WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+ 
+ 
+]]>
+    </select>
+    
+<!--     
+      SELECT * 
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+        BOARD_NO,BOARD_TITLE,BOARD_CONTENT,CREATE_DATE,READ_COUNT,
         BOARD_ST,USER_NO,BOARD_LIKE,BOARD_TAG,USER_NICK
         FROM BOARD 
         JOIN "USER" USING(USER_NO)
-        ORDER BY BOARD_NO 
-        DESC
+    ) A
+    WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount} -->
+    
+    
+    <select id="getTotal" resultType= "int">
+    	select count(*) as total from Board
     </select>
+    
     
      <insert id="write" parameterType="board" >
 	INSERT INTO BOARD VALUES(
@@ -72,6 +148,19 @@
 
 	</select>
 	
+	<!-- Like -->
+	<update id="like_Check" parameterType="_int">
+	    UPDATE BOARD_LIKE
+	    SET LIKE_CHECK = ${like_check} + 1 
+	    WHERE USER_NO=#{userNo} AND BOARD_NO=${boardNo}
+	  </update>
+	  
+	  <update id="like_Check_cancel" parameterType="_int">
+	    UPDATE BOARD_LIKE
+	    SET LIKE_CHECK = ${like_check} - 1 
+	    WHERE USER_NO=${userNo} AND BOARD_NO=${boardNo}
+	  </update>
+
 	
 	
 	

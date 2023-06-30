@@ -5,7 +5,7 @@
     color: var(--text-dark-color);
     background-color : var(--background-dark-color);
     stroke: var(--stroke-dark-color);
-    transition: 0.3s;
+    transition: 0.5s;
  }
  
  /* ===============================�떎�겕紐⑤뱶 �쟻�슜 css=============================== */
@@ -21,6 +21,7 @@ body{
     list-style: none;
 }
 
+
 .navBar a{
     text-decoration: none;
     color:var(--text-color);
@@ -29,6 +30,11 @@ body{
 .navBar i{
     color:var(--text-color);
     font-size: var(--maxFont-size);
+}
+
+body.darkmode .navBar i,
+body.darkmode .navBar a{
+    color: var(--text-dark-color);
 }
 
 .navSecondDiv button{
@@ -56,6 +62,10 @@ body{
     font-family: var(--navFont-style-);
     transition: 0.5s;
     z-index: 1;
+}
+
+body.darkmode .navBar{
+    background-color: var(--background-dark-color);
 }
 
 
@@ -124,31 +134,146 @@ body{
 }
 
 
-.navSecondDiv > a, .navSecondDiv > i , .navSecondDiv > button > i{
+/* .navSecondDiv > a, .navSecondDiv > i , .navSecondDiv > button > i{
     padding: var(--tinyFont-size);
-}
+} */
 
 .navSecondDiv{
-    /* padding-right: 0.938em; */
     margin-bottom: 6px;
     position: relative;
+    display: flex;
+    gap: 0 1em;
 }
 
-.signUpIMG, .loginIMG{
-    display: none;
+
+/* 로그인 시 프사영역 css */
+
+.navSecondDiv .profileImgBox{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: .5em;
 }
 
+.navSecondDiv .profileImgBox #profileImg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
+}
+
+
+.navSecondDiv .menu{
+    position: absolute;
+    top: calc(100% + 30px);
+    right: 0;
+    width: 200px;
+    min-height: 100px;
+    border:1px solid black;
+    background-color: var(--background-color);
+    box-shadow: 0 50px 50px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: .3s;
+}
+
+body.darkmode .navSecondDiv .menu{
+    border: 1px solid var(--border-color);
+    background-color: var(--background-dark-color);
+}
+
+
+
+body.darkmode .navSecondDiv .menu::before{
+    border-left: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+}
+
+
+.navSecondDiv .menu.activeMenu{
+    visibility: visible;
+    opacity: 1;
+    border-radius: 10px;
+}
+
+.navSecondDiv .menu ul{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.navSecondDiv .menu ul li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+    list-style: none;
+    padding: 1em 1.2em;
+    transform: .5s;
+}
+
+.navSecondDiv .menu ul li:last-of-type{
+    padding-left: .9em;
+}
+
+.navSecondDiv .menu ul li:hover{
+    background-color: #607d8b;
+    transition: 0;
+}
+
+.navSecondDiv .menu ul li a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 3em;
+}
+
+.navSecondDiv .menu ul li a:hover{
+    color: var(--border-color);
+}
+
+.navSecondDiv .menu ul li a i:hover{
+    color: var(--border-color);
+}
+
+.light{
+    outline:none
+} 
+/* 로그인 시 프사영역 css */
+
+#logintext{
+    padding-top: .5em;
+}
+
+.myPageIMG,
+.loginIMG,
 .logoutIMG{
     display: none;
 }
 
-.alertBell{
+
+
+.alertBell, .msgBoxOpen{
     position: relative;
+    padding-top: .7em;
 }
 
-.msgBoxOpen{
-    position: relative;
+#alertBellImg{
+    position: absolute;
+    top: 7px;
+    right: -2px;
 }
+
+
+
 
 
 body.darkmode .alertBell > i,
@@ -163,6 +288,7 @@ body.darkmode .msgBoxOpen >i{
     right: 32px;
 }
 
+/* 미디어 쿼리 */
 @media screen and (max-width:46.875rem){
     .navBar, .navUl{
         flex-direction: column;
@@ -190,21 +316,34 @@ body.darkmode .msgBoxOpen >i{
         display: block;
     }
 
-    #sun{
-        padding-left: 0.5em;
-    }
 
     .navUl.active,
     .navSecondDiv.active,
-    .signUpIMG.active,
-    .loginIMG.active{
+    #loginIMGI.active{
         display: flex;
     }
 
-
-    .myPageText, .loginText{
+    /* .loginText{
         display: none;
+    } */
+
+    .wrapperUl, .messageUlBox{
+        left: -7em;
+        top: 5em;
     }
+    .navSecondDiv .menu{
+        right: -1em
+    }
+}
+/* 미디어 쿼리 */
+
+
+@media screen and (min-width:22.4rem) and (max-width:31.3rem) {
+    .wrapperUl, .messageUlBox{
+        left: -5em;
+        width: 300px !important;
+    }
+    
 }
 
 /* ===============================nav css=============================== */
@@ -216,26 +355,34 @@ body.darkmode .msgBoxOpen >i{
 /* 알림창 css */
 
 
-.alertViewShow{
-    display: flex !important;
-}
 
 .wrapperUl{
     position: absolute;
-    top: 2.4em;
-    right: 9em;
-    display: none;
+    top: 3em;
+    right: 8em;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
     flex-direction: column;
     padding: 20px;
     width: 400px;
     max-height: 300px;
     border: 1px solid var(--stroke-color);
     border-radius: 10px;
+    box-shadow: 0 50px 50px rgba(0,0,0,0.1);
     gap: 1em;
     overflow: hidden;
     overflow-y: scroll;
     background-color: var(--text-dark-color);
+    transition: .3s;
 }
+
+.navSecondDiv .wrapperUl.show,
+.navSecondDiv .messageUlBox.show{
+    visibility: visible;
+    opacity: 1;
+}
+
 
 body.darkmode .wrapperUl{
     background-color: var(--background-dark-color);
@@ -285,10 +432,18 @@ body.darkmode .wrapperUl > h1{
 }
 
 .wrapperUl li a{
+    position: relative;
     color: #262626;
     text-decoration: none;
     display: block;
     padding-left: 70px;
+}
+
+#reserveDate{
+    position: absolute;
+    right: 0;
+    top: 1.9em;
+    font-size: .9em;
 }
 
 body.darkmode .wrapperUl li a{
@@ -310,7 +465,6 @@ body.darkmode .wrapperUl li a{
 
 .wrapperUl li h3{
     position: relative;
-    z-index: 2;
     margin-top: -6px;
     margin-right: 1.2em;
     font-size: 1em;
@@ -337,18 +491,21 @@ body.darkmode .wrapperUl .date h3 span{
 .messageUlBox{
     position: absolute;
     top: 3em;
-    right: 5em;
-    display: none;
+    right: 6.5em;
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
     flex-direction: column;
     padding: 20px;
     width: 400px;
     max-height: 300px;
     border: 1px solid var(--stroke-color);
     border-radius: 10px;
+    box-shadow: 0 50px 50px rgba(0,0,0,0.1);
     overflow: hidden;
     overflow-y: scroll;
     background-color: var(--text-dark-color);
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 body.darkmode .messageUlBox{
@@ -425,7 +582,6 @@ body.darkmode .messageUlBox li a{
 
 .messageUlBox li h3{
     position: relative;
-    z-index: 2;
     margin-top: -6px;
     margin-right: 1.2em;
     font-size: 1em;
@@ -508,10 +664,11 @@ body.darkmode .wrapperUl::-webkit-scrollbar-thumb {
 #msgAlarmCount{
     display: none;
     position: absolute;
-    top: 5px;
-    right:0;
-    width: 15px;
-    height: 15px;
+    font-size: 0.7em;
+    top: 11px;
+    left:15px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background-color: var(--alert-div-color);
     color: var(--text-dark-color);
@@ -520,11 +677,16 @@ body.darkmode .wrapperUl::-webkit-scrollbar-thumb {
 #alarmCount{
     display: none;
     position: absolute;
-    top: -5px;
-    right: 7px;
-    width: 15px;
-    height: 15px;
+    font-size: 0.7em;
+    top: 11px;
+    right: -3.5px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
     background-color: var(--alert-div-color);
     color: var(--text-dark-color);
 }
+
+
+
+

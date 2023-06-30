@@ -1,11 +1,16 @@
 package edu.kh.fin.band.board.controller;
-
+   
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 import edu.kh.fin.band.board.model.vo.Board;
 import edu.kh.fin.band.board.model.vo.BoardDetail;
+import edu.kh.fin.band.board.model.vo.Criteria;
+import edu.kh.fin.band.board.model.vo.PageVO;
 import edu.kh.fin.band.login.model.vo.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +20,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
+import edu.kh.fin.band.board.model.service.ReplyService;
+import edu.kh.fin.band.board.model.vo.Reply;
 import edu.kh.fin.band.board.model.service.BoardService;
 
 @Controller
@@ -28,43 +38,60 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
-	
+	@Autowired
+	private ReplyService rService;   
 	
 	@GetMapping("/board")
-		 public String BoardList(Model model) {
-		List<BoardDetail> boardList = service.boardList();
-		model.addAttribute("boardList",boardList);
-		
-		 
 	
-		
-		return "board/boardMain";
+	public String BoardList(Model model, Criteria cri) {
+	    int total = service.getTotal();
+	    PageVO pageVO = new PageVO(cri, total);
+	    List<BoardDetail> boardList = service.boardList(cri);
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("pageVO", pageVO);
+	    return "board/boardMain";
+//		 public String BoardList(Model model) {
+//
+//		Criteria cri = new Criteria();
+//		PageVO pageVO = new PageVO(cri, service.getTotal());
+//		List<BoardDetail> boardList = service.boardList(cri);
+//		model.addAttribute("boardList",service.boardList(cri));
+//		model.addAttribute("pageVO",pageVO);
+//		 
+//	
+//		
+//		return "board/boardMain";
 		
 	}
+
 	
-	
-	
-	
-	
+
 	@GetMapping("/boardDetail")
 	public String boardDetail(@RequestParam("boardNo")int boardNo,
-							  	Model model) {
+							  	Model model,Criteria cri ) {
 		service.updateReadCount(boardNo);
 		BoardDetail boardDetail = service.boardDetail(boardNo);
 		model.addAttribute("BoardDetail" , boardDetail);
+		List<Reply> rList = rService.selectReplyList(boardNo);
+		model.addAttribute("rList", rList);
 		
+		
+	    int total = service.getTotal();
+	    PageVO pageVO = new PageVO(cri, total);
+	    List<BoardDetail> boardList = service.boardList(cri);
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("pageVO", pageVO);
 		
 		return "board/boardDetail";
 		
 	}
-	
-	
+	   
 	
 	
 	@GetMapping("/boardWrite")
 	public String boardWriteFom() {
 		
-		
+		    
 		
 		return "board/boardWrite";
 		
@@ -89,10 +116,7 @@ public class BoardController {
 			message = "게시글 삽입 실패...";
 			ra.addFlashAttribute("message", message);
 			return "board/boardWrite";
-		}
-			
-		
-		
+		}		
 		
 	}
 	
@@ -131,7 +155,6 @@ public class BoardController {
 	
 	}
 	
-	
 	@GetMapping("/update")
 	public String updateForm(@RequestParam("boardNo")int boardNo, 
 											Model model,
@@ -144,6 +167,21 @@ public class BoardController {
 		
 		
 		return "board/boardUpdate";
+	}
+	
+	/* addlike 증가하는 코드 */
+	@PostMapping("/addLike")
+	public String addLike(@RequestParam("boardNo")int boardNo,
+							  @ModelAttribute("loginUser") User loginUser,
+							  RedirectAttributes ra) {
+		
+		int like_check = service.like_Check(boardNo);
+		
+		if(like_check > 0) {
+			  return new Gson().toJson("좋아요 쌓임!");
+		  } else {
+			  return new Gson().toJson("ㄴㄴ");
+		  }
 	}
 	
 	@PostMapping("/mody")
@@ -171,18 +209,10 @@ public class BoardController {
 			return "redirect:/board";
 			
 		}
-		
-	
-		
-	
-			
-	
-			
-	
-		
 	
 	}
 	
+
 	
 
 }

@@ -25,7 +25,7 @@
       arrows : true, 		// 옆으로 이동하는 화살표 표시 여부
       dots : true, 		// 스크롤바 아래 점으로 페이지네이션 여부
       autoplay : true,			// 자동 스크롤 사용 여부
-      autoplaySpeed : 10000, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+      autoplaySpeed : 2500, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
       pauseOnHover : true,		// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
       vertical : false,		// 세로 방향 슬라이드 옵션
       prevArrow :	"<button type='button' class='btn'>&#10094</button>",// 이전 화살표 모양 설정
@@ -70,31 +70,30 @@
 
       
             <div class="explainBox">
+              
+              
                 <ul class="explain">
 
                     <li>
                         <i class="fa-solid fa-guitar"></i>
-                        <span>GUITAR</span>
+                        <span>${lesson.inst}</span>
                     </li>
                     <li>
                         <i class="bi bi-journals"></i>
-                        <span>POP</span>
+                        <span>${lesson.genre}</span>
                     </li>
                     <li>
                         <i class="bi bi-house"></i>
-                        <span>서울</span>
+                        <span>${lesson.region}</span>
                     </li>
                     <li>
                         <i class="bi bi-instagram"></i>
-                        <span>@guitarDuck</span>
+                        <span>@ ${lesson.socialSite}</span>
                     </li>
                     <li>
                         <i class="bi bi-pencil"></i>
                         <span id="profileExpalin"><br>
-                            동작구 개인 연습실에서 레슨합니다.
-                            1시간 레슨 한달 기준 15만원입니다.
-                            한 분 한 분 케어 레슨 들어갑니다.
-                            기초과정 가능</span>
+                            ${lesson.detailment}</span>
                     </li>
                     
                 </ul>
@@ -103,20 +102,31 @@
 
             <div class="imgWrap">
                 <div class="imgBox">
-                    <div>
-                        이미지
+                    <div class="imgFirstBox">
+                        <img src="${contextPath}${lessonImg.imageRename}" alt="">
                     </div>
-                    <div>
+                    <div class="explainBox">
                         <p>
-                            이현경
+                            ${lesson.userNick}
                         </p>
                         <p>
-                            나한테 배워라
+                            ${lesson.motto}
                         </p>
                     </div>
                     <div class="chatBox">
-                        <button ><i class="bi bi-chat-dots"></i></button>
-                        <button id="deleteBtn">DELETE</button>
+                        <c:if test="${sessionScope.loginUser.userNo ne lesson.userNo}">
+                          <button ><i class="bi bi-chat-dots"></i></button>
+                        </c:if>
+                        
+                        
+                        <c:if test="${sessionScope.loginUser.userNo eq lesson.userNo}">
+                          <button id="deleteBtn" type="button" onclick="deleteLesson(hiddenLessonNo)">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                          <input type="hidden" value="${lesson.lessonNo}" id="hiddenLessonNo" name="hiddenLessonNo">
+                          <input type="hidden" value="${lesson.userNo}">
+                        </c:if>
+
                         <button id="kakaotalk-sharing-btn" href="javascript:;">
                           <i class="bi bi-share"></i>
                         </button>
@@ -135,41 +145,16 @@
       </div>
 
       <div class="recommendImgBox" id="recommendImgBox">
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
-
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
-
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
-
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
-
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
-
-          <div>
-            <img src="${contextPath}/resources/images/guitarduck.png" alt="">
-            <p>박재범</p>
-            <p>보컬, 드럼</p>
-          </div>
+          <c:if test="${!empty lessonList}">
+            <c:forEach var="lessonList" items="${lessonList}">
+              <div style="cursor: pointer;" onclick="location.href='/fin/lessonDetail?lessonNo=${lessonList.lessonNo}'">
+                <img src="/fin${lessonList.imgSrc}" class="recommendImg">
+                <p>${lessonList.userNick}</p>
+                <p>${lessonList.genre}</p>
+                <p>${lessonList.inst}</p>
+              </div>
+            </c:forEach>
+          </c:if>
       </div>
     </section>
     

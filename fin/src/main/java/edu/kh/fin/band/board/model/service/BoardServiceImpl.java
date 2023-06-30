@@ -10,6 +10,7 @@ import edu.kh.fin.band.board.model.dao.BoardDAO;
 import edu.kh.fin.band.board.model.service.BoardService;
 import edu.kh.fin.band.board.model.vo.Board;
 import edu.kh.fin.band.board.model.vo.BoardDetail;
+import edu.kh.fin.band.board.model.vo.Criteria;
 @Service
 public class BoardServiceImpl implements BoardService{
 
@@ -24,9 +25,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardDetail> boardList() {
+	public List<BoardDetail> boardList(Criteria cri) {
 		// TODO Auto-generated method stub
-		return dao.boardList();
+		return dao.boardList(cri);
 	}
 
 	@Override
@@ -51,6 +52,35 @@ public class BoardServiceImpl implements BoardService{
 	public int boardUpdate(Board board) {
 		// TODO Auto-generated method stub
 		 return dao.boardUpdate(board);
+	}
+	
+	@Override
+	public int like_Check(int board) {
+		 return like_Check(board);
+	}
+
+	@Override
+	public int getTotal() {
+		// TODO Auto-generated method stub
+		return dao.getTotal();
+	}
+
+	@Override
+	public List<BoardDetail> boardTalk(Criteria cri) {
+		// TODO Auto-generated method stub
+		return dao.boardTalk(cri);
+	}
+
+	@Override
+	public List<BoardDetail> boardQus(Criteria cri) {
+		// TODO Auto-generated method stub
+		return dao.boardQus(cri);
+	}
+
+	@Override
+	public List<BoardDetail> boardAll(Criteria cri) {
+		// TODO Auto-generated method stub
+		return dao.boardAll(cri);
 	}
 
 

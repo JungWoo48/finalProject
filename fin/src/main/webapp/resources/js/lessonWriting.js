@@ -31,7 +31,7 @@ $("#writingBtn").click(()=>{
         swal.fire("상세 내용을 입력해주세요");
     }else if($('input[name="genre"]:checked').length < 1){
         swal.fire("장르를 선택해주세요");
-    }else if($('input[name="lesson"]:checked').length< 1){
+    }else if($('input[name="inst"]:checked').length< 1){
         swal.fire("악기를 선택해주세요");
     }else{
 
@@ -40,6 +40,13 @@ $("#writingBtn").click(()=>{
     }
 
 });
+
+
+
+
+
+
+
 
 
 

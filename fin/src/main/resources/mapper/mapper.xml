@@ -16,13 +16,21 @@
 		<result property="region" column="REGION" />
 		<result property="gender" column="GENDER" />
 		<result property="yoe" column="YEARS_OF_EXP" />
-		
+		<result property="profileImg" column="IMAGE"/>
 	</resultMap>
 	
 	
 	
 	<select id="testSelect" resultMap="dbTest_rm" parameterType="_int">
 		SELECT * FROM "USER"u  LEFT JOIN MATCHING_INFO m ON (u.USER_NO = m.USER_NO) WHERE u.USER_NO = #{userNo}
+	</select>
+	
+	<select id="leaderCheck" parameterType="_int" resultType="_int">
+		SELECT count(*) FROM BAND_USER WHERE USER_NO = ${loginUserNo} AND LEADER_FL = 'T'
+	</select>
+	
+	<select id="inBandCheck" parameterType="_int" resultType="_int">
+		SELECT count(*) FROM BAND_USER WHERE USER_NO = ${userNo}
 	</select>
 	
 </mapper>

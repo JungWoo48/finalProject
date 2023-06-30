@@ -11,9 +11,10 @@
     /* border: 1px solid red; */
     width: 600px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    gap:3em
 }
 
 
@@ -24,7 +25,7 @@
 
 .chatBox > button > i{
     color: var(--text-color); 
-    font-size: 3em;
+    font-size: 2em;
 }
 
 
@@ -72,35 +73,42 @@ body.darkmode .chatBox > button >i{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--stroke-color);
+    background-color: var(--newBack-color);
+    box-shadow: 4px -2px 15px 0px rgba(0,0,0,0.25);
     width: 70%;
     height: 100%;
     border-radius: 0.5em;
 }
 
+
 body.darkmode .imgBox{
-    border: 1px solid var(--border-color);
+    background-color: var(--newBack-dark-color);
 }
 
-.imgBox > div:first-child{
-    flex-basis: 60%;
-    border: 1px solid goldenrod;
+
+
+.imgFirstBox{
+    width: 100%;
+    height: 330px;
     overflow: hidden;
 }
 
-.imgBox > div:nth-child(2) > p:first-child{
-    padding-left: 2.2em;
+.imgFirstBox > img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
 }
 
-.imgBox > div:nth-child(2) > p{
-    font-size: 1.1em;
+.explainBox > p:nth-of-type(1){
+    font-size: 1.5em;
+    padding: 1em 1em;
+}
+.explainBox > p:nth-of-type(2){
+    font-size: 1em;
 }
 
 
-
-.imgBox > div:not(.chatBox){
-    margin-bottom: 4em;
-}
 
 .chatBox{
     display: flex;
@@ -119,9 +127,7 @@ body.darkmode .imgBox{
 
 
 
-.imgBox > div:nth-child(2) > p{
-    padding: 1em 1em;
-}
+
 
 
 
@@ -129,21 +135,20 @@ body.darkmode .imgBox{
     평소 displayNone인데 강사가 본인 게시글을 들어갔을 때, 혹은 관리자일때 채팅 보내기 
     아이콘 말고 delelte 버튼이 있어야함.
  */
+
 #deleteBtn{
-    width: 150px;
-    height: 40px;
-    border: 1px solid var(--label-color);
+    border: none;
     background: transparent;
-    border-radius: 0.5em;
-    letter-spacing: 0.3em;
-    text-align: center;
     cursor: pointer;
-    display: none;
 }
 
-body.darkmode #deleteBtn{
-    color: var(--text-dark-color);
-    border: 1px solid var(--accent-color);
+#deleteBtn > i{
+    color: var(--text-color);
+    font-size: 2em;
+}
+
+body.darkmode #deleteBtn > i{
+    color: var(--border-color);
 }
 
 
@@ -214,7 +219,16 @@ body.darkmode #deleteBtn{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: .5em;
 }
+.slick-slide img{
+    display: block;
+    width: 60%;
+    border-radius: 50%;
+    margin-bottom: 2em;
+}
+
+
 /* slider */
 
 

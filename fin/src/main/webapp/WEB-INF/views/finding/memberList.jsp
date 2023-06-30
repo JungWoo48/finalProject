@@ -53,9 +53,12 @@
 		<c:choose>
 			<c:when test="${!empty memberList}">
 				<c:forEach items="${memberList}" var="member">
+
 					<div class="wrapper">
 			            <div class="userNameBox">
-			                <img src="" alt="#">
+			                <div class="userImgBox">
+								<img src="${contextPath}/resources/images/profileImage/user.png" alt="#">
+							</div>
 			                <p>${member.userName}</p>
 			            </div>
 			            
@@ -74,10 +77,11 @@
 			                    <li class="bi bi-chat-dots"></li>
 								<li class="profileMsg bi bi-envelope"></li>
 								<input id="receiverUserNo_memberList" type="hidden" value="${member.userNo}">
-			                    <li class="bi bi-person-circle"></li>
+			                    <li class="bi bi-person-circle" data-bs-toggle="modal" data-bs-target="#exampleModal"></li>
 			                </ul>
 			            </div>
         			</div>
+
 				</c:forEach>
 			</c:when>
 
@@ -94,12 +98,12 @@
 		<div class="container">
 			<!-- <button class=" js-static-modal-toggle btn btn-primary " type="button">test</button> -->
 			<div id="static-modalBlock" class="modal fade" tabindex="-1" role="dialog" style="display: none; padding-right: 17px;">
-			<div class="modal-dialog">
+			<div class="modal-dialog" id="memberListDialog">
 				<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body memberModal">
 					
 					<div class="sendMsgModalBox">
 					<h1>SEND MESSAGE</h1>
@@ -109,9 +113,7 @@
 	
 					
 				</div>
-				<div class="modal-footer">
-				
-				</div>
+				<div class="modal-footer"></div>
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 			</div>
@@ -120,11 +122,12 @@
 		
 
 		
-
+		
 		
 		
 	</section>
 	
+	<jsp:include page="/WEB-INF/views/profile/lookProfile.jsp"/>
 	<jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
 	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
