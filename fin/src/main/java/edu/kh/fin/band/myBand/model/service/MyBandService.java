@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import edu.kh.fin.band.common.pagination.CommonCriteria;
 import edu.kh.fin.band.login.model.vo.User;
 import edu.kh.fin.band.myBand.model.dao.MyBandDAO;
+import edu.kh.fin.band.myBand.model.vo.LikeLogic;
 import edu.kh.fin.band.myBand.model.vo.MyBand;
 import edu.kh.fin.band.myBand.model.vo.MyBandReply;
 
@@ -47,8 +48,8 @@ public class MyBandService {
 		return dao.bandUserFl(bandNo,loginUser);
 	}
 
-	public int writeBandBoard(String title, String text, int bandNo, int userNo) {
-		return dao.writeBandBoard(title, text, bandNo, userNo);
+	public int writeBandBoard(String title, String text, int bandNo, int userNo,boolean noticeBoardCheck) {
+		return dao.writeBandBoard(title, text, bandNo, userNo, noticeBoardCheck);
 	}
 
 	public MyBand bandBoardDetail(int boardNo) {
@@ -69,8 +70,8 @@ public class MyBandService {
 	 * @param boardNo
 	 * @return
 	 */
-	public int updateBandBoard(String title, String text, int boardNo) {
-		return dao.updateBandBoard(title,text,boardNo);
+	public int updateBandBoard(String title, String text, int boardNo, boolean noticeBoardCheck) {
+		return dao.updateBandBoard(title,text,boardNo, noticeBoardCheck);
 	}
 
 	public int deleteBandBoardDetail(int boardNo) {
@@ -98,6 +99,39 @@ public class MyBandService {
 	 */
 	public int likeCheck(int boardNo, int userNo) {
 		return dao.likeCheck(boardNo, userNo);
+	}
+
+	public int likeLogic(LikeLogic likeLogic) {
+		return dao.likeLogic(likeLogic);
+	}
+
+	public int unlikeLogic(LikeLogic likeLogic) {
+		return dao.unlikeLogic(likeLogic);
+	}
+
+	public List<MyBand> searcingBandList(int bandNo, int amount, int pageNum, String searchingText, String selectType) {
+		return dao.searcingBandList(bandNo, amount, pageNum, searchingText, selectType);
+	}
+
+	public int getSearchingTotal(int bandNo, String searchingText, String selectType) {
+		return dao.getSearchingTotal(bandNo, searchingText, selectType);
+	}
+
+	public int reRplyLogic(Map<String, Object> paramMap) {
+		return dao.reRplyLogic(paramMap);
+		
+	}
+
+	public int boardCheck(int bandNo) {
+		return dao.boardCheck(bandNo);
+	}
+
+	public List<MyBand> zeroBand(int bandNo) {
+		return dao.zeroBand(bandNo);
+	}
+
+	public String leaderCheck(int userNo) {
+		return dao.leaderCheck(userNo);
 	}
 	
 	

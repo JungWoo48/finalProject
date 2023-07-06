@@ -16,17 +16,16 @@
     gap: 3em;
     width: 500px;
     height: 350px;
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    box-shadow: 2px 2px 20px silver;
+    background-color: var(--newBack-color);
+    box-shadow: 4px -2px 15px 0px rgba(0,0,0,0.25);
     border-radius: 12px;
 }
 
 body.darkmode .alarmWrapper{
-    background-color: transparent;
-    background-image: none;
-    box-shadow: none;
-    border: 1px solid var(--border-color);
+    background-color: var(--newBack-dark-color);
 }
+
+
 
 .alarmWrapper > h1{
     padding-left: 0;
@@ -46,9 +45,10 @@ body.darkmode .alarmWrapper{
 .alarmBtnBox form button{
     width: 130px;
     height: 50px;
-    border: .5px solid var(--silver-color);
+    border: none;
     border-radius: .5em;
     background-color: transparent;
+    box-shadow: 3px 1px 15px 0px rgba(0,0,0,0.25);
     outline: none;
     cursor: pointer;
     font-size: 1.3em;
@@ -56,11 +56,18 @@ body.darkmode .alarmWrapper{
 }
 
 .alarmBtnBox form button:hover{
-    background: var(--accent-color);
+    background-color: var(--accent-color);
+    color: var(--text-dark-color);
+}
+
+body.darkmode .alarmBtnBox form button:hover{
+    background-color: var(--accent-color);
+    color:var(--text-color);
 }
 
 body.darkmode .alarmBtnBox form button{
     color: var(--text-dark-color);
+    box-shadow: 2px -2px 15px 0px rgb(170 170 170 / 25%);
 }
 
 
@@ -84,8 +91,21 @@ body.darkmode .alarmBtnBox form button{
 }
 
 .js-static-modal-toggleInfoBandP{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 32px;
+    border-radius: 16px;
+    box-shadow: 3px 1px 15px 0px rgba(0,0,0,0.25);
     font-size: 1.1em;
     cursor: pointer;
+    color: #12b886;
+}
+
+body.darkmode .js-static-modal-toggleInfoBandP{
+    background-color: var(--newBack-dark-color);
+    box-shadow: 2px -2px 15px 0px rgb(170 170 170 / 25%);
 }
 
 @keyframes in{
@@ -130,8 +150,30 @@ body.darkmode .alarmBtnBox form button{
 
 .bandNameInfo > h1{
     padding-left: 0;
+    color: var(--text-color);
 }
+
+
 
 .bnadMentInfo > p{
     font-size: 1.3em;
+    color: var(--text-color);
+    text-align: center;
 }
+
+@media screen and (min-width:22rem) and (max-width:26rem){
+    .alarmWrapper{
+        width: 350px;
+        height: 400px;
+    }
+    .alarmWrapper > p:nth-of-type(1){
+        font-size: 1em;
+    }
+}
+
+@media screen and (width:31.250rem) {
+    .alarmWrapper{
+        width: 450px;
+    }
+}
+

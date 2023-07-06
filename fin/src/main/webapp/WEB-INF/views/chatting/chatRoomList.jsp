@@ -45,6 +45,7 @@
 		<div class="top-bar">
 			<div class="avatar" id="otherProfile"></div>
 			<div class="name" id="withChatName"></div>
+			<div class="x-markDiv" id="x-markDiv"><i class="fa-solid fa-xmark"></i></div>
 		</div>
 		<!-- 채팅상황 -->
 		<div class="middle" id="middleChatRoom">
@@ -67,7 +68,12 @@
 		<div class="messages"></div>
 		<div class="profile">
 			<c:if test="${!empty sessionScope.loginUser.profileImg}">
-				<div class="avatar"><img src="${sessionScope.loginUser.profileImg}" id="avatarImg"></div>
+				<c:if test="${sessionScope.loginUser.userType eq 'NORMAL' }">
+					<div class="avatar"><img src="/fin/${sessionScope.loginUser.profileImg}" id="avatarImg"></div>
+				</c:if>
+				<c:if test="${sessionScope.loginUser.userType ne 'NORMAL' }">
+					<div class="avatar"><img src="${sessionScope.loginUser.profileImg}" id="avatarImg"></div>
+				</c:if>
 			</c:if>
 			<c:if test="${empty sessionScope.loginUser.profileImg}">
 				<div class="avatar"></div>

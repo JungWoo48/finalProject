@@ -225,4 +225,60 @@ public class MyPageServiceimpl implements MyPageService{
 		return dao.ReplyList(userNo);
 	}
 
+	@Override
+	public int dissmiss2(int bandNo) {
+		
+		return dao.dismiss2(bandNo);
+	}
+
+	@Override
+	public int checkBand(Map<String, Object> paramMap) {	
+		
+		int checkIn = dao.checkBand(paramMap);
+		
+		if(checkIn > 0) {
+			
+			return dao.bandInfo(paramMap);
+		} else {
+			
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Band> BandUserList(int bandNo) {
+		
+		return dao.BandUserList(bandNo);
+	}
+
+	@Override
+	public int getbandNo(int userNo) {
+		
+		String bandNo = dao.getBandNo(userNo);
+			
+		
+		if(bandNo != null) {
+			
+			return Integer.parseInt(bandNo);
+			
+		} else {
+			
+			
+			
+			return 0;
+		}
+		
+			
+		
+	}
+
+	@Override
+	public User NewloginUser(Map<String, Object> paramMap) {
+		
+		return dao.NewloginUser(paramMap);
+	}
+	
+
+	
+
 }

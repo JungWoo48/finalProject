@@ -104,14 +104,25 @@
                         <!-- </li> -->
                     </ul>
 
-                    <div class="profileImgBox" onclick="activeMenu()" id="profileImgBox">
-                    	<c:if test="${empty loginUser.profileImg}">
-                			<img src="${contextPath}/resources/images/guitarduck.png" id="profile-image">
-                		</c:if>
-
-                		<c:if test="${!empty loginUser.profileImg}">
-                     		<img src="${contextPath}${loginUser.profileImg}" id="profile-image">
-                		</c:if>               
+                    <div class="profileImgBox" onclick="activeMenu()" id="profileImgBox">                		           			
+                		<c:choose>
+                        	<c:when test ="${empty loginUser.profileImg}">
+                        		<img src="${contextPath}/resources/images/guitarduck.png" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'NAVER' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'KAKAO' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:otherwise>
+                        		<img src="${contextPath}${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:otherwise>
+                        
+                		</c:choose>
                     </div>
         
                     <div class="menu">

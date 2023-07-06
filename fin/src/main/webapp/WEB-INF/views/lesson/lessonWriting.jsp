@@ -63,7 +63,7 @@
                     <span class="icon">
                         <ion-icon name="person"></ion-icon>
                     </span>
-                    <input id="lessonMottoPlace" name="userMotto" type="text" required>
+                    <input id="lessonMottoPlace" name="userMotto" type="text" required maxlength="20">
                     <label>MOTTO</label>
                 </div>
 
@@ -200,6 +200,8 @@
 
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
+    <jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
     
     <script src = "${contextPath}/resources/js/lessonWriting.js"></script>
 </body>

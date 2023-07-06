@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/myPagebootStrap.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/myPageModal.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src = "${contextPath}/resources/js/myPageModal.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
@@ -48,18 +49,35 @@
         <section class="myPageInfo">
             <div>
                 <span>${loginUser.userNick}</span>
-               <ion-icon name="person-circle" id="profileIcon"></ion-icon>
+                <c:choose>
+                        <c:when test="${empty bandMem}">
+                        </c:when>
+                        <c:otherwise>
+                        	<a href="${contextPath}/myBandBoard?bandNo=${bandMem[0].bandNo}" id="toBandBoard">My BAND BOARD</a>
+                        </c:otherwise>
+                        
+                </c:choose>
             </div>
 
             <div class="imgBox">
-                <c:if test="${empty loginUser.profileImg}">
-                	<img src="${contextPath}/resources/images/guitarduck.png" id="profile-image">
-                </c:if>
-
-                <c:if test="${!empty loginUser.profileImg}">
-                     <img src="${contextPath}${loginUser.profileImg}" id="profile-image">
-                </c:if>
-                
+               <c:choose>
+                        	<c:when test ="${empty loginUser.profileImg}">
+                        		<img src="${contextPath}/resources/images/guitarduck.png" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'NAVER' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'KAKAO' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:otherwise>
+                        		<img src="${contextPath}${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:otherwise>
+                        
+                		</c:choose>
             </div>
 
             <div>
@@ -76,11 +94,11 @@
                         <c:otherwise>
 
                         <div class="ulBox">
-                            <div class="firstUlBox">
+                            <div class="firstUlBox">                       
                                 <ul>
                                     <li>Band</li>
                                     <li>Leader</li>
-                                    <li>Member</li>
+                                    <li>Member</li>                                   
                                 </ul>
                             </div>
 
@@ -91,8 +109,8 @@
                                 <li><i class="fa-solid fa-headphones-simple"></i>${bandMem[0].bandName}</li>
                                  <li><i class="fa-solid fa-crown"></i>${bandMem[0].leaderNick}</li>
         
-                                <c:forEach var="bandMem" items="${bandMem}">
-                                    <li><i class="fa-solid fa-user-astronaut"></i>${bandMem.userNick}</li>
+                                <c:forEach var="bandUserList" items="${bandUserList}">
+                                    <li><i class="fa-solid fa-user-astronaut"></i>${bandUserList.userNick}</li>
                                 </c:forEach>
                             </ul>
                         </c:otherwise>
@@ -112,23 +130,64 @@
             <div class="firstSecWrapper">
                 <div class="myPageFirstBox">
                     <ul>
-                        <li class="js-static-modal-toggleInfo"><i class="bi bi-person-bounding-box"></i></li>
-                        <li class="js-static-modal-toggleBand"><i class="bi bi-people"></i></li>
+                    	<c:choose>
+                        	<c:when test="${loginUser.userType eq 'NORMAL'}"> 
+                        		<li class="js-static-modal-toggleInfo" id="toggleInfo"><i class="bi bi-person-bounding-box"></i></li>                    		
+                        	</c:when>
+                        	<c:otherwise>                       		
+                        	</c:otherwise>
+                        </c:choose>
+                                          
+                        <c:choose>
+                        	<c:when test="${empty bandMem}">                       		
+                        	</c:when>
+                        	<c:otherwise>
+                        		<li class="js-static-modal-toggleBand" id="toggleBA"><i class="bi bi-people"></i></li> 
+                        	</c:otherwise>
+                        </c:choose> 						                    
                         <li class="js-static-modal-toggleBoard"><i class="bi bi-clipboard"></i></li>
                         <li class="js-static-modal-toggleReply"><i class="bi bi-chat"></i></li>
                         <li class="js-static-modal-toggleBlock"><i class="bi bi-emoji-angry"></i></li>
-                        <li class="js-static-modal-toggleGroup"><i class="bi bi-music-player"></i></li>
+                        <c:choose>
+                        	<c:when test="${empty bandMem}">
+                        		 <li class="js-static-modal-toggleGroup" id="toggleGA"><i class="bi bi-music-player"></i></li>
+                        	</c:when>
+                        	<c:otherwise>
+                        	</c:otherwise>
+                        </c:choose>
+                        
+                                               
                     </ul>
                 </div>
 
                 <div class="myPageSecBox">
                     <ul>
-                        <li class="js-static-modal-toggleInfoP"><p>회원 정보 수정</p></li>
-                        <li class="js-static-modal-toggleBandP"><p>나의 밴드</p></li>
+                    	<c:choose>
+                        	<c:when test="${loginUser.userType eq 'NORMAL'}"> 
+                        		<li class="js-static-modal-toggleInfoP" id="toggleInfoP"><p>회원 정보 수정</p></li>                      		
+                        	</c:when>
+                        	<c:otherwise>                       		
+                        	</c:otherwise>
+                        </c:choose>  
+                            
+                        <c:choose>
+                        	<c:when test="${empty bandMem}">                       		
+                        	</c:when>
+                        	<c:otherwise>
+                        		<li class="js-static-modal-toggleBandP" id="toggleBAP"><p>나의 밴드</p></li>
+                        	</c:otherwise>
+                        </c:choose>                                                                                  
                         <li class="js-static-modal-toggleBoardP"><p>내가 작성한 게시글</p></li>
                         <li class="js-static-modal-toggleReplyP"><p>내가 작성한 댓글</p></li>
                         <li class="js-static-modal-toggleBlockP" name="banList" id="banList"><p>차단 회원 목록</p></li>
-                        <li class="js-static-modal-togglegroupP"><p>밴드 생성</p></li>
+                        <c:choose>
+                        	<c:when test="${empty bandMem}">
+                        		<li class="js-static-modal-togglegroupP" id="ToggleGAP"><p>밴드 생성</p></li> 
+                        	</c:when>
+                        	<c:otherwise>
+                        	</c:otherwise>
+                        </c:choose>                       
+                                                            
                     </ul>
                 </div>
             </div>
@@ -184,9 +243,7 @@
             
                 
               </div>
-              <div class="modal-footer">
-               
-              </div>
+  
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div>
@@ -245,9 +302,6 @@
                     </div>
                 </section>
 
-              </div>
-              <div class="modal-footer">
-                
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
@@ -316,9 +370,7 @@
                                                
                 
               </div>
-              <div class="modal-footer">
-                
-              </div>
+            
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div>
@@ -343,6 +395,16 @@
                     </div>
 
                     <hr>
+                    
+                    <c:choose>
+                    	<c:when test="${empty bandMem}">
+                   			<p>밴드가 없습니다</p>
+                   		</c:when>
+                   		
+                   		
+                    	<c:otherwise>
+                    	                          	
+                    	                         
 
                     <div class="modalBandTableBox">
                         <table>
@@ -380,19 +442,19 @@
                         
                         <table>
                         
-                        	<c:forEach var="bandMem" items="${bandMem}">
+                        	<c:forEach var="bandUserList" items="${bandUserList}">
                         		<form action="fin/exile" method="POST">
                         		
-                        		<input type="hidden" value="${bandMem.userNo}" id="exileNo" name="exileNo">
+                        		<input type="hidden" value="${bandUserList.userNo}" id="exileNo" name="exileNo">
                         		
                         		<tr>
                                 	<td>
-                                    	<p class="modalContentP">${bandMem.userNick}</p>
+                                    	<p class="modalContentP">${bandUserList.userNick}</p>
                                 	</td>
                                 	
                                 	<c:choose>
                                 	                              		                              	
-                                		<c:when test="${loginUser.userNo eq bandMem.leaderNo}" >
+                                		<c:when test="${loginUser.userNo eq bandUserList.leaderNo}" >
                                 		                                		
                                 		
                                 			<td>
@@ -412,6 +474,9 @@
                             
                         </table>
                     </div>
+                    
+                    </c:otherwise>
+                    </c:choose>
 
                     <hr>
                     
@@ -441,9 +506,7 @@
                 
                 
               </div>
-              <div class="modal-footer">
-
-              </div>
+             
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div>
@@ -471,13 +534,24 @@
              	
                 
                     <div class="modalImgBox">
-                        <c:if test="${empty loginUser.profileImg}">
-                            <img src="${contextPath}/resources/images/guitarduck.png" id="profile-image">
-                        </c:if>
-
-                        <c:if test="${!empty loginUser.profileImg}">
-                            <img src="${contextPath}${loginUser.profileImg}" id="profile-image">
-                        </c:if>
+                        <c:choose>
+                        	<c:when test ="${empty loginUser.profileImg}">
+                        		<img src="${contextPath}/resources/images/guitarduck.png" class="propImg" id="profileimage2">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'NAVER' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:when test ="${loginUser.userType eq 'KAKAO' }">
+                        		<img src=" ${loginUser.profileImg}" id="profile-image" class="propImg">
+                        	</c:when>
+                        	
+                        	<c:otherwise>
+                        		<img src="${contextPath}${loginUser.profileImg}" id="profileimage2" class="propImg">
+                        	</c:otherwise>
+                        
+                		</c:choose>
                         <i class="bi bi-camera-fill" id="fileImg"><input type="file" required name="uploadImage" id="inputimage" accept="image/*"></i>              
                     </div>
                 
@@ -498,13 +572,16 @@
                             <label>NICKNAME</label>
                         </div>
                         
-                        <div class="input-box">                          
+                        <div class="input-box"> 
+                        	<span class="icon">
+                        		<ion-icon name="reader-outline"></ion-icon>
+                        	</span>                         
                             <input type="text" required id="userIntro" name="newIntro">
                             <label>INTRO</label>
                         </div>
                         
 
-                        <div class="arrowBox">
+                        <div class="arrowBox" id="arrBox">
                             <label for="">나의 포지션</label>
                             <i class="bi bi-caret-down" id="show"></i>
                         </div>
@@ -716,15 +793,31 @@
             
             </div>
             <div class="modal-footer">
-                <form action="fin/secession" method="POST" id="secessionout">                     
-                <button id="secessionBtn" type="button">탈퇴하기</button>
-        		</form>
+            	<c:choose>
+            		<c:when test="${loginUser.userType eq 'NAVER' }">
+            		
+            		</c:when>
+            		
+            		<c:when test="${loginUser.userType eq 'KAKAO' }">
+            		
+            		</c:when>
+            		
+            		<c:otherwise>
+            			<form action="fin/secession" method="POST" id="secessionout">                     
+                		<button id="secessionBtn" type="button">탈퇴하기</button>
+        				</form>
+            		</c:otherwise>
+            	</c:choose>
+            
+                
             </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
     </div>
     
+    
+        
      <!-- group create -->
     <div class="container">
         <!-- <button class=" js-static-modal-toggleBoard btn btn-primary " type="button">test</button> -->
@@ -736,19 +829,14 @@
               </div>
               <div class="modal-body">
 
-                   
-                   <c:choose>
-                   		<c:when test="${!empty bandMem}">
-                   			<p id="alreadyBand">밴드가 이미 있습니다</p>
-                   		</c:when>
+                                                       		
                    		
-                   		<c:otherwise>
                    			<section class="groupSection">
                    				<form action="fin/makeBand" class="groupForm" method="GET">
                    				
                    				
                    					<div class="groupTitle">
-                            			<h1>그룹 생성</h1>
+                            			<h1 id="makeBandTitle">그룹 생성</h1>
                         			</div>
 
                         				<div class="grouInfoBox">
@@ -767,24 +855,25 @@
                         			</div>
                   		 		</form>
                 			</section>                  
-                   		</c:otherwise>
-                   
-                   </c:choose>                                    
+                   		                                 
                     
               </div>
-              <div class="modal-footer"></div>
+             
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div>
-    </div>
-    
-    
+    </div>        
     
     
     <script>
       const msg = "${msg}";
       if (msg.trim() !== "") {
-        alert(msg);
+    	  Swal.fire({  		 
+    		  icon: 'success',
+    		  title: msg,
+    		  showConfirmButton: false,
+    		  timer: 2000
+    		})
       } 
         // 왜 자꾸 로그인 창을 들어가도 공백 alert가 뜰까 
         // -> 해결 -> != null로 조건을 주지 말고, 문자열로 체크를 해서 주면 발생하지않음.
@@ -793,7 +882,8 @@
     
     
     
-
+	<jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
+	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

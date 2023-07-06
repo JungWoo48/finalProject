@@ -53,7 +53,7 @@ email.addEventListener("input", function(){
                 // console.log(result);
 
                 if(result == 1){ // 중복 O
-                    emailMessage.innerText = "";
+                    emailMessage.innerText = "Click Email icon";
                     emailMessage.classList.add("confirm");
                     emailMessage.classList.remove("error");
                     checkObj.email = true;
@@ -101,7 +101,7 @@ sendEmail.addEventListener("click", function(){
     if( checkObj.email ){ // 유효한 이메일이 작성되어 있을 경우에만 메일 보내기
 
         $.ajax({
-            url : "checkEmail"  ,
+            url : "checkEm"  ,
             data : { "inputEmail" : email.value },
             type : "GET",
             success : function(result){
@@ -271,4 +271,17 @@ function findPwValidate(){
 
     return true; // form태그 기본 이벤트 수행
 
+}
+
+let password = document.getElementById('password');
+let eye = document.getElementById('eye');
+    
+function showAndHide(){
+    if(password.type === 'password'){
+        password.setAttribute('type', 'text');
+        eye.classList.toggle('bi-eye-slash-fill');
+    }else{
+        password.setAttribute('type', 'password');
+        eye.classList.toggle('bi-eye-slash-fill');
+    }
 }

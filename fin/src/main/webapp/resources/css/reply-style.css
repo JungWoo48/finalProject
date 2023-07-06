@@ -1,3 +1,19 @@
+#btxs{
+	
+	background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    
+}
+
+body.darkmode .reply-btn-area > button {
+    outline: none;
+    color: var(--stroke-color);
+}
+
+
 /* 댓글 목록(ul) */
 #reply-list{
     padding : 0;
@@ -51,7 +67,10 @@
     border: 0;
     border-radius: 3px;
     cursor: pointer;
+    border: none;
+    background-color: transparent;
 }
+
 
 /* 버튼 hover */
 .reply-btn-area > button:hover{
@@ -74,16 +93,21 @@
    
     margin-right: 10px;
     resize: none;
+    padding: 10px;
 }
 
 /* 댓글 등록 버튼 */
 #addReply{
-    flex-basis: 8%;
+flex-basis: 8%;
     font-weight: bold;
-	background-color: #474554;
+    background-color: #474554;
     color: white;
     border: 0;
     cursor: pointer;
+    height: 87px;
+    font-size: 15px;
+    border-radius: 5px;
+    min-width: 30px;
 }
 /* 
 #addReply:hover{
@@ -97,6 +121,7 @@
     width: 100%;
     height: 90px;
     resize: none;
+    padding: 5px;
 }
 
 
@@ -114,4 +139,3 @@
     resize: none;
     margin-top: 20px;
 }
-

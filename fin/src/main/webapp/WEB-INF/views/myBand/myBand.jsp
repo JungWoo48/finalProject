@@ -13,6 +13,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
 <title>내 밴드 보기</title>
+<style>
+	body.swal2-shown{
+		padding-right : 0 !important;
+		overflow: revert !important;
+	}
+</style>
 </head>
 <body>
 <c:set var="bandTitle" value="${bandList[0].bandName}"/>
@@ -27,15 +33,20 @@
 		</div>
 		<div class="bandContentsDiv">
 			<div class="leftSideBandMemberDiv">
-				<div class="bandTitleDiv">
-					<p>${bandTitle}</p>
+				<div class="bandTitleDiv" onclick="location.href='${contextPath}/myBandBoard?bandNo=${bandNo}'">
+					<c:if test="${empty searchingFl }">
+						<p>${bandTitle}</p>
+					</c:if>
+					<c:if test="${!empty searchingFl }">
+						<p>${bandTitleForS}</p>
+					</c:if>
 				</div>
 				<div class="bandInfoDiv">
 					<div>
 						<i class="fa-solid fa-crown"></i>
 						<span class="memList">${leaderNick}</span>
 					</div>
-					<c:forEach var="eachBandMember" items="${memberList }" >
+					<c:forEach var="eachBandMember" items="${memberList}" >
 						<div>
 							<i class="fa-solid fa-user"></i>
 							<span class="memList">${eachBandMember}</span>
@@ -56,95 +67,151 @@
 				<div class="realBoardDiv">
 					<!-- 글 영역 -->
 					<div>
-						<c:forEach var="eachBoard" items="${bandList}">
-							<form method="post" action="bandBoardDetail" class="eachBoardFormForBand">
-								<!-- 각각의 글 -->
-								<c:if test="${eachBoard.boardTag eq '공지'}">
-									<div class="eachBoardDiv notification" onclick="$(this).parent().submit();">
-										<!-- 보드넘버, 밴드 넘버 숨기기 -->
-										<input type="hidden" name="thisBoardNo" value="${eachBoard.boardNo}">
-										<input type="hidden" name="thisBandNo" value="${bandNo}">
-										<!-- 제목 영역 -->
-										<div>
-											<span class="notiSpan">공지</span>${eachBoard.boardTitle }<span class="replyCountForBandBoard">${eachBoard.replyCount}</span>
-										</div>
-										<!-- 조회수, 좋아요 등등 -->
-										<div>
-											<!-- 글쓴이 -->
-											<div>
-												${eachBoard.userNick }
-											</div>
-											<!-- 시간 -->
-											<div>
-												<i class="fa-regular fa-clock"></i>
-												<span>${eachBoard.boardDate}</span>
-											</div>
-											<!-- 조회수 -->
-											<div>
-												<i class="fa-regular fa-eye"></i>
-												<span>${eachBoard.readCount}</span>
-											</div>
-											<!-- 좋아요 -->
-											<div>
-												<i class="fa-regular fa-heart"></i>
-												<span>${eachBoard.boardLike}</span>
-											</div>
-										</div>
-									</div>
-								</c:if>
-								<c:if test="${eachBoard.boardTag ne '공지'}">
-									<div class="eachBoardDiv" onclick="$(this).parent().submit();">
-										<!-- 보드넘버, 밴드 넘버 숨기기 -->
-										<input type="hidden" name="thisBoardNo" value="${eachBoard.boardNo}">
-										<input type="hidden" name="thisBandNo" value="${bandNo}">
-										<!-- 제목 영역 -->
-										<div>
-											${eachBoard.boardTitle }
-											<c:if test="${eachBoard.replyCount ne '0'}">
-												<span class="replyCountForBandBoard">${eachBoard.replyCount}</span>
-											</c:if>
-										</div>
-										<!-- 조회수, 좋아요 등등 -->
-										<div>
-											<!-- 글쓴이 -->
-											<div>
-												${eachBoard.userNick }
-											</div>
-											<!-- 시간 -->
-											<div>
-												<i class="fa-regular fa-clock"></i>
-												<span>${eachBoard.boardDate}</span>
-											</div>
-											<!-- 조회수 -->
-											<div>
-												<i class="fa-regular fa-eye"></i>
-												<span>${eachBoard.readCount}</span>
-											</div>
-											<!-- 좋아요 -->
-											<div>
-												<i class="fa-regular fa-heart"></i>
-												<span>${eachBoard.boardLike}</span>
-											</div>
-										</div>
-									</div>
-								</c:if>
-							</form>
-						</c:forEach>
-					</div>
-					<!-- 페이지네이션 영역 -->
-					<div class="paginations">
-						<c:if test="${pageVo.prev}">
-							<li><a href="myBandBoard?bandNo=${bandNo}&pageNum=${pageVo.startPage =1}&amount=${pageVo.amount}">이전</a></li>
+						<c:if test="${!empty zeroBand }">
+							<p class="noPost">게시글이 없습니다.</p>
 						</c:if>
-						<c:forEach var="num" begin="${pageVo.startPage}" end="${pageVo.endPage}">
-							<li class="${pageVo.pageNum eq num ? 'active' : ''}">
-								<a href="myBandBoard?bandNo=${bandNo}&pageNum=${num}&amount=${pageVo.amount}">${num}</a>
-							</li>
-						</c:forEach>
+						<c:if test="${!empty noSearching }">
+							<p class="noPost">검색 결과가 없습니다.</p>
+						</c:if>						
 						
-						<c:if test="${pageVo.next}">
-							<li><a href="myBandBoard?bandNo=${bandNo}&pageNum=${pageVo.endPage + 1}&amount=${pageVo.amount}">다음</a></li>
+						<c:if test="${empty zeroBand }">
+							<c:forEach var="eachBoard" items="${bandList}">
+								<form method="post" action="bandBoardDetail" class="eachBoardFormForBand">
+									<!-- 각각의 글 -->
+									<c:if test="${eachBoard.boardTag eq '공지'}">
+										<div class="eachBoardDiv notification" onclick="$(this).parent().submit();">
+											<!-- 보드넘버, 밴드 넘버 숨기기 -->
+											<input type="hidden" name="thisBoardNo" value="${eachBoard.boardNo}">
+											<input type="hidden" name="thisBandNo" value="${bandNo}">
+											<!-- 제목 영역 -->
+											<div>
+												<span class="notiSpan">공지</span>${eachBoard.boardTitle }<span class="replyCountForBandBoard">${eachBoard.replyCount}</span>
+											</div>
+											<!-- 조회수, 좋아요 등등 -->
+											<div>
+												<!-- 글쓴이 -->
+												<div>
+													${eachBoard.userNick }
+												</div>
+												<!-- 시간 -->
+												<div>
+													<i class="fa-regular fa-clock"></i>
+													<span>${eachBoard.boardDate}</span>
+												</div>
+												<!-- 조회수 -->
+												<div>
+													<i class="fa-regular fa-eye"></i>
+													<span>${eachBoard.readCount}</span>
+												</div>
+												<!-- 좋아요 -->
+												<div>
+													<i class="fa-regular fa-heart"></i>
+													<span>${eachBoard.boardLike}</span>
+												</div>
+											</div>
+										</div>
+									</c:if>
+									<c:if test="${eachBoard.boardTag ne '공지'}">
+										<div class="eachBoardDiv" onclick="$(this).parent().submit();">
+											<!-- 보드넘버, 밴드 넘버 숨기기 -->
+											<input type="hidden" name="thisBoardNo" value="${eachBoard.boardNo}">
+											<input type="hidden" name="thisBandNo" value="${bandNo}">
+											<!-- 제목 영역 -->
+											<div>
+												${eachBoard.boardTitle }
+												<c:if test="${eachBoard.replyCount ne '0'}">
+													<span class="replyCountForBandBoard">${eachBoard.replyCount}</span>
+												</c:if>
+											</div>
+											<!-- 조회수, 좋아요 등등 -->
+											<div>
+												<!-- 글쓴이 -->
+												<div>
+													${eachBoard.userNick }
+												</div>
+												<!-- 시간 -->
+												<div>
+													<i class="fa-regular fa-clock"></i>
+													<span>${eachBoard.boardDate}</span>
+												</div>
+												<!-- 조회수 -->
+												<div>
+													<i class="fa-regular fa-eye"></i>
+													<span>${eachBoard.readCount}</span>
+												</div>
+												<!-- 좋아요 -->
+												<div>
+													<i class="fa-regular fa-heart"></i>
+													<span>${eachBoard.boardLike}</span>
+												</div>
+											</div>
+										</div>
+									</c:if>
+								</form>
+							</c:forEach>
 						</c:if>
+					</div>
+					
+					<c:if test="${empty searchingFl}">
+						<!-- 페이지네이션 영역 -->
+						<div class="paginations">
+							<c:if test="${pageVo.prev}">
+								<li><a href="myBandBoard?bandNo=${bandNo}&pageNum=${pageVo.startPage =1}&amount=${pageVo.amount}">이전</a></li>
+							</c:if>
+							<c:forEach var="num" begin="${pageVo.startPage}" end="${pageVo.endPage}">
+								<li class="${pageVo.pageNum eq num ? 'active' : ''}">
+									<a href="myBandBoard?bandNo=${bandNo}&pageNum=${num}&amount=${pageVo.amount}">${num}</a>
+								</li>
+							</c:forEach>
+							
+							<c:if test="${pageVo.next}">
+								<li><a href="myBandBoard?bandNo=${bandNo}&pageNum=${pageVo.endPage + 1}&amount=${pageVo.amount}">다음</a></li>
+							</c:if>
+						</div>
+					</c:if>
+					<c:if test="${!empty searchingFl}">
+						<!-- 페이지네이션 영역 -->
+						<div class="paginations">
+							<c:if test="${pageVo.prev}">
+								<li><a href="searcingMyBandBoard?bandNoForSearch=${bandNo}&pageNum=${pageVo.startPage =1}&amount=${pageVo.amount}&searchingText=${searchingText}&selectType=${selectType}&bandTitle=${bandTitle}">이전</a></li>
+							</c:if>
+							<c:forEach var="num" begin="${pageVo.startPage}" end="${pageVo.endPage}">
+								<li class="${pageVo.pageNum eq num ? 'active' : ''}">
+									<a href="searcingMyBandBoard?bandNoForSearch=${bandNo}&pageNum=${num}&amount=${pageVo.amount}&searchingText=${searchingText}&selectType=${selectType}&bandTitle=${bandTitle}">${num}</a>
+								</li>
+							</c:forEach>
+							
+							<c:if test="${pageVo.next}">
+								<li><a href="searcingMyBandBoard?bandNoForSearch=${bandNo}&pageNum=${pageVo.endPage + 1}&amount=${pageVo.amount}&searchingText=${searchingText}&selectType=${selectType}&bandTitle=${bandTitle}">다음</a></li>
+							</c:if>
+						</div>
+					
+					</c:if>
+					
+					<!-- 검색 영역 -->
+					<div class="searchingMyBoardDiv">
+						<div>
+							<button type="button" class="selectBtn" id="selectBtn">
+								<span id="selectTextSpan">제목</span>
+								<i class="bi bi-caret-down" id="bi"></i>
+							</button>
+							<ul class="selectTypeListUl disappearList" id="selectTypeListUl">
+								<li>제목</li>
+								<li>내용</li>
+								<li>제목+내용</li>
+							</ul>
+						</div>
+						<form method="get" action="${contextPath}/searcingMyBandBoard" id="searcingMyBoardForm" onSubmit="return enterCheck()">
+							<div class="searchBtnDivForMyBand">
+								<input type="hidden" name="selectType" value="selectType" id="selectType"> 
+								<input type="hidden" name="bandTitle" value="${bandTitle}" id="bandTitle"> 
+								<input type="hidden" name="bandNoForSearch" id="bandNoForSearch" value="${bandNo}">
+								<input type="search" name="searchingText" id="bandBoardSearch">
+								<button id="s-btn" type="button">
+									<i class="fa-solid fa-magnifying-glass" id="glass"></i>			
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -154,9 +221,16 @@
 <jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 <script type="text/javascript" src="${contextPath}/resources/js/myBand.js"></script>
+
+<script>
+	let isMessage = true;
+</script>
 <c:if test="${!empty message }">
 	<script>
-		swal.fire("${message}");
+		if(isMessage){
+			swal.fire("${message}");
+			isMessage = false;
+		}
 	</script>
 </c:if>
 </body>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import edu.kh.fin.band.login.model.vo.User;
+import edu.kh.fin.band.myBand.model.vo.LikeLogic;
 import edu.kh.fin.band.myBand.model.vo.MyBand;
 import edu.kh.fin.band.myBand.model.vo.MyBandReply;
 
@@ -57,7 +58,7 @@ public class MyBandDAO {
 		return sqlSession.selectOne("myBandMapper.bandUserFl", bandFlMap);
 	}
 
-	public int writeBandBoard(String title, String text, int bandNo, int userNo) {
+	public int writeBandBoard(String title, String text, int bandNo, int userNo, boolean noticeBoardCheck) {
 		
 		Map<String, Object>map = new HashMap<String, Object>();
 		
@@ -65,6 +66,7 @@ public class MyBandDAO {
 		map.put("text", text);
 		map.put("bandNo", bandNo);
 		map.put("userNo", userNo);
+		map.put("noticeBoardCheck", noticeBoardCheck);
 		
 		return sqlSession.insert("myBandMapper.writeBandBoard", map);
 	}
@@ -89,13 +91,14 @@ public class MyBandDAO {
 		return sqlSession.selectList("myBandMapper.loadReplyForBandBoard", boardNo);
 	}
 
-	public int updateBandBoard(String title, String text, int boardNo) {
+	public int updateBandBoard(String title, String text, int boardNo, boolean noticeBoardCheck) {
 		
 		Map<String, Object> boardMap = new HashMap<String, Object>();
 		
 		boardMap.put("boardNo", boardNo);
 		boardMap.put("title", title);
 		boardMap.put("text", text);
+		boardMap.put("noticeBoardCheck", noticeBoardCheck);
 		return sqlSession.update("myBandMapper.updateBandBoard", boardMap);
 	}
 
@@ -132,6 +135,76 @@ public class MyBandDAO {
 		likeMap.put("userNo", userNo);
 		
 		return sqlSession.selectOne("myBandMapper.likeCheck", likeMap);
+	}
+
+	public int likeLogic(LikeLogic likeLogic) {
+		
+		sqlSession.update("myBandMapper.likeUpdate", likeLogic);
+		
+		return sqlSession.insert("myBandMapper.likeLogic", likeLogic);
+	}
+
+	public int unlikeLogic(LikeLogic likeLogic) {
+		
+		sqlSession.update("myBandMapper.unlikeUpdate", likeLogic);
+		return sqlSession.delete("myBandMapper.unlikeLogic", likeLogic);
+	}
+
+	public List<MyBand> searcingBandList(int bandNo, int amount, int pageNum, String searchingText, String selectType) {
+		
+		Map<String,Object> boardMap = new HashMap<>();
+		
+		searchingText = "%" +searchingText + "%";
+		
+		boardMap.put("bandNo", bandNo);
+		boardMap.put("amount", amount);
+		boardMap.put("pageNum", pageNum);
+		boardMap.put("searchingText", searchingText);
+		boardMap.put("selectType", selectType);
+		
+	
+		
+		List<MyBand> bList = sqlSession.selectList("myBandMapper.searcingBandList", boardMap);
+		
+		for(MyBand eachBand : bList) {
+			int MboardNo = eachBand.getBoardNo();
+			
+			int rCount = sqlSession.selectOne("myBandMapper.rCount", MboardNo);
+			
+			eachBand.setReplyCount(rCount);
+			
+		}
+		return bList;
+	}
+
+	public int getSearchingTotal(int bandNo, String searchingText, String selectType) {
+		
+
+		Map<String,Object> boardMap = new HashMap<>();
+		
+		searchingText = "%" +searchingText + "%";
+		
+		boardMap.put("bandNo", bandNo);
+		boardMap.put("searchingText", searchingText);
+		boardMap.put("selectType", selectType);
+		
+		return sqlSession.selectOne("myBandMapper.getSearchingTotal", boardMap);
+	}
+
+	public int reRplyLogic(Map<String, Object> paramMap) {
+		return sqlSession.insert("myBandMapper.reReplyLogic", paramMap);
+	}
+
+	public int boardCheck(int bandNo) {
+		return sqlSession.selectOne("myBandMapper.boardCheck", bandNo);
+	}
+
+	public List<MyBand> zeroBand(int bandNo) {
+		return sqlSession.selectList("myBandMapper.zeroBand", bandNo);
+	}
+
+	public String leaderCheck(int userNo) {
+		return sqlSession.selectOne("myBandMapper.leaderCheck", userNo);
 	}
 
 }

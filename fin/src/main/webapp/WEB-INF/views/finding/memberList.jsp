@@ -18,6 +18,8 @@
     <script src="https://cdn.jsdelivr.net/gh/marshallku/infinite-scroll/dist/infiniteScroll.js"></script>
     <script src="https://kit.fontawesome.com/3e3bbde124.js" crossorigin="anonymous"></script>
 	<script src="${contextPath}/resources/js/modal.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
     <title>memberList</title>
 
@@ -56,9 +58,16 @@
 
 					<div class="wrapper">
 			            <div class="userNameBox">
-			                <div class="userImgBox">
-								<img src="${contextPath}/resources/images/profileImage/user.png" alt="#">
-							</div>
+			                <c:if test="${empty member.userImage}">
+								<div class="userImgBox">
+									<img src="${contextPath}/resources/images/guitarduck.png" alt="#">
+								</div>
+							</c:if>
+							<c:if test="${!empty member.userImage}">
+								<div class="userImgBox">
+									<img src="${contextPath}${member.userImage}" alt="#">
+								</div>
+							</c:if>
 			                <p>${member.userName}</p>
 			            </div>
 			            

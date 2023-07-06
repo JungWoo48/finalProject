@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import edu.kh.fin.band.chatting.model.service.TempUserService;
 import edu.kh.fin.band.chatting.model.vo.ChatMessageVo;
 import edu.kh.fin.band.chatting.model.vo.ChatVo;
 import edu.kh.fin.band.chatting.model.vo.TempUserVo;
+import edu.kh.fin.band.login.model.vo.User;
 
 @Controller
 @SessionAttributes({"tempUser", "chatRoomList"})
@@ -59,7 +63,7 @@ public class ChattingController {
 	@RequestMapping("/createRoom")
 	@ResponseBody
 	public List<ChatVo> createRoom(@RequestParam HashMap<Object, Object> params){
-		System.out.println(params);
+
 		String roomName = (String)params.get("roomName"); // 1_2 , 2_3 이런 형태
 		if(roomName != null && !roomName.trim().equals("")){
 			ChatVo chatRoom = new ChatVo();
@@ -101,11 +105,22 @@ public class ChattingController {
 	
 	@PostMapping("/loadMessage")
 	@ResponseBody
-	public String loadMessage(@RequestParam(value="chatRoomNo", required=false) String chatRoomNo) {
+	public String loadMessage(@RequestParam(value="chatRoomNo", required=false) String chatRoomNo, HttpServletRequest req) {
 		
 		List<ChatMessageVo> chatList = new ArrayList<>();
 		
-		chatList = service.loadMessage(chatRoomNo);
+		
+		HttpSession session = req.getSession();
+		
+		int loginUserNo = ((User)session.getAttribute("loginUser")).getUserNo();
+		
+		Map<String, Object> cMap = new HashMap<>();
+		
+		cMap.put("chatRoomNo", chatRoomNo);
+		
+		cMap.put("loginUserNo", loginUserNo);
+		
+		chatList = service.loadMessage(cMap);
 		
 	
 		
@@ -146,7 +161,7 @@ public class ChattingController {
 	@PostMapping("/chatStart")
 	@ResponseBody
 	public int chatStart(@RequestParam("withUser") int withUser, @RequestParam("userNo") int userNo, 
-			@RequestParam("userName") String userName) {
+			@RequestParam("userName") String userName, HttpServletRequest req) {
 		
 		String roomNo = userNo + "_" + withUser;
 		String roomNoSub = withUser +  "_" + userNo;
@@ -155,6 +170,9 @@ public class ChattingController {
 		
 		String roomTitle = userName + "&" + withUserName +"의 채팅방";
 		
+		HttpSession session = req.getSession();
+		
+		int loginUserNo = ((User)session.getAttribute("loginUser")).getUserNo();
 		
 		Map<String, Object> roomNoMap = new HashMap<>();
 		
@@ -164,9 +182,13 @@ public class ChattingController {
 		roomNoMap.put("withUser", withUser);
 		roomNoMap.put("userName", userName);
 		roomNoMap.put("roomTitle", roomTitle);
+		roomNoMap.put("loginUserNo", loginUserNo);
 		
 		
 		int check = service.dupCheck(roomNoMap);
+		
+	
+		
 		
 		// 이미 방이 존재
 		if(check > 0) {
@@ -214,6 +236,14 @@ public class ChattingController {
 				
 	}
 	
+	@PostMapping("/chatExit")
+	@ResponseBody
+	public int chatExit(@RequestParam Map<String, Object> chatMap) {
+		
+		int result = service.chatExit(chatMap);
+		
+		return result;
+	}
 	
 	
 	

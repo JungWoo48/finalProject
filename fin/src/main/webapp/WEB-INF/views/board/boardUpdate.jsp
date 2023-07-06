@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${contextPath}/resources/css/global.css">
+      <script type="text/javascript" src="${contextPath}/resources/js/boardWrite.js"></script>
 	 <link rel="stylesheet"href="${contextPath}/resources/css/boardWrite.css"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/555e979a9d.js" crossorigin="anonymous"></script>
@@ -26,16 +27,28 @@
       
     </script>
 </c:if> 
-<style>
+ <style>
+ 
+ .cke_bottom {
+    padding: 6px 8px 2px;
+    position: relative;
+    border-top: 1px solid #d1d1d1;
+    background: #f8f8f8;
+    display: none  !important ;
+    }
+    
+.cke_button__exportpdf_icon {
+    background: url(icons.png?t=4a1fb11f44) no-repeat 0 -528px !important;
+    display: none !important;
+    }
 #hh {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #474554;
-  font-weight: bold;
-  padding-left:0;
-
-  
+	font-size: 20px;
+	margin-bottom: 20px;
+	color: #474554;
+	font-weight: bold;
+	padding-left:0;
 }
+		
 </style>
     <title>WRITE</title>
    </head>
@@ -44,7 +57,7 @@
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-       <form action="mody" method="post">
+       <form action="mody" method="post" onsubmit="return check();">
   <div class="container">
     <h1 id="hh">글쓰기</h1>
     <div class="tagsBox">
@@ -75,13 +88,13 @@
     </div>
     <div class="border"></div>
     <div class="boardContent">내용</div>
-    <textarea id="content" name="boardContent" class="content-input">${board.boardContent}</textarea>
+     <textarea id="content" name="boardContent" class="content-input">${board.boardContent}</textarea>
     
     
       <script type="text/javascript">	// 글쓰기 editor 및 사진 업로드 기능
-			CKEDITOR.replace('content'
-			
-			);
+			CKEDITOR.replace('content',{
+					 height:'350px'
+			  });
 		</script>
 		
 		

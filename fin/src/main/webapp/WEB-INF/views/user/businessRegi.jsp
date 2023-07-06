@@ -10,6 +10,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 	<script src="https://kit.fontawesome.com/44f3dd3f25.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/LoginRegister.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
 	
@@ -214,12 +215,27 @@
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
+          
+          <script>
+            const msg = "${msg}";
+            if (msg.trim() !== "") {
+              Swal.fire({
+                icon: "warning",
+                text: msg,
+                title: "BandArchive"
+              });
+            } 
+
+   
+
+              </script>
 
 
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+	<jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
+	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
         	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
    
    			<script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>

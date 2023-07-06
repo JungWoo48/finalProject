@@ -9,6 +9,7 @@
 		<result property="readCount" column="READ_COUNT" />
 		<result property="boardSt" column="BOARD_ST" />
 		<result property="userNo" column="USER_NO" />
+		<result property="loginUserNo" column="LOGIN_USER_NO" />
 		<result property="boardLike" column="BOARD_LIKE" />
 		<result property="boardTag" column="BOARD_TAG" />
 		<result property="userNick" column="USER_NICK" />
@@ -41,22 +42,88 @@
 		<result property="imageOriginal" column="IMG_ORIGINAL" />
 		<result property="boardNo" column="BOARD_NO" />
 	</resultMap> 
+	
+	
+		<resultMap type="boardBanned" id="boardBanned_rm">
+		<id property="bannedNo" column="BANNED_NO" />
+		<result property="userNo" column="USER_NO" />
+		<result property="bannedUserNo" column="BANNED_USER_NO" />
+		<result property="bannedUserNick" column="BANNED_USER_NICK" />
+	</resultMap> 
 
-	<select id="boardList" resultMap="detail_rm">
+
+<select id="boardList"  parameterType="hashMap" resultMap="detail_rm">
+	
 <![CDATA[
+
 SELECT *
 FROM (
-    SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
-    BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    SELECT RN, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
     BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
-    FROM BOARD 
-    JOIN "USER" USING(USER_NO)
-) A
-WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+        BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+        BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+        FROM BOARD 
+        JOIN "USER" USING(USER_NO)
+        WHERE 1=1
+		AND BOARD_ST = 'N'
+    ]]>
+    <if test="searchType =='all'">
+        AND (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')</if>
+    <if test="searchType =='popular'">
+        AND  (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+        AND BOARD_TAG = 1</if>
+    <if test="searchType =='notice'">
+        AND  (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+        AND BOARD_TAG = 2</if>
+<![CDATA[
+    ) A
+    WHERE RN <= #{pageNum} * #{amount}
+) B
+WHERE RN > (#{pageNum}-1) * #{amount}
 
 ]]>
+
+</select>
+
+
+<!-- 
+	<select id="boardList"  parameterType="hashMap" resultMap="detail_rm">
+	
+<![CDATA[
+
+SELECT *
+FROM (
+    SELECT RN, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+    BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
+        BOARD_NO, BOARD_TITLE, BOARD_CONTENT, CREATE_DATE, READ_COUNT,
+        BOARD_ST, USER_NO, BOARD_LIKE, BOARD_TAG, USER_NICK
+        FROM BOARD 
+        JOIN "USER" USING(USER_NO)
+    ) A
+    WHERE RN <= #{pageNum} * #{amount}
+    ]]>
+ <if test="searchType =='all'">
+ AND BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%'</if>
+<if test="searchType =='notice'">
+AND  (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+AND BOARD_TAG = 1</if>
+<if test="searchType =='popular'">
+AND  (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+AND BOARD_TAG = 2</if>
+
+
+<![CDATA[
+) B
+WHERE RN > (#{pageNum}-1) * #{amount}
+
+]]>
+
     </select> 
-    
+     -->
     	
 	<select id="boardTalk" resultMap="detail_rm">
 <![CDATA[
@@ -110,20 +177,20 @@ WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
 ]]>
     </select>
     
-<!--     
-      SELECT * 
-    FROM (
-        SELECT ROW_NUMBER() OVER (ORDER BY BOARD_NO DESC) AS RN,
-        BOARD_NO,BOARD_TITLE,BOARD_CONTENT,CREATE_DATE,READ_COUNT,
-        BOARD_ST,USER_NO,BOARD_LIKE,BOARD_TAG,USER_NICK
-        FROM BOARD 
-        JOIN "USER" USING(USER_NO)
-    ) A
-    WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount} -->
-    
     
     <select id="getTotal" resultType= "int">
     	select count(*) as total from Board
+    	
+ <if test="searchType =='all'">
+    	where (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')</if>
+ <if test="searchType =='popular'">
+where (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+AND BOARD_TAG = 1</if>
+   <if test="searchType =='notice'">
+where (BOARD_TITLE LIKE '%'||#{keyword}||'%' OR BOARD_CONTENT LIKE '%'||#{keyword}||'%')
+AND BOARD_TAG = 2</if>
+
+
     </select>
     
     
@@ -140,27 +207,14 @@ WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
 		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT,
 		TO_CHAR(CREATE_DATE, 'YY"." MM"." DD') CREATE_DATE,
 		READ_COUNT, USER_NO, BOARD_LIKE, BOARD_LIKE,
-		BOARD_TAG,USER_NICK
-		FROM BOARD
+		BOARD_TAG,USER_NICK, USER_NO
+		FROM BOARD b
 		JOIN "USER" USING(USER_NO)
 		WHERE BOARD_NO = #{boardNo}
 		AND BOARD_ST = 'N' 
 
 	</select>
 	
-	<!-- Like -->
-	<update id="like_Check" parameterType="_int">
-	    UPDATE BOARD_LIKE
-	    SET LIKE_CHECK = ${like_check} + 1 
-	    WHERE USER_NO=#{userNo} AND BOARD_NO=${boardNo}
-	  </update>
-	  
-	  <update id="like_Check_cancel" parameterType="_int">
-	    UPDATE BOARD_LIKE
-	    SET LIKE_CHECK = ${like_check} - 1 
-	    WHERE USER_NO=${userNo} AND BOARD_NO=${boardNo}
-	  </update>
-
 	
 	
 	
@@ -175,8 +229,9 @@ WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
 	
 	<delete id="delete" parameterType="detail">
 	
-		DELETE FROM BOARD 
-		WHERE BOARD_NO = #{boardNo}
+		UPDATE BOARD SET
+	BOARD_ST='Y'
+WHERE BOARD_NO = #{boardNo}
 	
 	</delete>
 	
@@ -188,5 +243,48 @@ WHERE RN > (#{pageNum}-1) * #{amount} AND RN <= #{pageNum} * #{amount}
 		WHERE BOARD_NO = #{boardNo}
 	</update> 
 	
+	
+	
+
+	   <insert id="reportUser" parameterType="boardBanned">
+        INSERT INTO BOARD_BANNED 
+        VALUES (
+        SEQ_BANNED_NO.NEXTVAL,#{userNo}, #{bannedUserNo}, #{bannedUserNick})
+    </insert>
+	
+	<select id="bannedUserIds" parameterType="boardBanned" resultType="String">
+    SELECT BANNED_USER_NO
+    FROM BOARD_BANNED
+    WHERE USER_NO = #{userNo}
+</select>
+
+	<!-- 좋아요 등록 -->
+	<update id="boardDetailLike" parameterType="hashmap">
+		UPDATE BOARD SET BOARD_LIKE = BOARD_LIKE +1 WHERE BOARD_NO = ${boardNo}
+	</update>
+	
+	<!-- 좋아요 취소 -->
+	<update id="removeLike" parameterType="hashmap">
+		UPDATE BOARD SET BOARD_LIKE = BOARD_LIKE -1 WHERE BOARD_NO = ${boardNo}
+	</update>
+	
+	<!-- 좋아요 테이블 좋아요 등록 -->
+	<insert id="addLike" parameterType="hashmap">
+		INSERT INTO BOARD_LIKE VALUES(BOARD_LIKE_SEQ.NEXTVAL, ${boardNo}, ${loginUserNo}, DEFAULT)
+	</insert>
+	
+	<!-- 좋아요 테이블 좋아요 삭제 -->
+	<delete id="removeLikeFromLikeTable" parameterType="hashmap">
+		DELETE FROM BOARD_LIKE WHERE BOARD_NO = ${boardNo} AND USER_NO = ${loginUserNo}
+	</delete>
+	
+	<select id="countLike" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = ${boardNo}
+	</select>
+	
+	<!-- 좋아요 한지 안한지 체크 -->
+	<select id="checkLike" parameterType="detail" resultType="_int">
+		SELECT COUNT(*) FROM BOARD_LIKE WHERE BOARD_NO = ${boardNo} AND USER_NO = ${loginUserNo}
+	</select>
 	
 </mapper>

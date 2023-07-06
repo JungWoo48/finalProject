@@ -1,3 +1,6 @@
+body.darkmode input:focus{
+	outline: none; 
+}
 
 
 
@@ -169,11 +172,7 @@ th{
     background-color: rgba(231, 239, 238, 0.5);
     color: #868E96;
 }
-tbody tr:nth-child(1),
-tbody tr:nth-child(2) {
-    background-color: rgba(237, 238, 239, 0.3); 
 
-}
 
 table thead,
 tbody tr {
@@ -502,6 +501,26 @@ cursor: pointer;
     
    
 
+
+body.darkmode  .write 
+{
+    background-color: var(  --silver-color );
+}      
+body.darkmode  .test_obj input[type="radio"]:checked + span
+{
+    background-color: var( --newBack-dark-color);
+}  
+
+body.darkmode  .test_obj input[type="radio"] + span
+{
+    background-color: transparent;
+}       
+
+body.darkmode  .titleA
+{
+    color: var(--text-dark-color);
+}   
+
 body.darkmode th.title a
  {
     color: var(--text-dark-color);
@@ -546,7 +565,7 @@ border: 1px solid var(--border-color);
 }
 
 
-#blockModal {
+#blocksModal {
     display: none;
    
 }
@@ -957,7 +976,7 @@ border: none;
         text-align: inherit;
         letter-spacing: -0.5px;
         font-size: 15px;
-        padding-left: 0px;
+       padding-left: 10px;
         padding-right: 0px;
         display: flex;
         flex-direction: column;

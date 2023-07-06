@@ -10,6 +10,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 	<script src="https://kit.fontawesome.com/44f3dd3f25.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 	<link rel="stylesheet" href="${contextPath}/resources/css/LoginRegister.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
@@ -19,6 +20,9 @@
 	<script src = "${contextPath}/resources/js/myPageModal.js"></script>
   <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js"
   integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+  
 
 
 	</head>
@@ -236,8 +240,14 @@
     <script>
       const msg = "${msg}";
       if (msg.trim() !== "") {
-        alert(msg);
+        Swal.fire({
+          icon: "warning",
+          text: msg,
+          title: "BandArchive"
+        });
       } 
+
+      
         // 왜 자꾸 로그인 창을 들어가도 공백 alert가 뜰까 
         // -> 해결 -> != null로 조건을 주지 말고, 문자열로 체크를 해서 주면 발생하지않음.
         // 빈 문자열인 경우에는 alert를 발생시키지 않음
@@ -245,10 +255,12 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     
+    <jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
+	<jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
         	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
    
-      <script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>
-			<script src="${contextPath}/resources/js/naverLogin.js"></script>
-      <script src="${contextPath}/resources/js/kakaoLogin.js"></script>
+    <script src="${contextPath}/resources/js/LoginRegister.js?ver=1"></script>
+    <script src="${contextPath}/resources/js/naverLogin.js"></script>
+    <script src="${contextPath}/resources/js/kakaoLogin.js"></script>
   </body>
 </html>

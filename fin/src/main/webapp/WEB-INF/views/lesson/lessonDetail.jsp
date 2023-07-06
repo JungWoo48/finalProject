@@ -14,6 +14,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js" integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
     $(function() {
     $('#recommendImgBox').slick({
@@ -28,8 +30,8 @@
       autoplaySpeed : 2500, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
       pauseOnHover : true,		// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
       vertical : false,		// 세로 방향 슬라이드 옵션
-      prevArrow :	"<button type='button' class='btn'>&#10094</button>",// 이전 화살표 모양 설정
-      nextArrow :	"<button type='button' class='btn'>&#10095</button>", // 다음 화살표 모양 설정
+      prevArrow :	"<button type='button' class='btn' id='preBtn' style='outline:none'>&#10094</button>",// 이전 화살표 모양 설정
+      nextArrow :	"<button type='button' class='btn' id='nextBtn' style='outline:none'>&#10095</button>", // 다음 화살표 모양 설정
       dotsClass : "slick-dots", 	//아래 나오는 페이지네이션(점) css class 지정
       draggable : true, 	//드래그 가능 여부 
       
@@ -68,7 +70,7 @@
 
     <section class="firstSection">
 
-      
+      <input type="hidden" value="${sessionScope.loginUser.userNo}" name="loginUserCheck" id="loginUserCheck">
             <div class="explainBox">
               
               
@@ -113,9 +115,11 @@
                             ${lesson.motto}
                         </p>
                     </div>
+                    
                     <div class="chatBox">
                         <c:if test="${sessionScope.loginUser.userNo ne lesson.userNo}">
-                          <button ><i class="bi bi-chat-dots"></i></button>
+                          <button id="chatBtn"><i class="bi bi-chat-dots"></i></button>
+                          <input type="hidden" value="${lesson.userNo}">
                         </c:if>
                         
                         
@@ -176,7 +180,10 @@
 
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/chatting/chatRoomList.jsp"/>
+    <jsp:include page="/WEB-INF/views/faq/faq.jsp"/>
     <script src="${contextPath}/resources/js/lessonDetail.js"></script>
+    
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </body>
 </html>

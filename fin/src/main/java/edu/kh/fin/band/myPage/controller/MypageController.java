@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,14 +48,12 @@ public class MypageController {
 	@Autowired 
 	private MyPageService service;
 	
-	
+	private Logger logger = LoggerFactory.getLogger(MypageController.class);
 	
 	
 	@GetMapping("/myPage")
 	public String myPageController(@ModelAttribute("loginUser") User loginUser, Model model,Crite cri) {
-		
-		System.out.println("loginUser::"+loginUser);
-		
+			
 		int total = service.getTotal();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,20 +67,21 @@ public class MypageController {
 		
 		List<Band> bandMem = service.bandMem(loginUser.getUserNo());
 		
+		int bandNo = service.getbandNo(loginUser.getUserNo());
+		
+		List<Band> BandUserList = service.BandUserList(bandNo);
+		
 		List<BoardDetail> boardList = service.boardList(map);
 		
 		List<Reply> rList = service.ReplyList(loginUser.getUserNo());
-		
-		System.out.println("차단리스트"+banList);
-		System.out.println("밴드리스트"+bandMem);
-		
+					
+		//model.addAttribute("bandMem2",bandMem2);
 		model.addAttribute("bandMem",bandMem);
 		model.addAttribute("banList",banList);
 		model.addAttribute("boardList", boardList);
 	    model.addAttribute("pageVO", pageVO);
 	    model.addAttribute("rList", rList);
-	    
-	    System.out.println("내글"+boardList);
+	    model.addAttribute("bandUserList", BandUserList);
 			
 		return "myPage/myPage";
 	}
@@ -96,8 +97,10 @@ public class MypageController {
 			RedirectAttributes ra, HttpSession session
 			, HttpServletRequest re, @RequestParam("newNick") String newNick
 			, @RequestParam("newPw") String newPw ,@RequestParam("newIntro") String Intro
+			, SessionStatus status
 			) throws IOException{
 		
+		logger.info("회원 정보 수정 수행");
 		
 		Searching updateInfo = new Searching();
 		
@@ -112,10 +115,6 @@ public class MypageController {
 		updateInfo.setRegion(region);
 		updateInfo.setGender(gender);
 		
-		System.out.println(updateInfo.getGenre());
-		System.out.println(updateInfo.getInst());
-		System.out.println(updateInfo.getRegion());
-
 		paramMap.put("newIntro", Intro);
 		paramMap.put("newPw", newPw);
 		paramMap.put("userPw", loginUser.getUserPw());
@@ -127,21 +126,21 @@ public class MypageController {
 		paramMap.put("webPath", webPath);
 		paramMap.put("folderPath", folderPath);
 		paramMap.put("uploadImage", uploadImage);
+		paramMap.put("newNick", newNick);
 		
 		int allResult = 0;
 		
+		int bandInfo = 0;
 		
 		int img = service.updateImg(paramMap, loginUser);
-		System.out.println("이미지 변경" + img);
 		
-		int info = service.updateInfo(paramMap);
-		System.out.println("info변경" + info);
+		int info = service.updateInfo(paramMap);	
 		
+		int checkBand = service.checkBand(paramMap);
+				
 		int position = service.updatePosition(paramMap);
-		System.out.println("포지션 변경" + position);
 		
-		int changePw = service.changePw(paramMap);
-		System.out.println("비밀번호 변경" + changePw );
+		int changePw = service.changePw(paramMap);		
 		
 		int insertPosition = 0;
 		
@@ -158,19 +157,23 @@ public class MypageController {
 		}
 		
 		
-		System.out.println("포지션 입력" + insertPosition );
 		
-		allResult = img + info + position + changePw + insertPosition;
+		allResult = img + info + position + changePw + insertPosition + bandInfo;
 		
 		String message = null;
 		
-		if(allResult == 4) {
+		if(allResult > 3) {
 			message = "회원 정보 변경 완료";
 		} else {
 			message = "회원 정보 변경 실패";
 		}
 		
-		System.out.println("이미지 검사" + loginUser.getProfileImg());
+				
+		
+		User NewloginUser = service.NewloginUser(paramMap);
+		
+		model.addAttribute("loginUser", NewloginUser);
+		
 		
 		ra.addFlashAttribute("msg", message);
 		return "redirect:/myPage";
@@ -185,6 +188,7 @@ public class MypageController {
 			HttpServletResponse resp,
 			RedirectAttributes ra ) {
 		
+		logger.info("회원 탈퇴 수행");
 		
 		int result = service.secession(loginUser);
 		
@@ -222,8 +226,8 @@ public class MypageController {
 			HttpServletResponse resp,
 			RedirectAttributes ra) {
 		
-		System.out.println(bannedUserNo);
-		
+		logger.info("회원 차단해체 수행");
+			
 		int result = service.updateBan(bannedUserNo);
 		
 		String message = null;
@@ -257,7 +261,7 @@ public class MypageController {
 			RedirectAttributes ra	
 			) {
 		
-		System.out.println(loginUser.getUserNo());
+		logger.info("회원 밴드 생성 수행");
 		
 		paramMap.put("ment", ment);
 		paramMap.put("userNo", loginUser.getUserNo());
@@ -302,7 +306,7 @@ public class MypageController {
 			HttpServletResponse resp,
 			RedirectAttributes ra) {
 		
-		System.out.println("유저추방번호" + exileNo);
+		logger.info("밴드멤버 추방 수행");
 		
 		int result = service.exile(exileNo);
 		
@@ -336,21 +340,28 @@ public class MypageController {
 			HttpServletResponse resp,
 			RedirectAttributes ra
 			) {
-		System.out.println("밴드해체"+bandNo);
+		
+		logger.info("밴드 해체 수행");
 		
 		int result = service.dismiss(bandNo);
+		
+		int result2 = service.dissmiss2(bandNo);
+		
+		int total = 0;
+		
+		total = result + result2;
 		
 		String message = null;
 		String path = null;
 		
-		if(result > 0) {
+		if(total == 2) {
 			
 			message = "해체 완료";
 			path = "/myPage";
 			
 		} else {
 			
-			message = "해체 실패";
+			message = "해체 성공";
 			path = "/myPage";
 		}
 		
@@ -360,6 +371,8 @@ public class MypageController {
 		return "redirect:" + path;
 		
 	}
+	
+	
 	
 	
 }
